@@ -52,7 +52,7 @@ public class Animal {
 	}
 
     public String           getNume         (){ return this.nume;       }
-    public String           getSpeci        (){ return this.specie;     }
+    public String           getSpecie       (){ return this.specie;     }
     public String           getRasa         (){ return this.rasa;       }
     public String           getImagine      (){ return this.imagine;    }
     public Stapan           getStapan       (){ return this.stapanId;   }

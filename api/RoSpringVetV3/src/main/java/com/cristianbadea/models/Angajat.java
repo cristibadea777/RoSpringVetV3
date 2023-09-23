@@ -23,12 +23,10 @@ public class Angajat extends Persoana {
 	private List<Vizita> vizite;
 
     public Angajat(){ super(); }
-    public Angajat(String nume, String nrTelefon, String email, String imagine, long angajatId, String functie, String descriere, List<Vizita> vizite){
+    public Angajat(String nume, String nrTelefon, String email, String imagine, String functie, String descriere){
         super(nume, nrTelefon, email, imagine);
-        this.angajatId  = angajatId;
         this.functie    = functie;
         this.descriere  = descriere;
-        this.vizite     = vizite;
     }
 
     public long         getAnagajatId (){ return this.angajatId; }

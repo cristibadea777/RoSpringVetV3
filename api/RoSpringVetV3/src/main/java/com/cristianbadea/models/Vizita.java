@@ -1,6 +1,7 @@
 package com.cristianbadea.models;
 
-import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -12,35 +13,36 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 
 @Entity
-public class Vizita extends Data{
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+public class Vizita{
 
     @Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long vizitaId;
-	@ManyToOne(fetch = FetchType.LAZY)
+	private long        vizitaId;
+    private String      dataVizita;
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "animalId")
-	private Animal animalId;
-	@ManyToOne(fetch = FetchType.LAZY)
+	private Animal      animalId;
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "stapanId")
-	private Stapan stapanId;
-	@ManyToOne(fetch = FetchType.LAZY)
+	private Stapan      stapanId;
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "angajatId")
-	private Angajat angajatId;
-	private String numeStapan;
-	private String numeAnimal;
-	private String numeAngajat;
-	private String motiv;
+	private Angajat     angajatId;
+	private String      numeStapan;
+	private String      numeAnimal;
+	private String      numeAngajat;
+	private String      motiv;
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "diagnosticId")
-	private Diagnostic diagnosticId;
+    private Diagnostic  diagnosticId;
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "tratamentId")
-	private Tratament tratamentId;
+    private Tratament   tratamentId;
 
     public Vizita(){ super(); }
-    public Vizita(Date date, long vizitaId, Animal animalId, Stapan stapanId, Angajat angajatId, String numeStapan, String numeAnimal, String numeAngajat, String motiv, Diagnostic diagnosticId, Tratament tratamentId){
-        super(date);
-        this.vizitaId       = vizitaId;
+    public Vizita(String dataVizita, Animal animalId, Stapan stapanId, Angajat angajatId, String numeStapan, String numeAnimal, String numeAngajat, String motiv, Diagnostic diagnosticId, Tratament tratamentId){
+        this.dataVizita     = dataVizita;
         this.animalId       = animalId;
         this.stapanId       = stapanId;
         this.angajatId      = angajatId;
@@ -53,6 +55,7 @@ public class Vizita extends Data{
     }
 
     public long         getVizitaId       (){ return this.vizitaId;       }
+    public String       getDataVizita     (){ return this.dataVizita;     }
     public Animal       getAnimalId       (){ return this.animalId;       }
     public Stapan       getStapanId       (){ return this.stapanId;       }
     public Angajat      getAngajatId      (){ return this.angajatId;      }
@@ -61,9 +64,10 @@ public class Vizita extends Data{
     public String       getNumeAngajat    (){ return this.numeAngajat;    }
     public String       getMotiv          (){ return this.motiv;          }
     public Diagnostic   getDiagnostic     (){ return this.diagnosticId;   }
-    public Tratament    gTratament        (){ return this.tratamentId;    }
+    public Tratament    getTratament      (){ return this.tratamentId;    }
 
     public void setVizitaId      (long vizitaId)            { this.vizitaId = vizitaId;         }
+    public void setDataVizita    (String dataVizita)        { this.dataVizita = dataVizita;     }
     public void setAnimalId      (Animal animalId)          { this.animalId = animalId;         }
     public void setStapanId      (Stapan stapanId)          { this.stapanId = stapanId;         }
     public void setAngajatId     (Angajat angajatId)        { this.angajatId = angajatId;       }

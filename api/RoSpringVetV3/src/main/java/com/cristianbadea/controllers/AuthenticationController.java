@@ -22,7 +22,6 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public ApplicationUser registerUser(@RequestBody RegistrationDTO body){
-        System.out.println(body.toString());;
         return authenticationService.registerUser(body.getUsername(), body.getPassword());
     }
 

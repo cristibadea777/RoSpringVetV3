@@ -16,21 +16,20 @@ public class Stapan extends Persoana{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long stapanId;
+	private long             stapanId;
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "stapanId")
 	@JsonIgnore
-	private List<Animal> animale;
+	private List<Animal>     animale;
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "stapanId")
 	@JsonIgnore
 	private List<Programare> programari;
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "stapanId")
 	@JsonIgnore
-	private List<Vizita> vizite;
+	private List<Vizita>      vizite;
 
     public Stapan(){ super(); }
-    public Stapan(String nume, String nrTelefon, String email, String imagine, long stapanId, List<Animal> animale, List<Programare> programari, List<Vizita> vizite){
+    public Stapan(String nume, String nrTelefon, String email, String imagine, List<Animal> animale, List<Programare> programari, List<Vizita> vizite){
         super(nume, nrTelefon, email, imagine);
-        this.stapanId   = stapanId;
         this.animale    = animale;
         this.programari = programari;
         this.vizite     = vizite;    

@@ -1,0 +1,68 @@
+.titlu{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 10%;
+  width: 100%;
+  background-color: #232B2B;
+}
+
+.titlu-text{
+  font-size: 1.5em;
+  color: cyan;
+}
+
+.container-body{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.login-register{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  height: 33%;
+}
+
+.rowLoginRegister{
+  display: flex;
+  flex-direction: row;
+  height: 50%;
+  width: 100%;
+}
+
+.elementRowLoginRegister{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+}
+
+.textLoginRegister{
+  color: cyan;
+  font-size: 1em;
+}
+
+.inputLoginRegister{
+  color: cyan;
+  max-width: 77%;
+  background-color: #232B2B;
+}
+
+.containerButonLoginRegister{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.butonLoginRegister{
+  height: 50%;
+  max-width: 77%;
+  background-color: #232B2B;
+}

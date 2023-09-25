@@ -2,26 +2,29 @@ package com.cristianbadea.dto;
 
 public class RegistrationDTO {
     //creata pt inregistrare - pt a nu pasa /auth/register un intreg ApplicationUser de fiecare data cand se inregistreaza un user nou, pt ca ne trebuie doar userul si parola
+    private String nume;
+    private String telefon;
     private String username;
     private String password;
 
     public RegistrationDTO(){ 
         super(); 
     }
-    public RegistrationDTO(String username, String password){
+    public RegistrationDTO(String nume, String telefon, String username, String password){
         super();
+        this.nume     = nume;
+        this.telefon  = telefon;
         this.username = username;
         this.password = password;
     }
 
-    public String getUsername(){ return username; }
-    public void setUsername(String username){ this.username = username; }
-    public String getPassword(){ return password; }
-    public void setPassword(String password){ this.password = password; }
+    public String   getNume     (){ return this.nume;     }
+    public String   getTelefon  (){ return this.telefon;  }
+    public String   getUsername (){ return this.username; }
+    public String   getPassword (){ return this.password; }
 
-    @Override
-    public String toString(){
-        return "~~~~~~~@@@@@@@~~~~~~~\nRegistration details: \nUsername: " + this.username + "\nPassword: " + this.password + "\n~~~~~~~@@@@@@@~~~~~~~";
-    }
-
+    public void     setNume     (String nume)    { this.nume     = nume;     }
+    public void     setTelefon  (String telefon) { this.telefon  = telefon;  }
+    public void     setUsername (String username){ this.username = username; }
+    public void     setPassword (String password){ this.password = password; }
 }

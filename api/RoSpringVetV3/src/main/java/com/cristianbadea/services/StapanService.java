@@ -16,6 +16,13 @@ public class StapanService {
         return stapanRepository.findAll();
     }
 
+    public String saveStapan(String nume, String telefon, String email){
+        stapanRepository.save(new Stapan(nume, telefon, email, null, null, null, null));
+        return "Stapan " + email + " salvat";
+    }
 
+    public Stapan findByEmail(String email){
+        return stapanRepository.findByEmail(email);
+    }
 
 }

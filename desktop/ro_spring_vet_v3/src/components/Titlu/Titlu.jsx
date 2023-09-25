@@ -1,11 +1,11 @@
 import "./styles.css"
 
-const Titlu = ({viewLoginRegister}) => {
+const Titlu = ( {viewLoginRegister, viewDashboard} ) => {
     return (
         <div className="titlu">
-            {viewLoginRegister && (
-                <p className="titlu-text">Bun venit la RoSpringVet</p>
-            )}
+            <p className="titlu-text">
+                {viewLoginRegister ? "Bun venit la RoSpringVet" : "Dashboard"}
+            </p>
         </div>
     )
 }

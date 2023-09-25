@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
 import "./styles.css"
-import { registerUser } from "./AccesareAPI"
+import { loginUser, registerUser } from "./AccesareAPI"
 
-const LoginRegister = () => {
+const LoginRegister = ({setViewLoginRegister, setViewDashboard, setJwtToken}) => {
 
     const [viewLogin,       setViewLogin]       = useState(true)
     const [viewRegister,    setViewRegister]    = useState(false)
@@ -26,6 +26,23 @@ const LoginRegister = () => {
     const handleInregistrare = async () => {
         const raspuns = await registerUser({textNume, textTelefon, textEmail, textParola})
         setTextEroare(raspuns)
+        if(raspuns === "Registered succesfully"){
+            setViewRegister(false)
+            setViewLogin(true)
+        }
+    }
+
+    const handleAutentificare = async () => {
+        const raspuns = await loginUser({textEmail, textParola})
+        if(raspuns === "")
+            setTextEroare("Credențiale invalide")
+        else{
+            setViewRegister(false)
+            setViewLogin(false)
+            setViewLoginRegister(false)
+            setViewDashboard(true)
+            setJwtToken(raspuns)
+        }        
     }
 
     return(
@@ -95,7 +112,7 @@ const LoginRegister = () => {
                 {viewLogin ? (
                 <div className="rowLoginRegister">
                     <div className="containerButonLoginRegister">
-                        <button className="butonLoginRegister">
+                        <button className="butonLoginRegister" onClick={handleAutentificare}>
                             Autentificare
                         </button>
                     </div>

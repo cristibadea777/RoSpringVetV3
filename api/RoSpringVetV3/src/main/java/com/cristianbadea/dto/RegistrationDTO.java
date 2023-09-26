@@ -1,7 +1,6 @@
 package com.cristianbadea.dto;
 
 public class RegistrationDTO {
-    //creata pt inregistrare - pt a nu pasa /auth/register un intreg ApplicationUser de fiecare data cand se inregistreaza un user nou, pt ca ne trebuie doar userul si parola
     private String nume;
     private String telefon;
     private String username;
@@ -27,4 +26,5 @@ public class RegistrationDTO {
     public void     setTelefon  (String telefon) { this.telefon  = telefon;  }
     public void     setUsername (String username){ this.username = username; }
     public void     setPassword (String password){ this.password = password; }
+
 }

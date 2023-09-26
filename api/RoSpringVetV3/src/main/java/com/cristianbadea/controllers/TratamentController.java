@@ -21,7 +21,4 @@ public class TratamentController {
     public List<Tratament> getAllTratamente(){
         return tratamentService.getAllTratamente();
     }
-
-    //TODO: all tratamente azi
-    //TODO: all tratamente ziua X
 }

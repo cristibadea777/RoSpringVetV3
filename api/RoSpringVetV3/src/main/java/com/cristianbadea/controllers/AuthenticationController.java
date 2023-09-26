@@ -26,7 +26,7 @@ public class AuthenticationController {
     @PostMapping("/register")
     public String registerUser(@RequestBody RegistrationDTO body){
         //TODO: verificat format email valid
-        if(body.getUsername() != null && stapanService.findByEmail(body.getUsername()) != null)
+        if(body.getUsername() != null && ! body.getUsername().isEmpty() && stapanService.findByEmail(body.getUsername()) != null)
             return "Email existent";
         if(body.getNume() != null && body.getNume().isBlank())
             return "Nume este gol";
@@ -34,7 +34,7 @@ public class AuthenticationController {
             return "Parola este goala";
         authenticationService.registerUser(body.getUsername(), body.getPassword());
         stapanService.saveStapan(body.getNume(), body.getTelefon(), body.getUsername());
-        return "";
+        return "Registered succesfully";
     }
 
     @PostMapping("/login")

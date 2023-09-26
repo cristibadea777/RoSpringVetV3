@@ -1,8 +1,8 @@
 import { useState } from "react";
 import "./App.css";
 import LoginRegister from "./components/LoginRegister/LoginRegister";
-import Titlu from "./components/Titlu/Titlu";
 import Dashboard from "./components/Dashboard/Dashboard";
+import Navbar from "./components/Navbar/Navbar";
 
 function App() {
   
@@ -10,24 +10,31 @@ function App() {
 
   const [viewLoginRegister, setViewLoginRegister] = useState(true)
   const [viewDashboard,     setViewDashboard]     = useState(false)
+  
   const [jwtToken,          setJwtToken]          = useState('')
+  const [username,          setUsername]          = useState('')
+  const [authority,         setAuthority]         = useState('')
+
 
   return (
     <div className="container-principal">
-      <Titlu 
+      <Navbar 
         viewLoginRegister       = {viewLoginRegister}
-        viewDashboard           = {viewDashboard}
       />
       {viewLoginRegister && (
         <LoginRegister
           setViewLoginRegister  = {setViewLoginRegister}
           setViewDashboard      = {setViewDashboard}
           setJwtToken           = {setJwtToken}
+          setUsername           = {setUsername}
+          setAuthority          = {setAuthority}
         />
       )}
       {viewDashboard && (
         <Dashboard 
           jwtToken              = {jwtToken}
+          username              = {username}
+          authority             = {authority}
         />
       )}
     </div>

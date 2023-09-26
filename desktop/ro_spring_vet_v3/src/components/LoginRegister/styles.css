@@ -7,7 +7,7 @@
     flex-direction: column;
 }
 
-.containerLinie{
+.containerLinieLogin{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -102,7 +102,7 @@
 }
 
 .butonLoginRegister{
-height: 50%;
-max-width: 77%;
-background-color: #232B2B;
+    height: 50%;
+    max-width: 77%;
+    background-color: #232B2B;
 }

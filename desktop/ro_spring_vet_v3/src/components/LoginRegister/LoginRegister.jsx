@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import "./styles.css"
 import { loginUser, registerUser } from "./AccesareAPI"
 
-const LoginRegister = ({setViewLoginRegister, setViewDashboard, setJwtToken}) => {
+const LoginRegister = ({setViewLoginRegister, setViewDashboard, setJwtToken, setUsername, setAuthority}) => {
 
     const [viewLogin,       setViewLogin]       = useState(true)
     const [viewRegister,    setViewRegister]    = useState(false)
@@ -37,18 +37,21 @@ const LoginRegister = ({setViewLoginRegister, setViewDashboard, setJwtToken}) =>
         if(raspuns === "")
             setTextEroare("Credențiale invalide")
         else{
+            console.log(raspuns.user.username)
             setViewRegister(false)
             setViewLogin(false)
             setViewLoginRegister(false)
             setViewDashboard(true)
-            setJwtToken(raspuns)
+            setJwtToken(raspuns.jwt)
+            setUsername(raspuns.user.username)
+            setAuthority(raspuns.user.authorities[0].authority)
         }        
     }
 
     return(
         <>
         <div className="container-body">
-            <div className="containerLinie">
+            <div className="containerLinieLogin">
                 <div className="containerSchimbaLoginRegister">
                     <button className="butonSchimba" onClick={handleSchimbaAutentificare}>
                         Autentificare
@@ -128,7 +131,7 @@ const LoginRegister = ({setViewLoginRegister, setViewDashboard, setJwtToken}) =>
                 )}
 
             </div>
-            <div className="containerLinie">
+            <div className="containerLinieLogin">
                 <div className="containerElementEroare">
                     <div className="elementEroare">
                         <p className="textEroare">{textEroare}</p>

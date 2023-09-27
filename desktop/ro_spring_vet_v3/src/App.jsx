@@ -3,7 +3,6 @@ import "./App.css";
 import LoginRegister from "./components/LoginRegister/LoginRegister";
 import Dashboard from "./components/Dashboard/Dashboard";
 import Navbar from "./components/Navbar/Navbar";
-import { getStapanConectat } from "./components/LoginRegister/AccesareAPI";
 
 function App() {
   
@@ -16,8 +15,8 @@ function App() {
   const [authority,         setAuthority]         = useState('')
   const [username,          setUsername]          = useState('')
 
-  const [stapanConectat,    setStapanConectat]    = useState('')
-  const [stapanImgDefault,  setStapanImgDefault]  = useState('')
+  const [userConectat,      setUserConectat]      = useState('')
+  const [pozaProfil,        setPozaProfil]        = useState('')
   
   const [numeUser,          setNumeUser]          = useState('')
   const [telefonUser,       setTelefonUser]       = useState('')
@@ -39,8 +38,8 @@ function App() {
           setJwtToken           = {setJwtToken}
           setUsername           = {setUsername}
           setAuthority          = {setAuthority}
-          setStapanConectat     = {setStapanConectat}
-          setStapanImgDefault   = {setStapanImgDefault}
+          setUserConectat       = {setUserConectat}
+          setPozaProfil         = {setPozaProfil}
         />
       )}
       {viewDashboard && (
@@ -48,8 +47,8 @@ function App() {
           jwtToken              = {jwtToken}
           username              = {username}
           authority             = {authority}
-          stapanConectat        = {stapanConectat}
-          stapanImgDefault      = {stapanImgDefault}
+          userConectat          = {userConectat}
+          pozaProfil            = {pozaProfil}
         />
       )}
     </div>

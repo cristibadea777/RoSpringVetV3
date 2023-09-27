@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
 import "./styles.css"
-import { getPozaDefaultStapan, getStapanConectat, loginUser, registerUser } from "./AccesareAPI"
+import { getPoza, getUserConectat, loginUser, registerUser } from "./AccesareAPI"
 
-const LoginRegister = ({setViewLoginRegister, setViewDashboard, setJwtToken, setUsername, setAuthority, setStapanConectat, setStapanImgDefault}) => {
+const LoginRegister = ({setViewLoginRegister, setViewDashboard, setJwtToken, setUsername, setAuthority, setUserConectat, setPozaProfil}) => {
 
     const [viewLogin,       setViewLogin]       = useState(true)
     const [viewRegister,    setViewRegister]    = useState(false)
@@ -34,7 +34,7 @@ const LoginRegister = ({setViewLoginRegister, setViewDashboard, setJwtToken, set
 
     const handleAutentificare = async () => {
         const raspuns = await loginUser({textEmail, textParola})
-        if(raspuns === "")
+        if(raspuns.user === null || raspuns.jwt === null)
             setTextEroare("Credențiale invalide")
         else{
             setViewRegister(false)
@@ -47,11 +47,30 @@ const LoginRegister = ({setViewLoginRegister, setViewDashboard, setJwtToken, set
             setJwtToken(jwtToken)
             setUsername(username)
             setAuthority(authority)            
-            if(raspuns.user.authorities[0].authority === 'USER'){
-                setStapanConectat(await getStapanConectat({jwtToken}))
-                //if poza e goala...
-                const img = await getPozaDefaultStapan({jwtToken})
-                setStapanImgDefault(img)
+            
+            if(authority === 'USER'){
+                const apiEndpoint = 'http://localhost:8000/stapani/stapan/getStapanConectat'
+                const stapan = await getUserConectat({jwtToken, apiEndpoint})
+                setUserConectat(stapan)
+                if(stapan.imagine === null){
+                    const path = 'http://localhost:8000/resources/poze_stapani/stapan_default.png'
+                    setPozaProfil(await getPoza({jwtToken, path}))
+                }else{
+                    const path = stapan.imagine
+                    setPozaProfil(await getPoza({jwtToken, path}))
+                }
+            }
+            if(authority === 'ADMIN'){
+                const apiEndpoint = 'http://localhost:8000/angajati/getAngajatConectat'
+                const admin = await getUserConectat({jwtToken, apiEndpoint})
+                setUserConectat(admin)
+                if(admin.imagine === null){
+                    const path = 'http://localhost:8000/resources/poze_angajati/angajat_default.png'
+                    setPozaProfil(await getPoza({jwtToken, path}))
+                }else{
+                    const path = admin.imagine
+                    setPozaProfil(await getPoza({jwtToken, path}))
+                }
             } 
         }        
     }

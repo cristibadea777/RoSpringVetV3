@@ -56,8 +56,7 @@ const getAllStapani =  ({jwtToken}) => {
     }).catch(error => { console.log(error) })
 }
 
-const getStapanConectat = async ({jwtToken}) => {
-    const apiEndpoint = 'http://localhost:8000/stapani/stapan/getStapanConectat'
+const getUserConectat = async ({jwtToken, apiEndpoint}) => {
     const config = {
         headers: {
             'Authorization' : `Bearer ${jwtToken}`,
@@ -70,8 +69,8 @@ const getStapanConectat = async ({jwtToken}) => {
     } catch (error) { error => {console.log(error)} }
 }
 
-const getPozaDefaultStapan = async ({jwtToken}) => {
-    const apiEndpoint = 'http://localhost:8000/resources/poze_stapani/stapan_default.png'
+
+const getPoza = async ({jwtToken, path}) => {
     const config = {
         headers: {
             'Authorization' : `Bearer ${jwtToken}`,
@@ -79,7 +78,7 @@ const getPozaDefaultStapan = async ({jwtToken}) => {
         responseType  : 'blob'
     }
     try {
-        const response = await axios.get(apiEndpoint, config);
+        const response = await axios.get(path, config);
         const blob = response.data; // Binary data
     
         // Convert the blob to base64
@@ -100,7 +99,4 @@ const getPozaDefaultStapan = async ({jwtToken}) => {
         console.log(error);
     }
 }
-
-
-
-export {registerUser, loginUser, getAllStapani, getStapanConectat, getPozaDefaultStapan}
+export {registerUser, loginUser, getAllStapani, getUserConectat, getPoza}

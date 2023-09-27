@@ -1,8 +1,6 @@
-import { useEffect } from "react"
-import { getAllStapani, getStapanConectat } from "../LoginRegister/AccesareAPI"
 import "./styles.css"
 
-const Dashboard = ( {jwtToken, username, authority, stapanConectat, stapanImgDefault} ) => {
+const Dashboard = ( {jwtToken, username, authority, userConectat, pozaProfil} ) => {
 
     const RowInfo = ({label, valoare}) => (
         <div className="containerLinie">
@@ -31,14 +29,14 @@ const Dashboard = ( {jwtToken, username, authority, stapanConectat, stapanImgDef
             <div className="containerInfo">
                 <div className="containerPoza">
                     <div className="poza">
-                        <img src={stapanImgDefault} />
+                        <img src={pozaProfil} />
                     </div>
                 </div>
                 <div className="containerTextInfo">
-                    <RowInfo label={"Utilizator"} valoare={stapanConectat.nume} />
-                    <RowInfo label={"Telefon"}    valoare={stapanConectat.nrTelefon} />
-                    <RowInfo label={"Email"}      valoare={username} />
-                    <RowInfo label={"Rol"}        valoare={authority} />
+                    <RowInfo label={"Utilizator"}   valoare={userConectat.nume} />
+                    <RowInfo label={"Telefon"}      valoare={userConectat.nrTelefon} />
+                    <RowInfo label={"Email"}        valoare={username} />
+                    <RowInfo label={"Funcție"}      valoare={userConectat.functie} />
                     <div className="containerLinie">
                         <div className="containerLinieStanga"></div>
                         <div className="containerLinieDreapta"> <button className="buton">Setări</button></div>

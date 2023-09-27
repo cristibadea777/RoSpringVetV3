@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
 import "./styles.css"
-import { loginUser, registerUser } from "./AccesareAPI"
+import { getPozaDefaultStapan, getStapanConectat, loginUser, registerUser } from "./AccesareAPI"
 
-const LoginRegister = ({setViewLoginRegister, setViewDashboard, setJwtToken, setUsername, setAuthority}) => {
+const LoginRegister = ({setViewLoginRegister, setViewDashboard, setJwtToken, setUsername, setAuthority, setStapanConectat, setStapanImgDefault}) => {
 
     const [viewLogin,       setViewLogin]       = useState(true)
     const [viewRegister,    setViewRegister]    = useState(false)
@@ -37,14 +37,22 @@ const LoginRegister = ({setViewLoginRegister, setViewDashboard, setJwtToken, set
         if(raspuns === "")
             setTextEroare("Credențiale invalide")
         else{
-            console.log(raspuns.user.username)
             setViewRegister(false)
             setViewLogin(false)
             setViewLoginRegister(false)
             setViewDashboard(true)
-            setJwtToken(raspuns.jwt)
-            setUsername(raspuns.user.username)
-            setAuthority(raspuns.user.authorities[0].authority)
+            const jwtToken = raspuns.jwt
+            const username = raspuns.user.username
+            const authority = raspuns.user.authorities[0].authority
+            setJwtToken(jwtToken)
+            setUsername(username)
+            setAuthority(authority)            
+            if(raspuns.user.authorities[0].authority === 'USER'){
+                setStapanConectat(await getStapanConectat({jwtToken}))
+                //if poza e goala...
+                const img = await getPozaDefaultStapan({jwtToken})
+                setStapanImgDefault(img)
+            } 
         }        
     }
 

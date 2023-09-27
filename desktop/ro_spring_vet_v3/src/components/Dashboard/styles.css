@@ -11,19 +11,22 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    height: 40%;
+    height: 50%;
     width: 100%;
 }
 .containerPoza{
-    height: 100%;
+    height: 60%;
     width: 30%;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 .poza{
-    height: 50%;
+    height: 100%;
     width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .poza img {
     max-width: 100%;
@@ -72,16 +75,50 @@
     align-items: center;
 }
 .buton{
-    height: 70%;
-    width: 70%;
+    height: 40%;
+    width: 50%;
     background-color: #232B2B;
 }
 .text{
     font-size: 1em;
     color: cyan;
 }
-.container{
-    flex-grow: 1;
+
+.containerSecundar{
+    height: 50%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.containerSecundarStanga{
+    height: 100%;
+    width: 60%;
+}
+
+.cotainerSecundarDreapta{
+    height: 100%;
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.linieContainerSecundarDreapta{
+    height: 25%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+
+.containerSecundarStanga button{
+    width: 30%;
 }
 
 

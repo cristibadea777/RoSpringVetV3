@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import LoginRegister from "./components/LoginRegister/LoginRegister";
 import Dashboard from "./components/Dashboard/Dashboard";
 import Navbar from "./components/Navbar/Navbar";
+import { getStapanConectat } from "./components/LoginRegister/AccesareAPI";
 
 function App() {
   
@@ -12,9 +13,18 @@ function App() {
   const [viewDashboard,     setViewDashboard]     = useState(false)
   
   const [jwtToken,          setJwtToken]          = useState('')
-  const [username,          setUsername]          = useState('')
   const [authority,         setAuthority]         = useState('')
+  const [username,          setUsername]          = useState('')
 
+  const [stapanConectat,    setStapanConectat]    = useState('')
+  const [stapanImgDefault,  setStapanImgDefault]  = useState('')
+  
+  const [numeUser,          setNumeUser]          = useState('')
+  const [telefonUser,       setTelefonUser]       = useState('')
+  const [animaleUser,       setAnimaleUser]       = useState('')
+  const [viziteUser,        setViziteUser]        = useState('')
+  const [programariUser,    setProgramariUser]    = useState('')
+  const [tratamenteUser,    setTratamenteUser]    = useState('')
 
   return (
     <div className="container-principal">
@@ -28,6 +38,8 @@ function App() {
           setJwtToken           = {setJwtToken}
           setUsername           = {setUsername}
           setAuthority          = {setAuthority}
+          setStapanConectat     = {setStapanConectat}
+          setStapanImgDefault   = {setStapanImgDefault}
         />
       )}
       {viewDashboard && (
@@ -35,6 +47,8 @@ function App() {
           jwtToken              = {jwtToken}
           username              = {username}
           authority             = {authority}
+          stapanConectat        = {stapanConectat}
+          stapanImgDefault      = {stapanImgDefault}
         />
       )}
     </div>

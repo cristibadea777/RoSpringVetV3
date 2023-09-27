@@ -4,6 +4,17 @@ import "./styles.css"
 
 const Dashboard = ( {jwtToken, username, authority, stapanConectat, stapanImgDefault} ) => {
 
+    const RowInfo = ({nume, valoare}) => (
+        <div className="containerLinie">
+            <div className="containerLinieStanga">
+                <p className="text">{nume}</p>
+            </div>
+            <div className="containerLinieDreapta">
+                <p className="text">{valoare}</p>
+            </div>
+        </div>
+    )
+
     return(
         <div className="containerDashboard">
             <div className="containerInfo">
@@ -13,112 +24,31 @@ const Dashboard = ( {jwtToken, username, authority, stapanConectat, stapanImgDef
                     </div>
                 </div>
                 <div className="containerTextInfo">
+                    <RowInfo nume={"Utilizator"} valoare={stapanConectat.nume} />
+                    <RowInfo nume={"Telefon"}    valoare={stapanConectat.nrTelefon} />
+                    <RowInfo nume={"Email"}      valoare={username} />
+                    <RowInfo nume={"Rol"}        valoare={authority} />
                     <div className="containerLinie">
-                        <div className="containerLinieStanga">
-                            <p className="text">Utilizator</p>
-                        </div>
-                        <div className="containerLinieDreapta">
-                            <p className="text">{stapanConectat.nume}</p>
-                        </div>
-                    </div>
-                    <div className="containerLinie">
-                        <div className="containerLinieStanga">
-                            <p className="text">Telefon</p>
-                        </div>
-                        <div className="containerLinieDreapta">
-                            <p className="text">Telefon</p>
-                        </div>
-                    </div>
-                    <div className="containerLinie">
-                        <div className="containerLinieStanga">
-                            <p className="text">Email</p>
-                        </div>
-                        <div className="containerLinieDreapta">
-                            <p className="text">{username}</p>
-                        </div>
-                    </div>
-                    <div className="containerLinie">
-                        <div className="containerLinieStanga">
-                            <p className="text">Rol</p>
-                        </div>
-                        <div className="containerLinieDreapta">
-                            <p className="text">{authority}</p>
-                        </div>
-                    </div>
-                    <div className="containerLinie">
-                        <div className="containerLinieStanga">
-                        </div>
-                        <div className="containerLinieDreapta">
-                            <button className="buton">Setări</button>
-                        </div>
+                        <div className="containerLinieStanga"></div>
+                        <div className="containerLinieDreapta"> <button className="buton">Setări</button></div>
                     </div>
                 </div>
             </div>
             <div className="containerSecundar">
                 <div className="containerSecundarStanga">
-                    <div className="containerLinie">
-                        <div className="containerLinieStanga">
-                            <p className="text">Programări neconfirmate</p>
-                        </div>
-                        <div className="containerLinieDreapta">
-                            <button className="buton">Nr</button>
-                        </div>
-                    </div>
-                    <div className="containerLinie">
-                        <div className="containerLinieStanga">
-                            <p className="text">Programări azi</p>
-                        </div>
-                        <div className="containerLinieDreapta">
-                            <button className="buton">Nr</button>
-                        </div>
-                    </div>
-                    <div className="containerLinie">
-                        <div className="containerLinieStanga">
-                            <p className="text">Programări mâine</p>
-                        </div>
-                        <div className="containerLinieDreapta">
-                            <button className="buton">Nr</button>
-                        </div>
-                    </div>
-                    <div className="containerLinie">
-                        <div className="containerLinieStanga">
-                            <p className="text">Tratamente azi</p>
-                        </div>
-                        <div className="containerLinieDreapta">
-                            <button className="buton">Nr</button>
-                        </div>
-                    </div>
-                    <div className="containerLinie">
-                        <div className="containerLinieStanga">
-                            <p className="text">Tratamente mâine</p>
-                        </div>
-                        <div className="containerLinieDreapta">
-                            <button className="buton">Nr</button>
-                        </div>
-                    </div>                    
+                    <RowInfo nume={"Programări neconfirmate"}   value={"Nr"}/>
+                    <RowInfo nume={"Programări azi"}            value={"Nr"}/>
+                    <RowInfo nume={"Programări mâine"}          value={"Nr"}/>
+                    <RowInfo nume={"Tratamente azi"}            value={"Nr"}/>
+                    <RowInfo nume={"Tratamente mâine"}          value={"Nr"}/>
                 </div>
                 <div className="cotainerSecundarDreapta">
-                    <div className="linieContainerSecundarDreapta">
-                        <div className="containerLinieStanga">
-                            <p className="text">Vizite efectuate</p>
-                        </div>
-                        <div className="containerLinieDreapta">
-                            <p className="text">Total</p>
-                        </div>
-                    </div>
-                    <div className="linieContainerSecundarDreapta">
-                        <div className="containerLinieStanga">
-                            <p className="text">Total animale</p>
-                        </div>
-                        <div className="containerLinieDreapta">
-                            <p className="text">Total</p>
-                        </div>
-                    </div>
+                    <RowInfo nume={"Vizite efectuate"}  value={"Total"}/>
+                    <RowInfo nume={"Total animale"}     value={"Total"}/>
                 </div>
             </div>
             <div className="container"></div>
         </div>    
     )
-
 }
 export default Dashboard

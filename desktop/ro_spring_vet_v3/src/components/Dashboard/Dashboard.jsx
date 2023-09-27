@@ -4,13 +4,24 @@ import "./styles.css"
 
 const Dashboard = ( {jwtToken, username, authority, stapanConectat, stapanImgDefault} ) => {
 
-    const RowInfo = ({nume, valoare}) => (
+    const RowInfo = ({label, valoare}) => (
         <div className="containerLinie">
-            <div className="containerLinieStanga">
-                <p className="text">{nume}</p>
+            <div className="containerLinieStanga">  
+                <p className="text">{label}</p> 
             </div>
-            <div className="containerLinieDreapta">
-                <p className="text">{valoare}</p>
+            <div className="containerLinieDreapta"> 
+                <p className="text">{valoare}</p> 
+            </div>
+        </div>
+    )
+
+    const RowInfoSecundar = ({label, valoare, functie}) => (
+        <div className="containerLinie">
+            <div className="containerLinieStanga">  
+                <p className="text">{label}</p>
+            </div>
+            <div className="containerLinieDreapta"> 
+                <button className="buton" onClick={functie}>{valoare}</button>
             </div>
         </div>
     )
@@ -24,10 +35,10 @@ const Dashboard = ( {jwtToken, username, authority, stapanConectat, stapanImgDef
                     </div>
                 </div>
                 <div className="containerTextInfo">
-                    <RowInfo nume={"Utilizator"} valoare={stapanConectat.nume} />
-                    <RowInfo nume={"Telefon"}    valoare={stapanConectat.nrTelefon} />
-                    <RowInfo nume={"Email"}      valoare={username} />
-                    <RowInfo nume={"Rol"}        valoare={authority} />
+                    <RowInfo label={"Utilizator"} valoare={stapanConectat.nume} />
+                    <RowInfo label={"Telefon"}    valoare={stapanConectat.nrTelefon} />
+                    <RowInfo label={"Email"}      valoare={username} />
+                    <RowInfo label={"Rol"}        valoare={authority} />
                     <div className="containerLinie">
                         <div className="containerLinieStanga"></div>
                         <div className="containerLinieDreapta"> <button className="buton">Setări</button></div>
@@ -36,19 +47,24 @@ const Dashboard = ( {jwtToken, username, authority, stapanConectat, stapanImgDef
             </div>
             <div className="containerSecundar">
                 <div className="containerSecundarStanga">
-                    <RowInfo nume={"Programări neconfirmate"}   value={"Nr"}/>
-                    <RowInfo nume={"Programări azi"}            value={"Nr"}/>
-                    <RowInfo nume={"Programări mâine"}          value={"Nr"}/>
-                    <RowInfo nume={"Tratamente azi"}            value={"Nr"}/>
-                    <RowInfo nume={"Tratamente mâine"}          value={"Nr"}/>
+                    <RowInfoSecundar label={"Programări neconfirmate"} valoare={"Nr"} functie={{}}/>
+                    <RowInfoSecundar label={"Programări azi"} valoare={"Nr"} functie={{}}/>
+                    <RowInfoSecundar label={"Programări mâine"} valoare={"Nr"} functie={{}}/>
+                    <RowInfoSecundar label={"Tratamente azi"} valoare={"Nr"} functie={{}}/>
+                    <RowInfoSecundar label={"Tratamente mâine"} valoare={"Nr"} functie={{}}/>         
                 </div>
                 <div className="cotainerSecundarDreapta">
-                    <RowInfo nume={"Vizite efectuate"}  value={"Total"}/>
-                    <RowInfo nume={"Total animale"}     value={"Total"}/>
+                    <div className="linieContainerSecundarDreapta">
+                        <RowInfo label={"Vizite efectuate"} valoare={"Total"} />
+                    </div>
+                    <div className="linieContainerSecundarDreapta">
+                        <RowInfo label={"Total animale"} valoare={"Total"} />
+                    </div>
                 </div>
             </div>
             <div className="container"></div>
         </div>    
     )
+
 }
 export default Dashboard

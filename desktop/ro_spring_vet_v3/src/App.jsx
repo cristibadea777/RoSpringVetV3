@@ -30,6 +30,7 @@ function App() {
     <div className="container-principal">
       <Navbar 
         viewLoginRegister       = {viewLoginRegister}
+        authority               = {authority}
       />
       {viewLoginRegister && (
         <LoginRegister

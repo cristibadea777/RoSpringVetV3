@@ -55,8 +55,7 @@ const getUserConectat = async ({jwtToken, apiEndpoint}) => {
     } catch (error) { error => {console.log(error)} }
 }
 
-
-const getPoza = async ({jwtToken, path}) => {
+const getPoza = async ({jwtToken, apiEndpoint}) => {
     const config = {
         headers: {
             'Authorization' : `Bearer ${jwtToken}`,
@@ -64,7 +63,7 @@ const getPoza = async ({jwtToken, path}) => {
         responseType  : 'blob'
     }
     try {
-        const response = await axios.get(path, config);
+        const response = await axios.get(apiEndpoint, config);
         const blob = response.data; //binary data
         const reader = new FileReader()
         reader.readAsDataURL(blob);//blob in base64
@@ -94,8 +93,6 @@ const logout = async ({jwtToken, setJwtToken, api}) => {
     setJwtToken('')
 }
 
-//liste
-
 const getAllObiecte = ({jwtToken, apiEndpoint}) => {
     const config = {
         headers: {
@@ -108,12 +105,4 @@ const getAllObiecte = ({jwtToken, apiEndpoint}) => {
     }).catch(error => { console.log(error) })
 }
 
-//get
-    //animale
-    //vizite
-    //tratamente
-    //programari
-
-
-
-export {registerUser, loginUser, getUserConectat, getPoza, logout, getAllObiecte }
+export { registerUser, loginUser, getUserConectat, getPoza, logout, getAllObiecte }

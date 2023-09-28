@@ -12,7 +12,7 @@ function App() {
 
   const [viewLoginRegister, setViewLoginRegister] = useState(true)
   const [viewDashboard,     setViewDashboard]     = useState(false)
-  
+    
   const [jwtToken,          setJwtToken]          = useState('')
   const [authority,         setAuthority]         = useState('')
   const [username,          setUsername]          = useState('')

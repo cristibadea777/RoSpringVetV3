@@ -3,7 +3,8 @@ import "./styles.css"
 import { getAllObiecte, getPoza, getUserConectat, loginUser, registerUser } from "./AccesareAPI"
 
 const LoginRegister = ({ setViewLoginRegister, setViewDashboard, setJwtToken, setUsername, setAuthority, setUserConectat, setPozaProfil,
-                         setAnimale, setStapani, setAngajati, setVizite, setProgramari, setTratamente
+                         api, setAnimale, setStapani, setAngajati, setVizite, setProgramari, setTratamente, 
+                         setAnimaleUser, setViziteUser, setProgramariUser, setTratamenteUser
                       }) => {
 
     const [viewLogin,       setViewLogin]       = useState(true)
@@ -26,20 +27,20 @@ const LoginRegister = ({ setViewLoginRegister, setViewDashboard, setJwtToken, se
     }
 
 
-    const setareListeStapan = () => {
-        //animale
-        //vizite
-        //tratamente
-        //programari                        
+    const setareListeStapan = async ({jwtToken}) => {
+        setAnimaleUser   (await getAllObiecte({jwtToken, apiEndpoint: `${api}/animale/stapan/getAllAnimaleStapan`}))
+        setViziteUser    (await getAllObiecte({jwtToken, apiEndpoint: `${api}/tratamente/stapan/getAllTratamenteStapan`}))
+        setTratamenteUser(await getAllObiecte({jwtToken, apiEndpoint: `${api}/tratamente/stapan/getAllTratamenteStapan`}))
+        setProgramariUser(await getAllObiecte({jwtToken, apiEndpoint: `${api}/programari/stapan/getAllProgramariStapan`}))
     }
 
     const setareListeAngajat = async ({jwtToken}) => {
-        setAngajati  (await getAllObiecte({jwtToken, apiEndpoint: `${api}angajati/getAllAngajati`}))
-        setStapani   (await getAllObiecte({jwtToken, apiEndpoint: `${api}stapani/angajat/getAllStapani`}))
-        setAnimale   (await getAllObiecte({jwtToken, apiEndpoint: `${api}animale/angajat/getAllAnimale`}))
-        setVizite    (await getAllObiecte({jwtToken, apiEndpoint: `${api}vizite/angajat/getAllVizite`}))
-        setTratamente(await getAllObiecte({jwtToken, apiEndpoint: `${api}tratamente/angajat/getAllTratamente`}))
-        setProgramari(await getAllObiecte({jwtToken, apiEndpoint: `${api}programari/angajat/getAllProgramari`}))
+        setAngajati  (await getAllObiecte({jwtToken, apiEndpoint: `${api}/angajati/getAllAngajati`}))
+        setStapani   (await getAllObiecte({jwtToken, apiEndpoint: `${api}/stapani/angajat/getAllStapani`}))
+        setAnimale   (await getAllObiecte({jwtToken, apiEndpoint: `${api}/animale/angajat/getAllAnimale`}))
+        setVizite    (await getAllObiecte({jwtToken, apiEndpoint: `${api}/vizite/angajat/getAllVizite`}))
+        setTratamente(await getAllObiecte({jwtToken, apiEndpoint: `${api}/tratamente/angajat/getAllTratamente`}))
+        setProgramari(await getAllObiecte({jwtToken, apiEndpoint: `${api}/programari/angajat/getAllProgramari`}))
     }
 
     const handleInregistrare = async () => {
@@ -56,15 +57,11 @@ const LoginRegister = ({ setViewLoginRegister, setViewDashboard, setJwtToken, se
         if(raspuns.user === null || raspuns.jwt === null)
             setTextEroare("Credențiale invalide")
         else{
+
             setViewRegister(false)
             setViewLogin(false)
             setViewLoginRegister(false)
-            
             setViewDashboard(true)
-
-            //aici in loc de afisare dashboard - 
-            //afisare ...loading... pana se incarca tot
-
 
             const jwtToken = raspuns.jwt
             const username = raspuns.user.username
@@ -74,28 +71,24 @@ const LoginRegister = ({ setViewLoginRegister, setViewDashboard, setJwtToken, se
             setAuthority(authority)            
             
             if(authority === 'USER'){
-                const apiEndpoint = `${api}stapani/stapan/getStapanConectat`
+                const apiEndpoint = `${api}/stapani/stapan/getStapanConectat`
                 const stapan = await getUserConectat({jwtToken, apiEndpoint})
                 setUserConectat(stapan)
                 if(stapan.imagine === null){
-                    const path = `${api}resources/poze_stapani/stapan_default.png`
-                    setPozaProfil(await getPoza({jwtToken, path}))
+                    setPozaProfil(await getPoza({jwtToken, apiEndpoint: `${api}/resources/poze_stapani/stapan_default.png`}))
                 }else{
-                    const path = stapan.imagine
-                    setPozaProfil(await getPoza({jwtToken, path}))
+                    setPozaProfil(await getPoza({jwtToken, apiEndpoint: `${stapan.imagine}`}))
                 }
-                setareListeStapan()
+                setareListeStapan({jwtToken})
             }
             if(authority === 'ADMIN'){
-                const apiEndpoint = `${api}angajati/getAngajatConectat`
+                const apiEndpoint = `${api}/angajati/getAngajatConectat`
                 const admin = await getUserConectat({jwtToken, apiEndpoint})
                 setUserConectat(admin)
                 if(admin.imagine === null){
-                    const path = `${api}resources/poze_angajati/angajat_default.png`
-                    setPozaProfil(await getPoza({jwtToken, path}))
+                    setPozaProfil(await getPoza({jwtToken, apiEndpoint: `${api}/resources/poze_angajati/angajat_default.png`}))
                 }else{
-                    const path = admin.imagine
-                    setPozaProfil(await getPoza({jwtToken, path}))
+                    setPozaProfil(await getPoza({jwtToken, apiEndpoint: `${admin.imagine}`}))
                 }
                 setareListeAngajat({jwtToken})
             } 

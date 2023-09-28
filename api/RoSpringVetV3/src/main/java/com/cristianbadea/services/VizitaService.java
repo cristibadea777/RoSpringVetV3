@@ -56,8 +56,11 @@ public class VizitaService {
         tratament.setVizitaId(vizita);
         tratamentRepository.save(tratament);
 
-
         return "";
+    }
+
+    public List<Vizita> getAllViziteStapan(Stapan stapanId){
+        return vizitaRepository.findAllByStapanId(stapanId);
     }
 
 }

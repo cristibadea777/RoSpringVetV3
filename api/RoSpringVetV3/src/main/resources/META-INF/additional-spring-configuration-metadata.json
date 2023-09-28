@@ -1,0 +1,12 @@
+{"properties": [
+  {
+    "name": "external.resources.path",
+    "type": "java.lang.String",
+    "description": "Cale resursa folder extern'"
+  },
+  {
+    "name": "external.resources.dir",
+    "type": "java.lang.String",
+    "description": "Nume folder extern'"
+  }
+]}

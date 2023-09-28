@@ -9,7 +9,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.cristianbadea.dto.VizitaDTO;
+import com.cristianbadea.models.Stapan;
 import com.cristianbadea.models.Vizita;
+import com.cristianbadea.services.AuthenticationService;
+import com.cristianbadea.services.StapanService;
 import com.cristianbadea.services.VizitaService;
 
 @RestController
@@ -19,6 +22,10 @@ public class VizitaController {
    
     @Autowired
     VizitaService vizitaService;
+    @Autowired
+    AuthenticationService authenticationService;
+    @Autowired
+    StapanService stapanService;
     
     @GetMapping("/angajat/getAllVizite")
     public List<Vizita> getAllVizite(){
@@ -38,6 +45,13 @@ public class VizitaController {
             vizitaDTO.getDataInceput(), 
             vizitaDTO.getDataSfarsit()
         );
+    }
+
+    @GetMapping("/stapan/getAllViziteStapan")
+    public List<Vizita> getAllViziteStapan(){
+        String username = authenticationService.getUserConectat();
+        Stapan stapanId = stapanService.findByEmail(username);
+        return vizitaService.getAllViziteStapan(stapanId);
     }
 
 }

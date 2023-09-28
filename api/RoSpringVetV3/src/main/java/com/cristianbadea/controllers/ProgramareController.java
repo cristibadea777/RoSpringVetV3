@@ -7,7 +7,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.cristianbadea.models.Programare;
+import com.cristianbadea.models.Stapan;
+import com.cristianbadea.services.AuthenticationService;
 import com.cristianbadea.services.ProgramareService;
+import com.cristianbadea.services.StapanService;
 
 @RestController
 @RequestMapping("/programari")
@@ -16,10 +19,21 @@ public class ProgramareController {
     
     @Autowired
     private ProgramareService programareService;
+    @Autowired
+    private AuthenticationService authenticationService;
+    @Autowired
+    private StapanService stapanService;
 
     @GetMapping("/angajat/getAllProgramari")
     public List<Programare> getAllProgramari(){
         return programareService.getAllProgramari();
+    }
+
+    @GetMapping("/stapan/getAllProgramariStapan")
+    public List<Programare> getAllProgramariStapan(){
+        String username = authenticationService.getUserConectat();
+        Stapan stapanId = stapanService.findByEmail(username);
+        return programareService.getAllProgramariStapan(stapanId);
     }
 
 }

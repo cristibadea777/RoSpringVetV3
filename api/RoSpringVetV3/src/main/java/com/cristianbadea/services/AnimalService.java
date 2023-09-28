@@ -32,6 +32,9 @@ public class AnimalService {
         return "";
     }
     
+    public List<Animal> getAllAnimaleStapan(Stapan stapanId){
+        return animalRepository.findAllByStapanId(stapanId);
+    }
     
 
 }

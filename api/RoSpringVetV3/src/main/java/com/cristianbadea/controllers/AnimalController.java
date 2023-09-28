@@ -10,7 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.cristianbadea.dto.AnimalDTO;
 import com.cristianbadea.models.Animal;
+import com.cristianbadea.models.Stapan;
 import com.cristianbadea.services.AnimalService;
+import com.cristianbadea.services.AuthenticationService;
+import com.cristianbadea.services.StapanService;
 
 @RestController
 @RequestMapping("/animale")
@@ -19,6 +22,11 @@ public class AnimalController {
     
     @Autowired
     private AnimalService animalService;
+    @Autowired
+    private AuthenticationService authenticationService;
+    @Autowired
+    private StapanService stapanService;
+
 
     @GetMapping("/angajat/getAllAnimale")
     public List<Animal> getAllAnimale(){
@@ -34,11 +42,15 @@ public class AnimalController {
             animalDTO.getImagine(), 
             animalDTO.getStapanId()
         );
+    } 
+
+    @GetMapping("/stapan/getAllAnimaleStapan")
+    public List<Animal> getAllAnimaleStapan(){
+        String username = authenticationService.getUserConectat();
+        Stapan stapanId = stapanService.findByEmail(username);
+        return animalService.getAllAnimaleStapan(stapanId);
     }
 
-    
 
-
-    
 }
 

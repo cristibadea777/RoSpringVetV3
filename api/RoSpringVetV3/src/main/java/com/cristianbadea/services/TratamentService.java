@@ -3,6 +3,8 @@ package com.cristianbadea.services;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.cristianbadea.models.Stapan;
 import com.cristianbadea.models.Tratament;
 import com.cristianbadea.repositories.TratamentRepository;
 
@@ -14,6 +16,10 @@ public class TratamentService {
 
     public List<Tratament> getAllTratamente(){
         return tratamentRepository.findAll();
+    }
+
+    public List<Tratament> getAllTratamenteStapan(Stapan stapanId){
+        return tratamentRepository.findAllByStapanId(stapanId);
     }
 
 }

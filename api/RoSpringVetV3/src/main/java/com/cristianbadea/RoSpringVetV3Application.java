@@ -7,6 +7,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import com.cristianbadea.models.Angajat;
 import com.cristianbadea.models.Animal;
 import com.cristianbadea.models.ApplicationUser;
 import com.cristianbadea.models.Role;
@@ -25,7 +27,7 @@ public class RoSpringVetV3Application {
 	}
 
 	@Bean
-	CommandLineRunner run(RoleRepository roleRepository, UserRepository userRepository, PasswordEncoder passwordEncoder){
+	CommandLineRunner run(RoleRepository roleRepository, UserRepository userRepository, PasswordEncoder passwordEncoder, AngajatRepository angajatRepository){
 		return args -> {
 			//reinsereaza informatiile (roluri, user admin) de fiecare data la fiecare restart al palicatiei (daca nu exista deja in BD)
 
@@ -37,8 +39,11 @@ public class RoSpringVetV3Application {
 			Set<Role> roles = new HashSet<>();
 			roles.add(adminRole);
 
-			ApplicationUser admin = new ApplicationUser(1, "admin", passwordEncoder.encode("password"), roles);
+			ApplicationUser admin = new ApplicationUser(1, "rospringvet@gmail.com", passwordEncoder.encode("fulger"), roles);
 			userRepository.save(admin);
+			Angajat angajat = new Angajat("AdminRoSpringVet", "0771287872", "rospringvet@gmail.com", null, "Doctor", null);
+			angajatRepository.save(angajat);
+			
 		};
 	}
 
@@ -47,6 +52,8 @@ public class RoSpringVetV3Application {
 		return args -> {
 			
 			try {
+
+
 				Stapan stapan1 = new Stapan("Cristian", "0771287872", "eu@cristianbadea.online", null, null, null, null);
 				Stapan stapan2 = new Stapan("Gabriela", "1234567890", "gabibadea@yahoo.com", null, null, null, null);
 				Stapan stapan3 = new Stapan("Georgiana", "098765432", "georgiana@yahoo.com.online", null, null, null, null);

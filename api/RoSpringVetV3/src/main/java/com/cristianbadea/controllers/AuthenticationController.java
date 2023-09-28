@@ -1,7 +1,9 @@
 package com.cristianbadea.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,6 +42,12 @@ public class AuthenticationController {
     @PostMapping("/login")
     public LoginResponseDTO loginUser(@RequestBody LoginDTO body){
         return authenticationService.loginUser(body.getUsername(), body.getPassword()); 
+    }
+
+    @GetMapping("/logout")
+    public void logout(){
+        //client-side se sterge si tokenul
+        SecurityContextHolder.clearContext();
     }
 
 }

@@ -1,8 +1,9 @@
 package com.cristianbadea.controllers;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,5 +24,11 @@ public class StapanController {
         return stapanService.getAllStapani();
     }   
 
+    @GetMapping("/stapan/getStapanConectat")
+    public Stapan getStapanConectat(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        return stapanService.findByEmail(username);
+    }
 
 }

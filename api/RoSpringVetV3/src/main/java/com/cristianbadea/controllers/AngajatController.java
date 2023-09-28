@@ -2,6 +2,8 @@ package com.cristianbadea.controllers;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +22,7 @@ public class AngajatController {
     @Autowired
     private AngajatService angajatService;
 
-    @GetMapping("/allAngajati")
+    @GetMapping("/getAllAngajati")
     public List<Angajat> getAllAngajati(){
         return angajatService.getAllAngajati();
     }
@@ -37,5 +39,11 @@ public class AngajatController {
         );
     }
 
+    @GetMapping("/getAngajatConectat")
+    public Angajat getAngajatConectat(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        return angajatService.findByEmail(username);
+    }
     
 }

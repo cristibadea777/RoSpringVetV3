@@ -1,10 +1,8 @@
 package com.cristianbadea.services;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.cristianbadea.models.Angajat;
 import com.cristianbadea.repositories.AngajatRepository;
 
@@ -28,5 +26,8 @@ public class AngajatService {
         return "";
     }
 
+    public Angajat findByEmail(String email){
+        return angajatRepository.findByEmail(email);
+    }
 
 }

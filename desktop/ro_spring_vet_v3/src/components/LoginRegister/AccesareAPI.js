@@ -42,20 +42,6 @@ const loginUser = async ({textEmail, textParola}) => {
     }
 }
 
-const getAllStapani =  ({jwtToken}) => {
-    console.log(jwtToken)
-    const apiEndpoint = 'http://localhost:8000/stapani/angajat/getAllStapani'
-    const config = {
-        headers: {
-            'Authorization' : `Bearer ${jwtToken}`,
-            'Content-Type'  : 'application/json'
-        }
-    }
-    axios.get(apiEndpoint, config).then(response => {
-        console.log(response.data)
-    }).catch(error => { console.log(error) })
-}
-
 const getUserConectat = async ({jwtToken, apiEndpoint}) => {
     const config = {
         headers: {
@@ -79,24 +65,55 @@ const getPoza = async ({jwtToken, path}) => {
     }
     try {
         const response = await axios.get(path, config);
-        const blob = response.data; // Binary data
-    
-        // Convert the blob to base64
-        const reader = new FileReader();
-        reader.readAsDataURL(blob);
-    
+        const blob = response.data; //binary data
+        const reader = new FileReader()
+        reader.readAsDataURL(blob);//blob in base64
         return new Promise((resolve, reject) => {
             reader.onloadend = () => {
                 const base64 = reader.result;
-                resolve(base64);
-            };
-    
+                resolve(base64)
+            }
             reader.onerror = (error) => {
-                reject(error);
-            };
-        });
-    } catch (error) {
-        console.log(error);
-    }
+                reject(error)
+            }
+        })
+    } catch (error) { console.log(error) }
 }
-export {registerUser, loginUser, getAllStapani, getUserConectat, getPoza}
+
+const logout = async ({jwtToken, setJwtToken, api}) => {
+    const apiEndpoint = `${api}/auth/logout`
+    const config = {
+        headers: {
+            'Authorization' : `Bearer ${jwtToken}`,
+            'Content-Type'  : 'application/json'
+        }
+    }
+    try {
+        await axios.get(apiEndpoint, config)
+    } catch (error) { (error) => { console.log(error ) } }
+    setJwtToken('')
+}
+
+//liste
+
+const getAllObiecte = ({jwtToken, apiEndpoint}) => {
+    const config = {
+        headers: {
+            'Authorization' : `Bearer ${jwtToken}`,
+            'Content-Type'  : 'application/json'
+        }
+    }
+    axios.get(apiEndpoint, config).then(response => {
+        console.log(response.data)
+    }).catch(error => { console.log(error) })
+}
+
+//get
+    //animale
+    //vizite
+    //tratamente
+    //programari
+
+
+
+export {registerUser, loginUser, getUserConectat, getPoza, logout, getAllObiecte }

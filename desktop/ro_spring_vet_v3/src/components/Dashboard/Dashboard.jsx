@@ -1,6 +1,6 @@
 import "./styles.css"
 
-const Dashboard = ( {jwtToken, username, authority, userConectat, pozaProfil} ) => {
+const Dashboard = ( {username, authority, userConectat, pozaProfil} ) => {
 
     const RowInfo = ({label, valoare}) => (
         <div className="containerLinie">

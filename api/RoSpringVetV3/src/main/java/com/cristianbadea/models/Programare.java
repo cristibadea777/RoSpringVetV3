@@ -36,14 +36,14 @@ public class Programare{
     public long   getProgramareId  (){ return this.programareId;  }
     public String getDataProgramare(){ return this.dataProgramare;}
     public String getMotiv         (){ return this.motiv;         }
-    public Stapan getStapan        (){ return this. stapanId;     }
-    public Animal getAnimal        (){ return this.animalId;      }
+    public Stapan getStapanId      (){ return this. stapanId;     }
+    public Animal getAnimalId      (){ return this.animalId;      }
     public String getStare         (){ return this.stare;         }
 
     public void setProgramareId  (long   programareId)  { this.programareId   = programareId;   }    
     public void setDataProgramare(String dataProgramare){ this.dataProgramare = dataProgramare; }
     public void setMotiv         (String motiv)         { this.motiv          = motiv;          }
-    public void setStapan        (Stapan stapanId)      { this.stapanId       = stapanId;       }
-    public void setAnimal        (Animal animalId)      { this.animalId       = animalId;       }
+    public void setStapanId      (Stapan stapanId)      { this.stapanId       = stapanId;       }
+    public void setAnimalId      (Animal animalId)      { this.animalId       = animalId;       }
     public void setStare         (String stare)         { this.stare          = stare;          }
 }

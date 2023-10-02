@@ -34,6 +34,7 @@ public class VizitaService {
 
 
     public List<Vizita> getAllVizite(){
+        //TODO: filtrare dupa data vizita (descrescator)
         return vizitaRepository.findAll();
     }
 

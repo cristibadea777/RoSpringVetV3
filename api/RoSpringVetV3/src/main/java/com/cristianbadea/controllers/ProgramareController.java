@@ -44,8 +44,8 @@ public class ProgramareController {
         return programareService.saveProgramare(
             programareDTO.getDataProgramare(),
             programareDTO.getMotiv(),
-            programareDTO.getStapan(),
-            programareDTO.getAnimal(),
+            programareDTO.getStapanId(),
+            programareDTO.getAnimalId(),
             "confirmata"
         );
     }

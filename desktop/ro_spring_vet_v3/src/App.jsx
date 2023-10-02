@@ -62,18 +62,18 @@ function App() {
 
   //cale folder poze, poza (prima oara default din folder), lista de elemente (animale, stapani, angajati)
   const getPoze = async ({caleFolderPoze, poza, lista, setListaPoze}) => {
+    const poze = {}
     try {
-      const promises = lista.map(async (elementLista) => {
+      const chei = Object.keys(lista[0]) //luam cheile din primul element
+      const cheieId = chei.find(key => key.includes('Id')) //luam numele cheii care contine 'Id' (animalId, stapanId, angajatId)
+      lista.map(async (elementLista) => {
         if((elementLista.imagine !== null) && (elementLista.imagine !== ""))
           poza = elementLista.imagine
         const base64 = await getPoza({ jwtToken, apiEndpoint: `${api}${caleFolderPoze}${poza}` });
-        return base64;
+        poze[elementLista[cheieId]] = base64 //pe pozitia ID-ului elementului din lista punem poza
       })
-      const base64Images = await Promise.all(promises);
-      setListaPoze(base64Images);
-    } catch (error) {
-      console.error(error);
-    }
+      setListaPoze(poze);
+    } catch (error) { console.error(error) }
   }
   
   useEffect(
@@ -163,14 +163,20 @@ function App() {
       {viewVizite && (
       <Vizite 
         vizite                = {vizite}
+        pozeAnimale           = {pozeAnimale}
+        pozeStapani           = {pozeStapani}
+        pozeAngajati          = {pozeAngajati}
       />)}
       {viewTratamente && (
       <Tratamente 
         tratamente            = {tratamente}
+        pozeAnimale           = {pozeAnimale}
       />)}
       {viewProgramari && (
       <Programari
         programari            = {programari}
+        pozeAnimale           = {pozeAnimale}
+        pozeStapani           = {pozeStapani}
       />)}
 
 

@@ -39,7 +39,7 @@ const Angajati = ({angajati, pozeAngajati}) => {
                             <tr key={index}>
                                 <td>
                                     <img 
-                                        src={pozeAngajati[index]} 
+                                        src={pozeAngajati[angajat.angajatId]} 
                                         height="55" width="55"
                                     />
                                 </td>

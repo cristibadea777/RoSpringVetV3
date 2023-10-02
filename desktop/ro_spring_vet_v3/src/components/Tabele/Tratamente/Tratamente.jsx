@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useState } from "react"
 import TitluSiFiltru from "../../Filtru/TitluSiFiltru"
 
-const Tratamente = ({tratamente}) => {
+const Tratamente = ({tratamente, pozeAnimale}) => {
     
     const [filtruTratamente, setFiltruTratamente] = useState('')
 
@@ -28,6 +28,7 @@ const Tratamente = ({tratamente}) => {
                 <table className="tabel">
                     <thead>
                         <tr>
+                            <th>Imagine</th>
                             <th>Animal</th>
                             <th>Stăpân</th>
                             <th>Dată începere</th>
@@ -39,6 +40,12 @@ const Tratamente = ({tratamente}) => {
                     <tbody>
                         {tratamente.map((tratament, index)=>(
                             <tr key={index}>
+                                <td>
+                                    <img 
+                                        src={pozeAnimale[tratament.animal.animalId]} 
+                                        height="55" width="55"
+                                    />
+                                </td>
                                 <td>{tratament.animal.nume}</td>
                                 <td>{tratament.animal.stapan.nume}</td>
                                 <td>{tratament.dataInceput}</td>

@@ -38,7 +38,7 @@ const Stapani = ({stapani, pozeStapani}) => {
                             <tr key={index}>
                                 <td>
                                     <img 
-                                        src={pozeStapani[index]} 
+                                        src={pozeStapani[stapan.stapanId]} 
                                         height="55" width="55"
                                     />
                                 </td>

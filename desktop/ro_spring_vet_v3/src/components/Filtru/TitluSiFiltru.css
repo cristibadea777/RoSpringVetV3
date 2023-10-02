@@ -1,0 +1,44 @@
+.containerTitluSiFiltru{
+    display: flex;
+    flex-direction: row;
+    height: 10%;
+    width: 100%;
+    background-color: #3E3F40;
+}
+
+.containerTitlu{
+    display: flex;
+    height: 100%;
+    width: 30%;
+    align-items: center;
+    justify-content: center;
+}
+
+.containerFiltru{
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: flex-end;
+    flex-direction: row;
+}
+
+.inputFiltru{
+    margin-right: 5%;
+    background-color: #11574a;
+    color: white;
+    height: 25%;
+    width: 30%;
+}
+
+.butonFiltru{
+    margin-right: 1%;
+    background-color: #11574a;
+    height: 55%;
+    width: 15%;
+    color: white;
+}
+
+.text{
+    font-size: 24px;
+    color: white;
+}

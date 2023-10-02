@@ -1,6 +1,10 @@
-import "./styles.css"
+import "./Dashboard.css"
 
 const Dashboard = ( {username, authority, userConectat, pozaProfil} ) => {
+
+    const test = () => {
+
+    }
 
     const RowInfo = ({label, valoare}) => (
         <div className="containerLinie">
@@ -36,7 +40,9 @@ const Dashboard = ( {username, authority, userConectat, pozaProfil} ) => {
                     <RowInfo label={"Utilizator"}   valoare={userConectat.nume} />
                     <RowInfo label={"Telefon"}      valoare={userConectat.nrTelefon} />
                     <RowInfo label={"Email"}        valoare={username} />
+                    {authority === 'ADMIN' &&(
                     <RowInfo label={"Funcție"}      valoare={userConectat.functie} />
+                    )}
                     <div className="containerLinie">
                         <div className="containerLinieStanga"></div>
                         <div className="containerLinieDreapta"> <button className="buton">Setări</button></div>
@@ -45,11 +51,11 @@ const Dashboard = ( {username, authority, userConectat, pozaProfil} ) => {
             </div>
             <div className="containerSecundar">
                 <div className="containerSecundarStanga">
-                    <RowInfoSecundar label={"Programări neconfirmate"} valoare={"Nr"} functie={{}}/>
-                    <RowInfoSecundar label={"Programări azi"} valoare={"Nr"} functie={{}}/>
-                    <RowInfoSecundar label={"Programări mâine"} valoare={"Nr"} functie={{}}/>
-                    <RowInfoSecundar label={"Tratamente azi"} valoare={"Nr"} functie={{}}/>
-                    <RowInfoSecundar label={"Tratamente mâine"} valoare={"Nr"} functie={{}}/>         
+                    <RowInfoSecundar label={"Programări"} valoare={"Nr"} functie={test}/>
+                    <RowInfoSecundar label={"Programări azi"} valoare={"Nr"} functie={test}/>
+                    <RowInfoSecundar label={"Programări mâine"} valoare={"Nr"} functie={test}/>
+                    <RowInfoSecundar label={"Tratamente azi"} valoare={"Nr"} functie={test}/>
+                    <RowInfoSecundar label={"Tratamente mâine"} valoare={"Nr"} functie={test}/>         
                 </div>
                 <div className="cotainerSecundarDreapta">
                     <div className="linieContainerSecundarDreapta">

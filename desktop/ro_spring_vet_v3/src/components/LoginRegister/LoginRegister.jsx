@@ -1,11 +1,8 @@
-import { useEffect, useState } from "react"
-import "./styles.css"
-import { getAllObiecte, getPoza, getUserConectat, loginUser, registerUser } from "./AccesareAPI"
+import { useState } from "react"
+import "./LoginRegister.css"
+import { getPoza, getUserConectat, loginUser, registerUser } from "./AccesareAPI"
 
-const LoginRegister = ({ setViewLoginRegister, setViewDashboard, setJwtToken, setUsername, setAuthority, setUserConectat, setPozaProfil,
-                         api, setAnimale, setStapani, setAngajati, setVizite, setProgramari, setTratamente, 
-                         setAnimaleUser, setViziteUser, setProgramariUser, setTratamenteUser
-                      }) => {
+const LoginRegister = ({ setViewLoginRegister, setViewDashboard, setJwtToken, setUsername, setAuthority, setUserConectat, setPozaProfil, api }) => {
 
     const [viewLogin,       setViewLogin]       = useState(true)
     const [viewRegister,    setViewRegister]    = useState(false)
@@ -24,23 +21,6 @@ const LoginRegister = ({ setViewLoginRegister, setViewDashboard, setJwtToken, se
     const handleSchimbaInregistrare = () => {
         setViewLogin(false)
         setViewRegister(true)
-    }
-
-
-    const setareListeStapan = async ({jwtToken}) => {
-        setAnimaleUser   (await getAllObiecte({jwtToken, apiEndpoint: `${api}/animale/stapan/getAllAnimaleStapan`}))
-        setViziteUser    (await getAllObiecte({jwtToken, apiEndpoint: `${api}/tratamente/stapan/getAllTratamenteStapan`}))
-        setTratamenteUser(await getAllObiecte({jwtToken, apiEndpoint: `${api}/tratamente/stapan/getAllTratamenteStapan`}))
-        setProgramariUser(await getAllObiecte({jwtToken, apiEndpoint: `${api}/programari/stapan/getAllProgramariStapan`}))
-    }
-
-    const setareListeAngajat = async ({jwtToken}) => {
-        setAngajati  (await getAllObiecte({jwtToken, apiEndpoint: `${api}/angajati/getAllAngajati`}))
-        setStapani   (await getAllObiecte({jwtToken, apiEndpoint: `${api}/stapani/angajat/getAllStapani`}))
-        setAnimale   (await getAllObiecte({jwtToken, apiEndpoint: `${api}/animale/angajat/getAllAnimale`}))
-        setVizite    (await getAllObiecte({jwtToken, apiEndpoint: `${api}/vizite/angajat/getAllVizite`}))
-        setTratamente(await getAllObiecte({jwtToken, apiEndpoint: `${api}/tratamente/angajat/getAllTratamente`}))
-        setProgramari(await getAllObiecte({jwtToken, apiEndpoint: `${api}/programari/angajat/getAllProgramari`}))
     }
 
     const handleInregistrare = async () => {
@@ -79,7 +59,6 @@ const LoginRegister = ({ setViewLoginRegister, setViewDashboard, setJwtToken, se
                 }else{
                     setPozaProfil(await getPoza({jwtToken, apiEndpoint: `${stapan.imagine}`}))
                 }
-                setareListeStapan({jwtToken})
             }
             if(authority === 'ADMIN'){
                 const apiEndpoint = `${api}/angajati/getAngajatConectat`
@@ -90,9 +69,12 @@ const LoginRegister = ({ setViewLoginRegister, setViewDashboard, setJwtToken, se
                 }else{
                     setPozaProfil(await getPoza({jwtToken, apiEndpoint: `${admin.imagine}`}))
                 }
-                setareListeAngajat({jwtToken})
             } 
         }        
+    }
+
+    const RowLoginRegister = ({label, functie}) => {
+
     }
 
     return(

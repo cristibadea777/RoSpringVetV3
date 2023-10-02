@@ -14,11 +14,12 @@ body{
   padding: 0;
 }
 
-.container-principal{
+.container-app{
   display: flex;
   width: 100vw;
   height: 100vh;
   flex-direction: column;
+  overflow: hidden;
 }
 
 input,

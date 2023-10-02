@@ -1,0 +1,52 @@
+.containerPrincipal{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    background-color: #1e1e1e;
+}
+
+.containerTabel{
+    display: flex;
+    height: 100%;
+    width: 100%;
+    justify-content: center;
+    align-items: flex-start;
+    overflow: auto; 
+}
+
+.tabel{
+    width: 100%;
+    background-color: #232B2B;
+}
+.tabel th{
+    color: cyan;
+}
+.tabel tr{
+    background-color: #1e1e1e;
+    text-align: center;
+    color: white;
+}
+.tabel div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.tabel button{
+    background-color: #232B2B;
+}
+
+.tabel .butonIconita{
+    border-radius: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    outline: none;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0);
+    background-color: #1e1e1e;
+}
+.tabel .tdButon{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

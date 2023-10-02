@@ -1,15 +1,32 @@
 import { logout } from "../LoginRegister/AccesareAPI"
-import "./styles.css"
+import "./Navbar.css"
 
-const Navbar = ( {api, viewLoginRegister, setViewLoginRegister, setViewDashboard, authority, setAuthority, jwtToken, setJwtToken} ) => {
+const Navbar = ( { api, viewLoginRegister, setViewLoginRegister, setViewDashboard, authority, setAuthority, jwtToken, setJwtToken, 
+                   setViewAngajati, setViewStapani, setViewAnimale, setViewVizite, setViewTratamente, setViewProgramari
+                 }) => {
 
     const setAllFalse = () => {
-        setAuthority(false)
         setViewLoginRegister(false)
         setViewDashboard(false)
+        setViewAngajati(false)
+        setViewStapani(false)
+        setViewAnimale(false)
+        setViewVizite(false)
+        setViewTratamente(false)
+        setViewProgramari(false)
     }
 
+    const handleClickDashboard  = () => { setAllFalse(), setViewDashboard  (true) }
+    const handleClickAnimale    = () => { setAllFalse(), setViewAnimale    (true) }
+    const handleClickAngajati   = () => { setAllFalse(), setViewAngajati   (true) }
+    const handleClickStapani    = () => { setAllFalse(), setViewStapani    (true) }
+    const handleClickVizite     = () => { setAllFalse(), setViewVizite     (true) } 
+    const handleClickTratamente = () => { setAllFalse(), setViewTratamente (true) }
+    const handleClickProgramari = () => { setAllFalse(), setViewProgramari (true) }
+    
+
     const handleClickLogout = () => {
+        setAuthority(false)
         logout({jwtToken, setJwtToken, api})
         setAllFalse()
         setViewLoginRegister(true)
@@ -26,23 +43,27 @@ const Navbar = ( {api, viewLoginRegister, setViewLoginRegister, setViewDashboard
             {viewLoginRegister && (
                 <p className="titlu-text">Bun venit la RoSpringVet</p>
             )}
-            {authority === "ADMIN" ? (
+            
+            {!viewLoginRegister &&(
+            <>
+            <div className="containerElementeNavbar">
+                <ElementNavbar label={"Dashboard"}  functie={handleClickDashboard}/>
+                {authority === 'ADMIN' && (
                 <>
-                <div className="containerElementeNavbar">
-                    <ElementNavbar label={"Dashboard"}  functie={{}}/>
-                    <ElementNavbar label={"Angajați"}   functie={{}}/>
-                    <ElementNavbar label={"Animale"}    functie={{}}/>
-                    <ElementNavbar label={"Stăpâni"}    functie={{}}/>
-                    <ElementNavbar label={"Vizite"}     functie={{}}/>
-                    <ElementNavbar label={"Tratamente"} functie={{}}/>
-                    <ElementNavbar label={"Programări"} functie={{}}/>
-                </div>
-                <div className="containerElementeNavbar2">
-                    <ElementNavbar label={"Logout"}     functie={handleClickLogout}/>
-                </div>
+                <ElementNavbar label={"Angajați"}   functie={handleClickAngajati}/>
+                <ElementNavbar label={"Stăpâni"}    functie={handleClickStapani}/>
                 </>
-            ):(
-                <></>
+                )}
+                <ElementNavbar label={"Animale"}    functie={handleClickAnimale}/>
+                
+                <ElementNavbar label={"Vizite"}     functie={handleClickVizite}/>
+                <ElementNavbar label={"Tratamente"} functie={handleClickTratamente}/>
+                <ElementNavbar label={"Programări"} functie={handleClickProgramari}/>
+            </div>
+            <div className="containerElementeNavbar2">
+                <ElementNavbar label={"Logout"}     functie={handleClickLogout}/>
+            </div>
+            </>
             )}
         </div>
     )

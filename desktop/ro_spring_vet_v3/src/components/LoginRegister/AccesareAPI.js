@@ -93,16 +93,18 @@ const logout = async ({jwtToken, setJwtToken, api}) => {
     setJwtToken('')
 }
 
-const getAllObiecte = ({jwtToken, apiEndpoint}) => {
+const getAllObiecte = async ({jwtToken, apiEndpoint}) => {
     const config = {
         headers: {
             'Authorization' : `Bearer ${jwtToken}`,
             'Content-Type'  : 'application/json'
         }
     }
-    axios.get(apiEndpoint, config).then(response => {
+    try {
+        const response = await axios.get(apiEndpoint, config)
         console.log(response.data)
-    }).catch(error => { console.log(error) })
+        return response.data
+    } catch (error) { console.log(error) }
 }
 
 export { registerUser, loginUser, getUserConectat, getPoza, logout, getAllObiecte }

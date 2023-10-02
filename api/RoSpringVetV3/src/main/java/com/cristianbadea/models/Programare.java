@@ -22,18 +22,14 @@ public class Programare{
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "animalId")
 	private Animal  animalId;
-	private String  numeStapan;
-	private String  numeAnimal;
 	private String  stare;
 
     public Programare(){ super(); }
-    public Programare(String dataProgramare, String motiv, Stapan stapanId, Animal animalId, String numeStapan, String numeAnimal, String stare){
+    public Programare(String dataProgramare, String motiv, Stapan stapanId, Animal animalId, String stare){
         this.dataProgramare = dataProgramare;
         this.motiv          = motiv;
         this.stapanId       = stapanId;
         this.animalId       = animalId;
-        this.numeStapan     = numeStapan;
-        this.numeAnimal     = numeAnimal;
         this.stare          = stare;
     }
     
@@ -42,14 +38,12 @@ public class Programare{
     public String getMotiv         (){ return this.motiv;         }
     public Stapan getStapan        (){ return this. stapanId;     }
     public Animal getAnimal        (){ return this.animalId;      }
-    public String getNumeStapan    (){ return this.numeStapan;    }
-    public String getNumeAnimal    (){ return this.numeAnimal;    }
     public String getStare         (){ return this.stare;         }
 
-    public void setProgramareId  (long programareId)    { this.programareId = programareId;     }    
-    public void setDataProgramare(String dataProgramare){this.dataProgramare = dataProgramare;  }
-    public void setMotiv         (String motiv)         { this.motiv = motiv;                   }
-    public void setStapan        (Stapan stapanId)      { this.stapanId = stapanId;             }
-    public void setAnimal        (Animal animalId)      { this.animalId = animalId;             }
-    public void setStare         (String stare)         { this.stare = stare;                   }
+    public void setProgramareId  (long   programareId)  { this.programareId   = programareId;   }    
+    public void setDataProgramare(String dataProgramare){ this.dataProgramare = dataProgramare; }
+    public void setMotiv         (String motiv)         { this.motiv          = motiv;          }
+    public void setStapan        (Stapan stapanId)      { this.stapanId       = stapanId;       }
+    public void setAnimal        (Animal animalId)      { this.animalId       = animalId;       }
+    public void setStare         (String stare)         { this.stare          = stare;          }
 }

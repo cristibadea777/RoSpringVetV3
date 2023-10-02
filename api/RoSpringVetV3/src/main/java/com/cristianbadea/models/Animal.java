@@ -51,6 +51,7 @@ public class Animal {
 		this.imagine = imagine;
 	}
 
+	public long				getAnimalId		(){	return this.animalId;	}
     public String           getNume         (){ return this.nume;       }
     public String           getSpecie       (){ return this.specie;     }
     public String           getRasa         (){ return this.rasa;       }
@@ -60,6 +61,7 @@ public class Animal {
     public List<Programare> getProgramari   (){ return this.programari; }
     public List<Tratament>  getTratamente   (){ return this.tratamente; }
 
+	public void				setAnmalId		(long animalId)					{ this.animalId		= animalId;		}
     public void             setNume         (String nume)                   { this.nume         = nume;         }
     public void             setSpecie       (String specie)                 { this.specie       = specie;       }
     public void             setRasa         (String rasa)                   { this.rasa         = rasa;         }

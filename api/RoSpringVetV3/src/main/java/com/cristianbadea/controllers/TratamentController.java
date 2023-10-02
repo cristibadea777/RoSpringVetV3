@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.cristianbadea.models.Stapan;
 import com.cristianbadea.models.Tratament;
 import com.cristianbadea.services.AuthenticationService;
 import com.cristianbadea.services.StapanService;
@@ -32,7 +31,7 @@ public class TratamentController {
     @GetMapping("/stapan/getAllTratamenteStapan")
     public List<Tratament> getAllTratamenteStapan(){
         String username = authenticationService.getUserConectat();
-        Stapan stapanId = stapanService.findByEmail(username);
+        long stapanId = stapanService.findByEmail(username).getStapanId();
         return tratamentService.getAllTratamenteStapan(stapanId);
     }
 

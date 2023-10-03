@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import TitluSiFiltru from "../../Filtru/TitluSiFiltru"
 import "../Tabele.css"
-const Animale = ( {animale, pozeAnimale} ) => {
+const Animale = ( {animale, pozeAnimale, setAnimalCurent} ) => {
 
     const [filtruAnimale, setFiltruAnimale] = useState('')
 
@@ -9,8 +9,8 @@ const Animale = ( {animale, pozeAnimale} ) => {
         setFiltruAnimale(event.target.value)
     }
 
-    const handleShowModalAnimal = () => {
-
+    const handleShowModalAnimal = (animal) => {
+        setAnimalCurent(animal)
     }
 
     return(
@@ -48,7 +48,7 @@ const Animale = ( {animale, pozeAnimale} ) => {
                                 <td>{animal.specie}</td>
                                 <td>{animal.rasa}</td>
                                 <td>
-                                    <div><button>Opțiuni</button></div>
+                                    <div><button onClick={() => handleShowModalAnimal(animal)}>Opțiuni</button></div>
                                 </td>
                             </tr>
                         ))}

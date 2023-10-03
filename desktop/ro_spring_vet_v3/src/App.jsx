@@ -10,15 +10,13 @@ import Stapani from "./components/Tabele/Stapani/Stapani";
 import Vizite from "./components/Tabele/Vizite/Vizite";
 import Tratamente from "./components/Tabele/Tratamente/Tratamente";
 import Programari from "./components/Tabele/Programari/Programari";
+import OptiuniAnimal from "./components/Tabele/Animale/OptiuniAnimal";
 
 function App() {
   
   //#232B2B #1e1e1e #11574a
 
   const api = "http://localhost:8000"
-
-  const [viewLoginRegister, setViewLoginRegister] = useState(true)
-  const [viewDashboard,     setViewDashboard]     = useState(false)
 
   const [jwtToken,          setJwtToken]          = useState('')
   const [authority,         setAuthority]         = useState('')
@@ -33,16 +31,20 @@ function App() {
   const [tratamente,        setTratamente]        = useState([])
   const [programari,        setProgramari]        = useState([])
 
-  const [viewAngajati,      setViewAngajati]      = useState('')
-  const [viewStapani,       setViewStapani]       = useState('')
-  const [viewAnimale,       setViewAnimale]       = useState('')
-  const [viewVizite,        setViewVizite]        = useState('')
-  const [viewTratamente,    setViewTratamente]    = useState('')
-  const [viewProgramari,    setViewProgramari]    = useState('')
-
   const [pozeAnimale,       setPozeAnimale]       = useState([])
   const [pozeAngajati,      setPozeAngajati]      = useState([])
   const [pozeStapani,       setPozeStapani]       = useState([])
+
+  const [viewLoginRegister, setViewLoginRegister] = useState(true)
+  const [viewDashboard,     setViewDashboard]     = useState(false)
+  const [viewAngajati,      setViewAngajati]      = useState(false)
+  const [viewStapani,       setViewStapani]       = useState(false)
+  const [viewAnimale,       setViewAnimale]       = useState(false)
+  const [viewVizite,        setViewVizite]        = useState(false)
+  const [viewTratamente,    setViewTratamente]    = useState(false)
+  const [viewProgramari,    setViewProgramari]    = useState(false)
+
+  const [animalCurent,      setAnimalCurent]      = useState('')
 
   const populareListeStapan = async ({jwtToken}) => {
     setAnimale   (await getAllObiecte({jwtToken, apiEndpoint: `${api}/animale/stapan/getAllAnimaleStapan`}))
@@ -149,6 +151,7 @@ function App() {
       <Animale 
         animale               = {animale} 
         pozeAnimale           = {pozeAnimale}
+        setAnimalCurent       = {setAnimalCurent}
       />)}
       {viewAngajati && (
       <Angajati
@@ -177,6 +180,12 @@ function App() {
         programari            = {programari}
         pozeAnimale           = {pozeAnimale}
         pozeStapani           = {pozeStapani}
+      />)}
+      {animalCurent && (
+      <OptiuniAnimal
+        animalCurent          = {animalCurent}
+        pozeAnimale           = {pozeAnimale}
+        setAnimalCurent       = {setAnimalCurent}
       />)}
 
 

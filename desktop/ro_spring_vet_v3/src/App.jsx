@@ -3,7 +3,7 @@ import "./App.css";
 import LoginRegister from "./components/LoginRegister/LoginRegister";
 import Dashboard from "./components/Dashboard/Dashboard";
 import Navbar from "./components/Navbar/Navbar";
-import { getAllObiecte, getPoza } from "./components/LoginRegister/AccesareAPI";
+import { getAllObiecte, getPoza } from "./components/AccesareAPI";
 import Animale from "./components/Tabele/Animale/Animale";
 import Angajati from "./components/Tabele/Angajati/Angajati";
 import Stapani from "./components/Tabele/Stapani/Stapani";
@@ -183,9 +183,13 @@ function App() {
       />)}
       {animalCurent && (
       <OptiuniAnimal
+        animale               = {animale}
+        setAnimale            = {animale}
         animalCurent          = {animalCurent}
         pozeAnimale           = {pozeAnimale}
         setAnimalCurent       = {setAnimalCurent}
+        api                   = {api}
+        jwtToken              = {jwtToken}
       />)}
 
 

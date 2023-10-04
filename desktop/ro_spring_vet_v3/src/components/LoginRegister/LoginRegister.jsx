@@ -1,6 +1,6 @@
 import { useState } from "react"
 import "./LoginRegister.css"
-import { getPoza, getUserConectat, loginUser, registerUser } from "./AccesareAPI"
+import { getPoza, getUserConectat, loginUser, registerUser } from "../AccesareAPI"
 
 const LoginRegister = ({ setViewLoginRegister, setViewDashboard, setJwtToken, setUsername, setAuthority, setUserConectat, setPozaProfil, api }) => {
 

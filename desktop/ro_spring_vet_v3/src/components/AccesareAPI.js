@@ -10,7 +10,7 @@ const registerUser = async ({textNume, textTelefon, textEmail, textParola}) => {
     }
     const customConfig = {
         headers: {
-        'Content-Type': 'application/json'
+            'Content-Type': 'application/json'
         }
     }
     try {
@@ -107,4 +107,26 @@ const getAllObiecte = async ({jwtToken, apiEndpoint}) => {
     } catch (error) { console.log(error) }
 }
 
-export { registerUser, loginUser, getUserConectat, getPoza, logout, getAllObiecte }
+const editAnimal = async ({jwtToken, apiEndpoint, idAnimalCurent, numeAnimalCurent, specieAnimalCurent, rasaAnimalCurent}) => {
+    const cerere = {
+        "animalId"    :   idAnimalCurent,        
+        "nume"        :   numeAnimalCurent,
+        "specie"      :   specieAnimalCurent,
+        "rasa"        :   rasaAnimalCurent,
+    }
+    const customConfig = {
+        headers: {
+            'Authorization' : `Bearer ${jwtToken}`,
+            'Content-Type': 'application/json'
+        }
+    }
+    try {
+        const raspuns = await axios.post(apiEndpoint, cerere, customConfig)
+        return raspuns.data
+    } catch (error) {
+        console.log("EROARE LA EDITARE ANIMAL \n" + JSON.stringify(error))
+        return "EROARE LA EDITARE ANIMAL"
+    }
+}
+
+export { registerUser, loginUser, getUserConectat, getPoza, logout, getAllObiecte, editAnimal }

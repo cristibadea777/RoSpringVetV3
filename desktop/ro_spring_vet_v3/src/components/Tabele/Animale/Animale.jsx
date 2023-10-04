@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react"
 import TitluSiFiltru from "../../Filtru/TitluSiFiltru"
 import "../Tabele.css"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faBars } from "@fortawesome/free-solid-svg-icons"
 const Animale = ( {animale, pozeAnimale, setAnimalCurent} ) => {
 
     const [filtruAnimale, setFiltruAnimale] = useState('')
@@ -48,7 +50,7 @@ const Animale = ( {animale, pozeAnimale, setAnimalCurent} ) => {
                                 <td>{animal.specie}</td>
                                 <td>{animal.rasa}</td>
                                 <td>
-                                    <div><button onClick={() => handleShowModalAnimal(animal)}>Opțiuni</button></div>
+                                    <div><button onClick={() => handleShowModalAnimal(animal)}><FontAwesomeIcon icon={faBars} color="white"></FontAwesomeIcon></button></div>
                                 </td>
                             </tr>
                         ))}

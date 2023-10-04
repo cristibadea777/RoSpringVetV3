@@ -1,4 +1,4 @@
-import { logout } from "../LoginRegister/AccesareAPI"
+import { logout } from "../AccesareAPI"
 import "./Navbar.css"
 
 const Navbar = ( { api, viewLoginRegister, setViewLoginRegister, setViewDashboard, authority, setAuthority, jwtToken, setJwtToken, 

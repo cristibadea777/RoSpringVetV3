@@ -29,7 +29,7 @@ public class Angajat extends Persoana {
         this.descriere  = descriere;
     }
 
-    public long         getAnagajatId (){ return this.angajatId; }
+    public long         getAngajatId  (){ return this.angajatId; }
     public String       getFunctie    (){ return this.functie;   }
     public String       getDescriere  (){ return this.descriere; }
     public List<Vizita> getVizite     (){ return this.vizite;    }

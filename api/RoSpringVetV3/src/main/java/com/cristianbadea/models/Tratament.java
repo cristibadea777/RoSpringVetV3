@@ -38,27 +38,27 @@ public class Tratament {
     public Tratament(){ super(); }
     public Tratament(String metodaTratament, String dataInceput, String dataSfarsit, Diagnostic diagnosticId, Animal animalId){
         super();
-        this.metodaTratament    = metodaTratament;
-        this.dataInceput        = dataInceput;
-        this.dataSfarsit        = dataSfarsit;
-        this.diagnosticId       = diagnosticId;
-        this.animalId           = animalId;
+        this.metodaTratament = metodaTratament;
+        this.dataInceput     = dataInceput;
+        this.dataSfarsit     = dataSfarsit;
+        this.diagnosticId    = diagnosticId;
+        this.animalId        = animalId;
     }
 
-    public long         getTratamentId      (){ return tratamentId;        }
-    public String       getMetodaTratament  (){ return metodaTratament;    }
-    public String       getDataInceput      (){ return dataInceput;        }
-    public String       getDataSfarsit      (){ return dataSfarsit;        }
-    public Vizita       getVizitaId         (){ return this.vizitaId;      }
-    public Diagnostic   geDiagnosticId      (){ return this.diagnosticId;  }
-    public Animal       getAnimal           (){ return this.animalId;      }
+    public long       getTratamentId     (){ return tratamentId;       }
+    public String     getMetodaTratament (){ return metodaTratament;   }
+    public String     getDataInceput     (){ return dataInceput;       }
+    public String     getDataSfarsit     (){ return dataSfarsit;       }
+    public Vizita     getVizitaId        (){ return this.vizitaId;     }
+    public Diagnostic geDiagnosticId     (){ return this.diagnosticId; }
+    public Animal     getAnimalId        (){ return this.animalId;     }
 
-    public void setTratamentId      (long tratamentId)        { this.tratamentId = tratamentId;         }
-    public void setMetodaTratament  (String metodaTratament)  { this.metodaTratament = metodaTratament; }
-    public void setDataInceput      (String dataInceput)      { this.dataInceput = dataInceput;         }
-    public void setDataSfarsit      (String dataSfarsit)      { this.dataSfarsit = dataSfarsit;         }
-    public void setVizitaId         (Vizita vizitaId)         { this.vizitaId = vizitaId;               }
-    public void setDiagnosticId     (Diagnostic diagnosticId) { this.diagnosticId = diagnosticId;       }
-    public void setAnimal           (Animal animalId)         { this. animalId = animalId;              }        
+    public void setTratamentId     (long tratamentId)        { this.tratamentId = tratamentId;         }
+    public void setMetodaTratament (String metodaTratament)  { this.metodaTratament = metodaTratament; }
+    public void setDataInceput     (String dataInceput)      { this.dataInceput = dataInceput;         }
+    public void setDataSfarsit     (String dataSfarsit)      { this.dataSfarsit = dataSfarsit;         }
+    public void setVizitaId        (Vizita vizitaId)         { this.vizitaId = vizitaId;               }
+    public void setDiagnosticId    (Diagnostic diagnosticId) { this.diagnosticId = diagnosticId;       }
+    public void setAnimalId        (Animal animalId)         { this. animalId = animalId;              }        
 
 }

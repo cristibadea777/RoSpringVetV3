@@ -10,10 +10,20 @@ import com.cristianbadea.models.Tratament;
 @Repository
 public interface TratamentRepository extends JpaRepository<Tratament, Long>{
 
-	//Toate tratamentele (active si vechi) ale animalelor unui stapan, dand ca parametru ID-ul stapanului.
+	//TODO: adaugat clauza pt ACTIVE
+
+	//Toate tratamentele (active) ale animalelor unui stapan, dand ca parametru ID-ul stapanului.
     @Query(	value = 	 "SELECT t.*, a.nume, a.stapan_id, a.animal_id as a_id FROM tratament as t INNER JOIN animal as a ON t.animal_id = a.animal_id WHERE a.stapan_id = ?1", 
 			countQuery = "SELECT count(*) FROM tratament as t INNER JOIN animal as a ON t.animal_id = a.animal_id WHERE a.stapan_id = ?1",
 			nativeQuery = true)
     List<Tratament> findAllByStapanId(@Param("stapanId") long stapanId); //nu mai merge cu entitatea in Query in Spring Boot 3 - trebuie dat id-ul in mod direct
     
+	
+	//Toate tratamentele (active) ale unui animal 
+    @Query(	value = 	 "SELECT t.*, a.nume, a.stapan_id, a.animal_id as a_id FROM tratament as t INNER JOIN animal as a ON t.animal_id = a.animal_id WHERE a.animal_id = ?1", 
+			countQuery = "SELECT count(*) FROM tratament as t INNER JOIN animal as a ON t.animal_id = a.animal_id WHERE a.animal_id = ?1",
+			nativeQuery = true)
+    List<Tratament> findAllByAnimalId(@Param("animalId") long animalId); //nu mai merge cu entitatea in Query in Spring Boot 3 - trebuie dat id-ul in mod direct
+    
+	
 }

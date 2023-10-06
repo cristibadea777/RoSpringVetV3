@@ -16,6 +16,8 @@ import jakarta.persistence.OneToOne;
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Vizita{
 
+    //TODO: de sters nume animal, nume stapan, nume angajat - irelevante. dau doar id-urile si asa le si iau in frontend
+
     @Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long        vizitaId;

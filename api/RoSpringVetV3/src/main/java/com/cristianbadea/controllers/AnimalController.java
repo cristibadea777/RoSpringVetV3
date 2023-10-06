@@ -44,6 +44,12 @@ public class AnimalController {
         );
     } 
 
+    @PostMapping("/editAnimal")
+    public String editAnimal(@RequestBody AnimalDTO animalDTO){
+        return animalService.editAnimal(animalDTO.getAnimalId(), animalDTO.getNume(), animalDTO.getSpecie(), animalDTO.getRasa());
+    }
+
+    //TODO: facut si pt angajat cand ia toate animalele stapanului
     @GetMapping("/stapan/getAllAnimaleStapan")
     public List<Animal> getAllAnimaleStapan(){
         String username = authenticationService.getUserConectat();
@@ -53,4 +59,3 @@ public class AnimalController {
 
 
 }
-

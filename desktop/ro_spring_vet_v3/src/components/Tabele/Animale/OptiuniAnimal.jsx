@@ -1,10 +1,11 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import "./Animale.css"
+import "../ModalOptiuni.css"
 import { faX } from "@fortawesome/free-solid-svg-icons"
 import { useEffect, useState } from "react"
-import { editAnimal } from "../../AccesareAPI"
+import { editAnimal, getPoza, salvarePoza } from "../../AccesareAPI"
+import { toBase64 } from "../Utilities"
 
-const OptiuniAnimal = ({animale, setAnimale, animalCurent, setAnimalCurent, pozeAnimale, api, jwtToken}) => {
+const OptiuniAnimal = ({animale, vizite, programari, tratamente, animalCurent, setAnimalCurent, pozeAnimale, api, jwtToken}) => {
     
     const handleClickInchidere = () => {
         setAnimalCurent(null)
@@ -14,6 +15,7 @@ const OptiuniAnimal = ({animale, setAnimale, animalCurent, setAnimalCurent, poze
     const [numeAnimalCurent,    setNumeAnimalCurent]    = useState('')
     const [rasaAnimalCurent,    setRasaAnimalCurent]    = useState('')
     const [specieAnimalCurent,  setSpecieAnimalCurent]  = useState('')
+    const [pozaAnimalCurent,    setPozaAnimalCurent]    = useState('')
     const [totalVizite,         setTotalVizite]         = useState('0')
     const [programariViitoare,  setProgramariViitoare]  = useState('0')
     const [tratamenteActive,    setTratamenteActive]    = useState('0')
@@ -22,21 +24,57 @@ const OptiuniAnimal = ({animale, setAnimale, animalCurent, setAnimalCurent, poze
     useEffect(
         () => {
             if(animalCurent){
-                setIdAnimalCurent(animalCurent.animalId)
-                setNumeAnimalCurent(animalCurent.nume)
-                setRasaAnimalCurent(animalCurent.rasa)
+                setIdAnimalCurent    (animalCurent.animalId)
+                setNumeAnimalCurent  (animalCurent.nume)
+                setRasaAnimalCurent  (animalCurent.rasa)
                 setSpecieAnimalCurent(animalCurent.specie)
-                //aici luat statistici din db
+                setPozaAnimalCurent  (pozeAnimale[animalCurent.animalId])
+                let dataCurenta  = new Date()
+                let nrVizite     = 0
+                let nrProgramari = 0
+                let nrTratamente = 0
+                vizite.map((vizita) => {
+                    if(vizita.animalId.animalId === animalCurent.animalId) 
+                        nrVizite = nrVizite + 1 
+                })
+                programari.map((programare) => { 
+                    if(programare.animalId.animalId === animalCurent.animalId && programare.stare === 'confirmata') 
+                        nrProgramari = nrProgramari + 1 
+                })
+                tratamente.map((tratament)  => { 
+                    const dataSfarsit = new Date(tratament.dataSfarsit)
+                    if(tratament.animalId.animalId === animalCurent.animalId && dataSfarsit > dataCurenta) 
+                        nrTratamente = nrTratamente + 1 
+                })
+                setTotalVizite(nrVizite)
+                setProgramariViitoare(nrProgramari)
+                setTratamenteActive(nrTratamente)
             }
         }, [animalCurent]
     )
 
+    const handleChangePoza = async (evt) => {
+        const file = evt.target.files[0]
+        try{
+            const poza       = await toBase64(file)
+            const idEntitate = animalCurent.animalId
+            setPozaAnimalCurent(poza)
+            const raspunsSetarePoza = await salvarePoza({api, poza, jwtToken, folder: "poze_animale", idEntitate}) 
+            setRaspuns(raspunsSetarePoza)
+            if(raspunsSetarePoza === "Poză salvată cu succes")
+                pozeAnimale[animalCurent.animalId] = poza
+        } catch(error){ 
+            setRaspuns("EROARE")
+            console.log(error) 
+        }
+    }
+    
     const handleClickEditAnimal = async () => {
         const apiEndpoint = api + '/animale/editAnimal'
         const raspunsApi = await editAnimal({jwtToken, apiEndpoint, idAnimalCurent, numeAnimalCurent, specieAnimalCurent, rasaAnimalCurent})
         
         if(raspunsApi === 'Editat cu succes'){
-            const animal = {
+            const animal = {    
                 ...animalCurent,
                 "nume"   : numeAnimalCurent,
                 "specie" : specieAnimalCurent,
@@ -76,10 +114,19 @@ const OptiuniAnimal = ({animale, setAnimale, animalCurent, setAnimalCurent, poze
                <div className="modalOptiuniInputuri">
                     <div id="containerInputPoza">
                         <div className="containerPoza">
-                            <img src={pozeAnimale[animalCurent.animalId]} />
+                            <img src={pozaAnimalCurent} />
                         </div>
                         <div className="containerButonSchimbaPoza">
-                            <button>Schimbă poza</button>
+                            <label>
+                                Schimbă poza
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    style={{display: "none"}}
+                                    onChange={handleChangePoza}
+                                >
+                                </input>
+                            </label>
                         </div>
                     </div>
                     <div id="containerInputuriText">

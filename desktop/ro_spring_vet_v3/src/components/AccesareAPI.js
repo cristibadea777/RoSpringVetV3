@@ -79,6 +79,28 @@ const getPoza = async ({jwtToken, apiEndpoint}) => {
     } catch (error) { console.log(error) }
 }
 
+const salvarePoza = async ({api, poza, folder, idEntitate, jwtToken}) => {
+    const apiEndpoint = `${api}/poze/salvarePoza`
+    const customConfig = {
+        headers: {
+            'Authorization' : `Bearer ${jwtToken}`,
+            'Content-Type'  : 'application/json',
+        },
+    }
+    const cerere = {
+        "base64String"      :   poza,
+        "folder"            :   folder,
+        "numePoza"          :   idEntitate,
+    }
+    try {
+        const raspuns = await axios.post(apiEndpoint, cerere, customConfig)
+        return raspuns.data
+    } catch (error) {
+        console.log("EROARE LA SALVARE POZA \n" + JSON.stringify(error))
+        return "EROARE LA SALVARE POZA"
+    }
+}
+
 const logout = async ({jwtToken, setJwtToken, api}) => {
     const apiEndpoint = `${api}/auth/logout`
     const config = {
@@ -129,4 +151,4 @@ const editAnimal = async ({jwtToken, apiEndpoint, idAnimalCurent, numeAnimalCure
     }
 }
 
-export { registerUser, loginUser, getUserConectat, getPoza, logout, getAllObiecte, editAnimal }
+export { registerUser, loginUser, getUserConectat, getPoza, logout, getAllObiecte, editAnimal, salvarePoza }

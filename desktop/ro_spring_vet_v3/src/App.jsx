@@ -184,7 +184,9 @@ function App() {
       {animalCurent && (
       <OptiuniAnimal
         animale               = {animale}
-        setAnimale            = {animale}
+        vizite                = {vizite}
+        programari            = {programari}
+        tratamente            = {tratamente}
         animalCurent          = {animalCurent}
         pozeAnimale           = {pozeAnimale}
         setAnimalCurent       = {setAnimalCurent}

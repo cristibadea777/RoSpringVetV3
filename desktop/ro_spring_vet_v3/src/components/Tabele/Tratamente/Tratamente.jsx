@@ -42,12 +42,12 @@ const Tratamente = ({tratamente, pozeAnimale}) => {
                             <tr key={index}>
                                 <td>
                                     <img 
-                                        src={pozeAnimale[tratament.animal.animalId]} 
+                                        src={pozeAnimale[tratament.animalId.animalId]} 
                                         height="55" width="55"
                                     />
                                 </td>
-                                <td>{tratament.animal.nume}</td>
-                                <td>{tratament.animal.stapan.nume}</td>
+                                <td>{tratament.animalId.nume}</td>
+                                <td>{tratament.animalId.stapan.nume}</td>
                                 <td>{tratament.dataInceput}</td>
                                 <td>{tratament.dataSfarsit}</td>
                                 <td className="tdButon">

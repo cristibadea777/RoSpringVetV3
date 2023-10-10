@@ -80,11 +80,11 @@ const Programari = ({programari, pozeAnimale, pozeStapani, viewProgramari}) => {
                                 <td>
                                     <img 
                                         src={pozeStapani[programare.stapanId.stapanId]} 
-                                        height="55" width="55"
+                                        height={"50vh"} width={"50vw"}
                                     />
                                     <img 
                                         src={pozeAnimale[programare.animalId.animalId]} 
-                                        height="55" width="55"
+                                        height={"50vh"} width={"50vw"}
                                     />
                                 </td>
                                 <td>{programare.dataProgramare}</td>

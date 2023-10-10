@@ -27,7 +27,7 @@ const ProgramareNoua = ({ animalCurent, setViewProgramareNoua, api, jwtToken, se
                 apiEndpoint, 
                 idAnimalCurent: animalCurent.animalId, 
                 idStapanCurent: animalCurent.stapan.stapanId,
-                dataProgramare: dataAleasa,
+                dataProgramare: dataAleasa.replace("T", " "),
                 motiv         : motiv,
             }
         )
@@ -73,7 +73,7 @@ const ProgramareNoua = ({ animalCurent, setViewProgramareNoua, api, jwtToken, se
             <div className="containerAdaugare">
                 <div className="containerLinie">
                     <label htmlFor="dataAleasa">Dată</label>
-                    <input type="date" id="dataAleasa" value={dataAleasa} onChange={handleChangeData} min={azi}></input>
+                    <input type="datetime-local" id="dataAleasa" value={dataAleasa} onChange={handleChangeData} min={azi}></input>
                 </div>
                 
                 <div className="containerLinie">

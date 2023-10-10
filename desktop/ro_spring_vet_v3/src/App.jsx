@@ -184,6 +184,7 @@ function App() {
       {viewProgramari && (
       <Programari
         programari            = {programari}
+        viewProgramari        = {viewProgramari}
         pozeAnimale           = {pozeAnimale}
         pozeStapani           = {pozeStapani}
       />)}

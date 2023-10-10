@@ -1,9 +1,18 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import TitluSiFiltru from "../../Filtru/TitluSiFiltru"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons"
 
-const Programari = ({programari, pozeAnimale, pozeStapani}) => {
+const Programari = ({programari, pozeAnimale, pozeStapani, viewProgramari}) => {
     
-    const [filtruProgramari, setFiltruProgramari] = useState('')
+    const [filtruProgramari,    setFiltruProgramari]    = useState('')
+    const [itemsPerPage,        setItemsPerPage]        = useState(8)
+    const [lowerBound,          setLowerBound]          = useState(0)
+    const [paginaProgramari,    setPaginaProgramari]    = useState([])
+    const [paginaCurenta,       setPaginaCurenta]       = useState(1)
+    
+    const totalPagini = Math.ceil(programari.length / itemsPerPage)
+
 
     const handleChangeFiltruProgramari = (event) => {
         setFiltruProgramari(event.target.value)
@@ -13,11 +22,41 @@ const Programari = ({programari, pozeAnimale, pozeStapani}) => {
 
     }
 
+    const handleClickPaginaInainte = () => {
+        if( (lowerBound + itemsPerPage) < programari.length){
+            setLowerBound(lowerBound + itemsPerPage)
+            setPaginaCurenta(paginaCurenta + 1)
+        }
+    }
+
+    const handleClickPaginaInapoi = () => {
+        if(lowerBound > 0){
+            setLowerBound(lowerBound - itemsPerPage)
+            setPaginaCurenta(paginaCurenta - 1)
+        }
+    }
+
+    const handleChangeItemsPerPage = (event) => {
+        setItemsPerPage(Number(event.target.value))
+        setLowerBound(0)
+        setPaginaCurenta(1)
+    }
+
+    useEffect(
+        () => {
+            console.log(itemsPerPage)
+            const upperBound = lowerBound + itemsPerPage
+            if(viewProgramari){
+                setPaginaProgramari(programari.slice(lowerBound, upperBound)) 
+            }
+        }, [viewProgramari, lowerBound, itemsPerPage]
+    )
+
     return(
         <div className="containerPrincipal">
             
             <TitluSiFiltru 
-                titlu={"Programari"}
+                titlu={"Programări"}
                 filtru={filtruProgramari}
                 functie={handleChangeFiltruProgramari}
             />
@@ -36,7 +75,7 @@ const Programari = ({programari, pozeAnimale, pozeStapani}) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {programari.map((programare, index)=>(
+                        {paginaProgramari.map((programare, index)=>(
                             <tr key={index}>
                                 <td>
                                     <img 
@@ -60,6 +99,25 @@ const Programari = ({programari, pozeAnimale, pozeStapani}) => {
                         ))}
                     </tbody>
                 </table>
+            </div>
+
+            <div className="containerPagini">
+                <div className="linieContainerPagini">
+                    <div className="containerItemsPerPage">
+                        <label htmlFor="itemsPerPage">Elemente / Pagină</label>
+                        <select value={itemsPerPage} id="itemsPerPage" className="dropdownItemsPerPage" onChange={handleChangeItemsPerPage}>
+                            <option value={8}>8</option>
+                            <option value={12}>12</option>
+                            <option value={20}>20</option>
+                            <option value={50}>50</option>
+                        </select>
+                    </div>
+                    <button onClick={handleClickPaginaInapoi}><FontAwesomeIcon icon={faArrowLeft}/></button>
+                    <button onClick={handleClickPaginaInainte}><FontAwesomeIcon icon={faArrowRight}/></button>
+                </div>
+                <div className="linieContainerPagini">
+                    <p>Pagina {paginaCurenta} / {totalPagini}</p>
+                </div>
             </div>
             
         </div>

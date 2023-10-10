@@ -2,6 +2,7 @@ package com.cristianbadea.controllers;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,7 +46,7 @@ public class AnimalController {
     } 
 
     @PostMapping("/editAnimal")
-    public String editAnimal(@RequestBody AnimalDTO animalDTO){
+    public ResponseEntity<String> editAnimal(@RequestBody AnimalDTO animalDTO){
         return animalService.editAnimal(animalDTO.getAnimalId(), animalDTO.getNume(), animalDTO.getSpecie(), animalDTO.getRasa());
     }
 

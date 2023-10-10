@@ -1,6 +1,9 @@
 package com.cristianbadea.services;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +11,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -65,6 +69,18 @@ public class AuthenticationService {
     public String getUserConectat(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication(); 
         return authentication.getName();
+    }
+
+    public List<String> getUserRoles(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication !=null && authentication.isAuthenticated()){
+            List<String> roluri = new ArrayList<>();
+            for(GrantedAuthority autoritate : authentication.getAuthorities()){
+                roluri.add(autoritate.getAuthority());
+            }
+            return roluri;
+        }
+        return Collections.emptyList();
     }
 
 }

@@ -3,6 +3,8 @@ package com.cristianbadea.services;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import com.cristianbadea.models.Animal;
 import com.cristianbadea.models.Stapan;
@@ -31,17 +33,19 @@ public class AnimalService {
         return "";
     }
 
-    public String editAnimal(long animalId, String nume, String specie, String rasa){
+    public ResponseEntity<String> editAnimal(long animalId, String nume, String specie, String rasa){
         Animal animal = animalRepository.findById(animalId).get();
         if(animal == null)
-            return "Eroare - animal null";
-        if(nume.isEmpty() || specie.isEmpty())
-            return "NUME SI SPECIE NU TREBUIE SA FIE GOALE";
+            return new ResponseEntity<String>("Animal inexistent", HttpStatus.CONFLICT);
+        if(nume.isEmpty())
+            return new ResponseEntity<String>("Nume nu trebuie să fie gol", HttpStatus.CONFLICT);
+        if(specie.isEmpty())
+            return new ResponseEntity<String>("Specia trebuie să fie specificată", HttpStatus.CONFLICT);
         animal.setNume(nume);
         animal.setSpecie(specie);
         animal.setRasa(rasa);
         animalRepository.save(animal);
-        return "Editat cu succes";
+        return ResponseEntity.ok("Editat cu succes");
     }
     
     public List<Animal> getAllAnimaleStapan(Stapan stapanId){

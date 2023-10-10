@@ -2,6 +2,8 @@ package com.cristianbadea.services;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import com.cristianbadea.models.Animal;
 import com.cristianbadea.models.Programare;
@@ -9,6 +11,7 @@ import com.cristianbadea.models.Stapan;
 import com.cristianbadea.repositories.AnimalRepository;
 import com.cristianbadea.repositories.ProgramareRepository;
 import com.cristianbadea.repositories.StapanRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class ProgramareService {
@@ -29,17 +32,18 @@ public class ProgramareService {
         return programareRepository.findAllByStapanId(stapanId);
     }
 
-    public String saveProgramare(String dataProgramare, String motiv, long stapanId, long animalId, String stare){
+    public ResponseEntity<String> saveProgramare(String dataProgramare, String motiv, long stapanId, long animalId, String stare){
         try {
             Stapan stapan = stapabRepository.findById(stapanId).get();
             Animal animal = animalRepository.findById(animalId).get();
-            Programare programare = new Programare(dataProgramare, motiv, stapan, animal, stare);
-            programareRepository.save(programare);
+            Programare programare = programareRepository.save(new Programare(dataProgramare, motiv, stapan, animal, stare));            
+            ObjectMapper objectMapper = new ObjectMapper();
+            String programareJson = objectMapper.writeValueAsString(programare);
+            return ResponseEntity.ok(programareJson);
         } catch (Exception e) {
             System.out.println("Eroare salvare programare " + e);
-            return "Eroare";
+            return new ResponseEntity<String>("Eroare salvare programare", HttpStatus.CONFLICT);
         }
-        return "";
     }
 
 }

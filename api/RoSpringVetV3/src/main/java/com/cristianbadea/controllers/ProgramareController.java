@@ -2,6 +2,7 @@ package com.cristianbadea.controllers;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,14 +40,20 @@ public class ProgramareController {
         return programareService.getAllProgramariStapan(stapanId);
     }
 
-    @PostMapping("/angajat/saveProgramare")
-    public String saveProgramare(@RequestBody ProgramareDTO programareDTO){
+    @PostMapping("/saveProgramare")
+    public ResponseEntity<String> saveProgramare(@RequestBody ProgramareDTO programareDTO){
+        
+        String stare = "";
+        System.out.println(authenticationService.getUserRoles());
+        if(authenticationService.getUserRoles().contains("ROLE_ADMIN")){ stare = "confirmata"; }
+        else { stare = "neconfirmata"; }
+
         return programareService.saveProgramare(
             programareDTO.getDataProgramare(),
             programareDTO.getMotiv(),
             programareDTO.getStapanId(),
             programareDTO.getAnimalId(),
-            "confirmata"
+            stare
         );
     }
 

@@ -2,12 +2,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import "../ModalOptiuni.css"
 import { faX } from "@fortawesome/free-solid-svg-icons"
 import { useEffect, useState } from "react"
-import { editAnimal, getPoza, salvarePoza } from "../../AccesareAPI"
+import { editAnimal, salvarePoza } from "../../AccesareAPI"
 import { toBase64 } from "../Utilities"
+import ProgramareNoua from "../Programari/ProgramareNoua";
 
-const OptiuniAnimal = ({animale, vizite, programari, tratamente, animalCurent, setAnimalCurent, pozeAnimale, api, jwtToken}) => {
+
+const OptiuniAnimal = (
+    { animale, vizite, programari, tratamente, animalCurent, setAnimalCurent, pozeAnimale, api, jwtToken }) => {
     
-    const handleClickInchidere = () => {
+    const handleClickInchidereOptiuniAnimal = () => {
         setAnimalCurent(null)
     }
 
@@ -20,6 +23,9 @@ const OptiuniAnimal = ({animale, vizite, programari, tratamente, animalCurent, s
     const [programariViitoare,  setProgramariViitoare]  = useState('0')
     const [tratamenteActive,    setTratamenteActive]    = useState('0')
     const [raspuns,             setRaspuns]             = useState('')
+    const [viewProgramareNoua,  setViewProgramareNoua]  = useState(false)
+
+    const optiune = ''
     
     useEffect(
         () => {
@@ -58,10 +64,11 @@ const OptiuniAnimal = ({animale, vizite, programari, tratamente, animalCurent, s
         try{
             const poza       = await toBase64(file)
             const idEntitate = animalCurent.animalId
+            console.log(poza)
             setPozaAnimalCurent(poza)
-            const raspunsSetarePoza = await salvarePoza({api, poza, jwtToken, folder: "poze_animale", idEntitate}) 
-            setRaspuns(raspunsSetarePoza)
-            if(raspunsSetarePoza === "Poză salvată cu succes")
+            const raspunsApi = await salvarePoza({api, poza, jwtToken, folder: "poze_animale", idEntitate, entitate: "animal"}) 
+            setRaspuns(raspunsApi)
+            if(raspunsApi.status === 200)
                 pozeAnimale[animalCurent.animalId] = poza
         } catch(error){ 
             setRaspuns("EROARE")
@@ -73,7 +80,7 @@ const OptiuniAnimal = ({animale, vizite, programari, tratamente, animalCurent, s
         const apiEndpoint = api + '/animale/editAnimal'
         const raspunsApi = await editAnimal({jwtToken, apiEndpoint, idAnimalCurent, numeAnimalCurent, specieAnimalCurent, rasaAnimalCurent})
         
-        if(raspunsApi === 'Editat cu succes'){
+        if(raspunsApi.status === 200){
             const animal = {    
                 ...animalCurent,
                 "nume"   : numeAnimalCurent,
@@ -87,8 +94,37 @@ const OptiuniAnimal = ({animale, vizite, programari, tratamente, animalCurent, s
             })
             setAnimalCurent(animal)    
         }
-
         setRaspuns(raspunsApi)
+    }
+
+    const handleChangeSelectVezi = (optiune) => { 
+        switch (optiune) {
+            case "stapan":
+                break
+            case "vizite":
+                break
+            case "programari":
+                break
+            case "tratamente":
+                break
+            default:
+                break
+        }
+        
+    }
+
+    const handleChangeSelectAdauga = (event) => { 
+        const optiune = event.target.value 
+        switch (optiune) {
+            case "programare_noua":
+                setViewProgramareNoua(true)
+                break;
+            case "vizita_noua":
+
+                break;
+            default:
+                break;
+        }
     }
 
     const RowStatistica = ({label, valoare}) => (
@@ -101,12 +137,12 @@ const OptiuniAnimal = ({animale, vizite, programari, tratamente, animalCurent, s
     return(
         <div className="modal">
             <div className="modalOptiuni">
-                <div className="baraModalOptiuni">
+                <div className="baraModal">
                     <div id="stanga">  
                         <p className="textTitluModal">{animalCurent.nume} - Opțiuni</p> 
                     </div>
                     <div id="dreapta"> 
-                        <button className="butonInchidere" onClick={handleClickInchidere}>
+                        <button className="butonInchidere" onClick={handleClickInchidereOptiuniAnimal}>
                             <FontAwesomeIcon icon={faX} size={"1x"} color={"white"} />
                         </button> 
                     </div>
@@ -152,20 +188,22 @@ const OptiuniAnimal = ({animale, vizite, programari, tratamente, animalCurent, s
                                 <div className="optiuniButoaneStanga">
                                     <p>Adaugă</p>
                                 </div>
-                                <select className="optiuniButoaneDreapta">
-                                    <option>Programare nouă</option>
-                                    <option>Vizită nouă</option>
+                                <select value={optiune} className="optiuniButoaneDreapta" onChange={handleChangeSelectAdauga}>
+                                    <option> - </option>
+                                    <option value={"programare_noua"}>Programare nouă</option>
+                                    <option value={"vizita_noua"}>Vizită nouă</option>
                                 </select>
                             </div>
                             <div className="linieOptiuniButoane">
                                 <div className="optiuniButoaneStanga">
                                     <p>Vezi</p>
                                 </div>
-                                <select className="optiuniButoaneDreapta">
-                                    <option>Stăpân</option>
-                                    <option>Vizite</option>
-                                    <option>Programări</option>
-                                    <option>Tratamente</option>
+                                <select className="optiuniButoaneDreapta" onChange={handleChangeSelectVezi}>
+                                    <option> - </option>
+                                    <option value={"stapan"}>Stăpân</option>
+                                    <option value={"vizite"}>Vizite</option>
+                                    <option value={"programari"}>Programări</option>
+                                    <option value={"tratamente"}>Tratamente</option>
                                 </select>
                             </div>
                     </div>
@@ -177,9 +215,20 @@ const OptiuniAnimal = ({animale, vizite, programari, tratamente, animalCurent, s
                     
                </div>
                <div className="modalOptiuniRaspuns">
-                    <p style={{color: raspuns === "Editat cu succes" ? "cyan" : "red"}}>{raspuns}</p>
+                    <p style={{color: (raspuns.status === 200) ? "cyan" : "red"}}> {raspuns.data} </p>
                </div>
             </div>
+
+            {viewProgramareNoua && (
+            <ProgramareNoua 
+                animalCurent          = {animalCurent}
+                setViewProgramareNoua = {setViewProgramareNoua}
+                api                   = {api}
+                jwtToken              = {jwtToken}
+                setRaspuns            = {setRaspuns}
+                programari            = {programari}
+            />)}
+            
         </div>
     )
 }

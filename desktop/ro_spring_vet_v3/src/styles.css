@@ -22,10 +22,17 @@ body{
   overflow: hidden;
 }
 
+label{
+  font-weight: 700;
+  font-family: inherit;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
 input,
-button,
-label
-{
+button{
   border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
@@ -63,6 +70,39 @@ button:active {
   align-items: center;
   justify-content: center;
 }
+
+.modalSecundar{
+  height: 100%; 
+  width: 100%; 
+  position: absolute;
+  display: flex; 
+  align-items: center;
+  justify-content: center;
+}
+
+.baraModal {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 15%;
+  background-color: #11574a;
+}
+
+.baraModal #stanga {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60%;
+}
+
+.baraModal #dreapta {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-right: 1%;
+  width: 40%;
+}
+
 
 .textTitluModal{
   font-size: 2vw;

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import "./App.css";
 import LoginRegister from "./components/LoginRegister/LoginRegister";
 import Dashboard from "./components/Dashboard/Dashboard";
 import Navbar from "./components/Navbar/Navbar";
@@ -18,31 +17,35 @@ function App() {
 
   const api = "http://localhost:8000"
 
-  const [jwtToken,          setJwtToken]          = useState('')
-  const [authority,         setAuthority]         = useState('')
-  const [username,          setUsername]          = useState('')
-  const [userConectat,      setUserConectat]      = useState('')
-  const [pozaProfil,        setPozaProfil]        = useState('')
+  const [jwtToken,            setJwtToken]            = useState('')
+  const [authority,           setAuthority]           = useState('')
+  const [username,            setUsername]            = useState('')
+  const [userConectat,        setUserConectat]        = useState('')
+  const [pozaProfil,          setPozaProfil]          = useState('')
 
-  const [stapani,           setStapani]           = useState([])
-  const [angajati,          setAngajati]          = useState([])
-  const [animale,           setAnimale]           = useState([])
-  const [vizite,            setVizite]            = useState([])
-  const [tratamente,        setTratamente]        = useState([])
-  const [programari,        setProgramari]        = useState([])
+  const [stapani,             setStapani]             = useState([])
+  const [angajati,            setAngajati]            = useState([])
+  const [animale,             setAnimale]             = useState([])
+  const [vizite,              setVizite]              = useState([])
+  const [tratamente,          setTratamente]          = useState([])
+  const [programari,          setProgramari]          = useState([])
 
-  const [pozeAnimale,       setPozeAnimale]       = useState([])
-  const [pozeAngajati,      setPozeAngajati]      = useState([])
-  const [pozeStapani,       setPozeStapani]       = useState([])
+  const [pozeAnimale,         setPozeAnimale]         = useState([])
+  const [pozeAngajati,        setPozeAngajati]        = useState([])
+  const [pozeStapani,         setPozeStapani]         = useState([])
 
-  const [viewLoginRegister, setViewLoginRegister] = useState(true)
-  const [viewDashboard,     setViewDashboard]     = useState(false)
-  const [viewAngajati,      setViewAngajati]      = useState(false)
-  const [viewStapani,       setViewStapani]       = useState(false)
-  const [viewAnimale,       setViewAnimale]       = useState(false)
-  const [viewVizite,        setViewVizite]        = useState(false)
-  const [viewTratamente,    setViewTratamente]    = useState(false)
-  const [viewProgramari,    setViewProgramari]    = useState(false)
+  const [viewLoginRegister,   setViewLoginRegister]   = useState(true)
+  const [viewDashboard,       setViewDashboard]       = useState(false)
+  const [viewAngajati,        setViewAngajati]        = useState(false)
+  const [viewStapani,         setViewStapani]         = useState(false)
+  const [viewAnimale,         setViewAnimale]         = useState(false)
+  const [viewVizite,          setViewVizite]          = useState(false)
+  const [viewTratamente,      setViewTratamente]      = useState(false)
+  const [viewProgramari,      setViewProgramari]      = useState(false)
+
+  
+
+
 
   const [animalCurent,      setAnimalCurent]      = useState('')
 
@@ -64,6 +67,7 @@ function App() {
 
   //cale folder poze, poza (prima oara default din folder), lista de elemente (animale, stapani, angajati)
   const getPoze = async ({caleFolderPoze, poza, lista, setListaPoze}) => {
+    const pozaDefault = poza
     const poze = {}
     try {
       const chei = Object.keys(lista[0]) //luam cheile din primul element
@@ -71,6 +75,8 @@ function App() {
       lista.map(async (elementLista) => {
         if((elementLista.imagine !== null) && (elementLista.imagine !== ""))
           poza = elementLista.imagine
+        else 
+          poza = pozaDefault 
         const base64 = await getPoza({ jwtToken, apiEndpoint: `${api}${caleFolderPoze}${poza}` });
         poze[elementLista[cheieId]] = base64 //pe pozitia ID-ului elementului din lista punem poza
       })
@@ -193,6 +199,7 @@ function App() {
         api                   = {api}
         jwtToken              = {jwtToken}
       />)}
+
 
 
     </div>

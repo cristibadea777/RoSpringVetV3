@@ -59,7 +59,10 @@ const getPoza = async ({jwtToken, apiEndpoint}) => {
     const config = {
         headers: {
             'Authorization' : `Bearer ${jwtToken}`,
-        }, 
+        },
+        validateStatus: (status) => {
+            return true
+        },
         responseType  : 'blob'
     }
     try {
@@ -79,7 +82,7 @@ const getPoza = async ({jwtToken, apiEndpoint}) => {
     } catch (error) { console.log(error) }
 }
 
-const salvarePoza = async ({api, poza, folder, idEntitate, jwtToken}) => {
+const salvarePoza = async ({api, poza, folder, idEntitate, jwtToken, entitate}) => {
     const apiEndpoint = `${api}/poze/salvarePoza`
     const customConfig = {
         headers: {
@@ -91,13 +94,13 @@ const salvarePoza = async ({api, poza, folder, idEntitate, jwtToken}) => {
         "base64String"      :   poza,
         "folder"            :   folder,
         "numePoza"          :   idEntitate,
+        "entitate"          :   entitate,
     }
     try {
         const raspuns = await axios.post(apiEndpoint, cerere, customConfig)
-        return raspuns.data
+        return raspuns
     } catch (error) {
         console.log("EROARE LA SALVARE POZA \n" + JSON.stringify(error))
-        return "EROARE LA SALVARE POZA"
     }
 }
 
@@ -140,15 +143,43 @@ const editAnimal = async ({jwtToken, apiEndpoint, idAnimalCurent, numeAnimalCure
         headers: {
             'Authorization' : `Bearer ${jwtToken}`,
             'Content-Type': 'application/json'
+        },
+        validateStatus: (status) => {
+            return true 
+            //pt a nu trata raspunsurile 406/etc ca erori, pt ca vreau raspunsul chiar daca nu e 200
         }
     }
     try {
         const raspuns = await axios.post(apiEndpoint, cerere, customConfig)
-        return raspuns.data
+        return raspuns
     } catch (error) {
         console.log("EROARE LA EDITARE ANIMAL \n" + JSON.stringify(error))
-        return "EROARE LA EDITARE ANIMAL"
     }
 }
 
-export { registerUser, loginUser, getUserConectat, getPoza, logout, getAllObiecte, editAnimal, salvarePoza }
+const salvareProgramare = async ({jwtToken, apiEndpoint, idAnimalCurent, idStapanCurent, dataProgramare, motiv}) => {
+    const cerere = {
+        "dataProgramare" : dataProgramare,
+        "motiv"          : motiv,
+        "stapanId"       : idStapanCurent,
+        "animalId"       : idAnimalCurent,
+    }
+    const customConfig = {
+        headers: {
+            'Authorization' : `Bearer ${jwtToken}`,
+            'Content-Type': 'application/json'
+        },
+        validateStatus: (status) => {
+            return true 
+        }
+    }
+    try {
+        const raspuns = await axios.post(apiEndpoint, cerere, customConfig)
+        return raspuns
+    } catch (error) {
+        console.log("EROARE LA SALVARE PROGRAMARE \n" + JSON.stringify(error))       
+    }
+
+}
+
+export { registerUser, loginUser, getUserConectat, getPoza, logout, getAllObiecte, editAnimal, salvarePoza, salvareProgramare }

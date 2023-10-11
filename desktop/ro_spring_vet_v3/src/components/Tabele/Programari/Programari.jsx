@@ -5,17 +5,53 @@ import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons"
 
 const Programari = ({programari, pozeAnimale, pozeStapani, viewProgramari}) => {
     
-    const [filtruProgramari,    setFiltruProgramari]    = useState('')
+    const [textFiltru,          setTextFiltru]    = useState('')
     const [itemsPerPage,        setItemsPerPage]        = useState(8)
     const [lowerBound,          setLowerBound]          = useState(0)
     const [paginaProgramari,    setPaginaProgramari]    = useState([])
     const [paginaCurenta,       setPaginaCurenta]       = useState(1)
+    const [tipProgramari,       setTipProgramari]       = useState('Confirmate')
+
+    const filtrareProgramari = (programariNefiltrate) => {
+        const programariFiltrate = programariNefiltrate.filter((programare) => {
+            let returnValue = false
+            //filtrare in functie de tipul ales 
+            //daca tipul ales = confirmate, si programarea confirmata atunci se alege
+            if(tipProgramari === "Confirmate"){
+                if(programare.stare === "confirmata")
+                    returnValue = true
+                else 
+                    return false
+            }
+            else if(tipProgramari === "Neconfirmate"){
+                if(programare.stare === "neconfirmata")
+                    returnValue = true
+                else
+                    return false
+            }
+            //daca textul de filtrare e gol, include tot
+            if(textFiltru.trim() === ""){
+                returnValue = true
+            }
+            //filtrare in functie de nume animal, nume stapan, data programare - o include daca textu cautat se regaseste in oricare
+            const textCautat = textFiltru.toLowerCase()
+            if( programare.animalId.nume.toLowerCase().includes(textCautat) || 
+                programare.stapanId.nume.toLowerCase().includes(textCautat) || 
+                programare.dataProgramare.toLowerCase().includes(textCautat) 
+            ){ returnValue = true }
+            else
+                return false
+            return returnValue
+        })
+        return programariFiltrate
+    }
+
+    const programariFiltrate = filtrareProgramari(programari) //se schimba de fiecare data cand programari se schimba
     
-    const totalPagini = Math.ceil(programari.length / itemsPerPage)
+    const totalPagini = Math.ceil(programariFiltrate.length / itemsPerPage) //se recalculeaza de fiecare data cand itemsPerPage se schimba
 
-
-    const handleChangeFiltruProgramari = (event) => {
-        setFiltruProgramari(event.target.value)
+    const handleChangeTextFiltru = (event) => {
+        setTextFiltru(event.target.value)
     }
 
     const handleShowModalProgramare = () => {
@@ -23,7 +59,7 @@ const Programari = ({programari, pozeAnimale, pozeStapani, viewProgramari}) => {
     }
 
     const handleClickPaginaInainte = () => {
-        if( (lowerBound + itemsPerPage) < programari.length){
+        if( (lowerBound + itemsPerPage) < programariFiltrate.length){
             setLowerBound(lowerBound + itemsPerPage)
             setPaginaCurenta(paginaCurenta + 1)
         }
@@ -44,33 +80,43 @@ const Programari = ({programari, pozeAnimale, pozeStapani, viewProgramari}) => {
 
     useEffect(
         () => {
-            console.log(itemsPerPage)
-            const upperBound = lowerBound + itemsPerPage
+            //reset paginilor
+            setLowerBound(0)
+            setPaginaCurenta(1)
+        }, [viewProgramari, tipProgramari]
+    )
+
+    useEffect(
+        () => {            
             if(viewProgramari){
-                setPaginaProgramari(programari.slice(lowerBound, upperBound)) 
+                const upperBound = lowerBound + itemsPerPage
+                setPaginaProgramari(programariFiltrate.slice(lowerBound, upperBound)) 
             }
-        }, [viewProgramari, lowerBound, itemsPerPage]
+        }, [viewProgramari, lowerBound, itemsPerPage, tipProgramari, textFiltru] 
     )
 
     return(
         <div className="containerPrincipal">
             
             <TitluSiFiltru 
-                titlu={"Programări"}
-                filtru={filtruProgramari}
-                functie={handleChangeFiltruProgramari}
+                titlu            = {"Programări"}
+                filtru           = {textFiltru}
+                functie          = {handleChangeTextFiltru}
+                viewProgramari   = {viewProgramari}
+                setTipProgramari = {setTipProgramari}
+                tipProgramari    = {tipProgramari}
             />
 
             <div className="containerTabel">
                 <table className="tabel">
                     <thead>
                         <tr>
-                            <th>Imagine</th>
-                            <th>Dată</th>
-                            <th>Animal</th>
-                            <th>Stăpân</th>
-                            <th>Motiv</th>
-                            <th>Stare</th>
+                            <th>Imagine</th> 
+                            <th>Dată</th> 
+                            <th>Animal</th> 
+                            <th>Stăpân</th> 
+                            <th>Motiv</th> 
+                            <th>Stare</th> 
                             <th>Opțiuni</th>
                         </tr>
                     </thead>
@@ -106,6 +152,7 @@ const Programari = ({programari, pozeAnimale, pozeStapani, viewProgramari}) => {
                     <div className="containerItemsPerPage">
                         <label htmlFor="itemsPerPage">Elemente / Pagină</label>
                         <select value={itemsPerPage} id="itemsPerPage" className="dropdownItemsPerPage" onChange={handleChangeItemsPerPage}>
+                            <option value={4}>4</option>
                             <option value={8}>8</option>
                             <option value={12}>12</option>
                             <option value={20}>20</option>

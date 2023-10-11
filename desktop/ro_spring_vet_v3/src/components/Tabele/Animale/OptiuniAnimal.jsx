@@ -39,15 +39,15 @@ const OptiuniAnimal = (
                 let nrVizite     = 0
                 let nrProgramari = 0
                 let nrTratamente = 0
-                vizite.map((vizita) => {
+                vizite && vizite.map((vizita) => {
                     if(vizita.animalId.animalId === animalCurent.animalId) 
                         nrVizite = nrVizite + 1 
                 })
-                programari.map((programare) => { 
+                programari && programari.map((programare) => { 
                     if(programare.animalId.animalId === animalCurent.animalId && programare.stare === 'confirmata') 
                         nrProgramari = nrProgramari + 1 
                 })
-                tratamente.map((tratament)  => { 
+                tratamente && tratamente.map((tratament)  => { 
                     const dataSfarsit = new Date(tratament.dataSfarsit)
                     if(tratament.animalId.animalId === animalCurent.animalId && dataSfarsit > dataCurenta) 
                         nrTratamente = nrTratamente + 1 

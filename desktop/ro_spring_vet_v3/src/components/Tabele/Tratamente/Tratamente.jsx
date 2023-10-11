@@ -19,7 +19,7 @@ const Tratamente = ({tratamente, pozeAnimale}) => {
         <div className="containerPrincipal">
             
             <TitluSiFiltru 
-                titlu={"Tratamente"}
+                titlu={"Tratamente Active"}
                 filtru={filtruTratamente}
                 functie={handleChangeFiltruTratamente}
             />
@@ -38,7 +38,7 @@ const Tratamente = ({tratamente, pozeAnimale}) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {tratamente.map((tratament, index)=>(
+                        {tratamente && tratamente.map((tratament, index)=>(
                             <tr key={index}>
                                 <td>
                                     <img 

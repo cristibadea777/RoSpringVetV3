@@ -3,13 +3,29 @@ import TitluSiFiltru from "../../Filtru/TitluSiFiltru"
 import "../Tabele.css"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faBars } from "@fortawesome/free-solid-svg-icons"
-const Animale = ( {animale, pozeAnimale, setAnimalCurent} ) => {
+import Pagini from "../../Pagini/Pagini"
+const Animale = ( {animale, pozeAnimale, setAnimalCurent, viewAnimale} ) => {
 
-    const [filtruAnimale, setFiltruAnimale] = useState('')
+    const [paginaAnimale,   setPaginaAnimale] = useState([])
 
-    const handleChangeFiltruAnimale = (event) => {
-        setFiltruAnimale(event.target.value)
+    const [textFiltru,      setTextFiltru] = useState('')
+    const handleChangeTextFiltru = (event) => {
+        setTextFiltru(event.target.value)
     }
+
+    const filtrareAnimale = (animale) => {
+        return animale.filter((animal) => {
+            const textCautat = textFiltru.toLowerCase()
+            return(
+                animal.nume.toLowerCase().includes(textCautat) ||
+                animal.rasa.toLowerCase().includes(textCautat) ||
+                animal.specie.toLowerCase().includes(textCautat) ||
+                animal.stapan.nume.toLowerCase().includes(textCautat)
+            )
+        })
+    }
+
+    const animaleFiltrate = filtrareAnimale(animale)
 
     const handleShowModalAnimal = (animal) => {
         setAnimalCurent(animal)
@@ -20,8 +36,8 @@ const Animale = ( {animale, pozeAnimale, setAnimalCurent} ) => {
             
             <TitluSiFiltru 
                 titlu={"Animale"}
-                filtru={filtruAnimale}
-                functie={handleChangeFiltruAnimale}
+                filtru={textFiltru}
+                functie={handleChangeTextFiltru}
             />
 
             <div className="containerTabel">
@@ -37,7 +53,7 @@ const Animale = ( {animale, pozeAnimale, setAnimalCurent} ) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {animale.map((animal, index)=>(
+                        {paginaAnimale.map((animal, index)=>(
                             <tr key={index}>
                                 <td>
                                     <img 
@@ -57,6 +73,13 @@ const Animale = ( {animale, pozeAnimale, setAnimalCurent} ) => {
                     </tbody>
                 </table>
             </div>
+
+            <Pagini 
+                viewTabel            = {viewAnimale}
+                listaObiecteFiltrate = {animaleFiltrate}
+                setPaginaTabel       = {setPaginaAnimale}
+                textFiltru           = {textFiltru}
+            />
             
         </div>
     )

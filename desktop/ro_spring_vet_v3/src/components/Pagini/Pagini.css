@@ -1,0 +1,59 @@
+.containerPagini{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    justify-content: flex-start;
+    margin-top: 1%;    
+}
+
+.linieContainerPagini{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.linieContainerPagini button{
+    height: fit-content;
+    width: fit-content;
+    margin-right: 0.5%;
+    margin-left: 6%;
+}
+
+.linieContainerPagini p{
+    font-size: 1.2vw;
+    color: white;
+    margin-right: 0.7%;
+    margin-top: 1%;
+}
+
+.containerItemsPerPage{
+    display: flex; 
+    flex-grow: 1;
+    margin-left: 0.5%;
+    align-items: center;
+}
+
+.containerItemsPerPage label{
+    margin-right: 1%;
+    font-size: 1.5vw;
+    font-weight: 100;
+}
+
+.dropdownItemsPerPage{
+    background-color: #232B2B;
+    color: white;
+    cursor: pointer;
+    border: 0;
+    font-family: inherit;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.7);
+    display: flex;
+    outline: none;
+    width: 10%;
+    height: 100%;
+    text-align: center;
+    font-size: 1.5vw;
+    font-weight: 300;
+}

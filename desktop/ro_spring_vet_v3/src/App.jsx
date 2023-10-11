@@ -158,6 +158,7 @@ function App() {
         animale               = {animale} 
         pozeAnimale           = {pozeAnimale}
         setAnimalCurent       = {setAnimalCurent}
+        viewAnimale           = {viewAnimale}
       />)}
       {viewAngajati && (
       <Angajati

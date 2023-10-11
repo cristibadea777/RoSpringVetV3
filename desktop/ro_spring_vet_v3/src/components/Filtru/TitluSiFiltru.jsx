@@ -1,7 +1,7 @@
 import "./TitluSiFiltru.css"
 
 const TitluSiFiltru = ({titlu, functie, filtru, viewProgramari, setTipProgramari, tipProgramari}) => {
-    
+
     const handleChangeTipProgramari = (event) => {
         setTipProgramari(event.target.value)
     }

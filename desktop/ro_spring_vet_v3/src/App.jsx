@@ -196,6 +196,7 @@ function App() {
         programari            = {programari}
         tratamente            = {tratamente}
         animalCurent          = {animalCurent}
+        angajati              = {angajati}
         pozeAnimale           = {pozeAnimale}
         setAnimalCurent       = {setAnimalCurent}
         api                   = {api}

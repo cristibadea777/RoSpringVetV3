@@ -5,7 +5,7 @@ import "../ModalAdaugare.css"
 import { useState } from "react"
 import { salvareProgramare } from "../../AccesareAPI"
 
-const ProgramareNoua = ({ animalCurent, setViewProgramareNoua, api, jwtToken, setRaspuns, programari }) => {
+const ProgramareNoua = ({ animalCurent, setViewProgramareNoua, api, jwtToken, setRaspuns, raspuns, programari }) => {
     
     const handleClickInchidere = () => {
         setViewProgramareNoua(false)
@@ -47,6 +47,7 @@ const ProgramareNoua = ({ animalCurent, setViewProgramareNoua, api, jwtToken, se
                 "status" : raspunsApi.status,
                 "data"   : raspunsApi.data, //la esec se returneaza mesajul de eroare de la server
             }
+            setRaspuns(raspuns)
         }
         setViewProgramareNoua(false)
     }
@@ -86,7 +87,7 @@ const ProgramareNoua = ({ animalCurent, setViewProgramareNoua, api, jwtToken, se
                 </div>
 
                 <div className="containerLinie">
-                    <p className="textEroare"></p>
+                    <p className="textEroare">{raspuns.data}</p>
                 </div>
             </div>
         </div>

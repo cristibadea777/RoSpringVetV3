@@ -179,7 +179,35 @@ const salvareProgramare = async ({jwtToken, apiEndpoint, idAnimalCurent, idStapa
     } catch (error) {
         console.log("EROARE LA SALVARE PROGRAMARE \n" + JSON.stringify(error))       
     }
-
 }
 
-export { registerUser, loginUser, getUserConectat, getPoza, logout, getAllObiecte, editAnimal, salvarePoza, salvareProgramare }
+const salvareVizita = async ({apiEndpoint, jwtToken, dataVizita, motiv, diagnostic, animalId, stapanId, angajatId, metodaTratament, dataInceput, dataSfarsit }) => {
+    const cerere = {
+        "dataVizita"        : dataVizita,
+        "animalId"          : animalId,
+        "stapanId"          : stapanId,
+        "angajatId"         : angajatId,
+        "motiv"             : motiv,
+        "diagnostic"        : diagnostic,
+        "metodaTratament"   : metodaTratament,
+        "dataInceput"       : dataInceput,
+        "dataSfarsit"       : dataSfarsit,
+    }
+    const customConfig = {
+        headers: {
+            'Authorization' : `Bearer ${jwtToken}`,
+            'Content-Type': 'application/json'
+        },
+        validateStatus: (status) => {
+            return true 
+        }        
+    }
+    try {
+        const raspuns = await axios.post(apiEndpoint, cerere, customConfig)
+        return raspuns
+    } catch (error) {
+        console.log("EROARE LA SALVARE VIZITA \n" + JSON.stringify(error))       
+    }
+}
+
+export { registerUser, loginUser, getUserConectat, getPoza, logout, getAllObiecte, editAnimal, salvarePoza, salvareProgramare, salvareVizita }

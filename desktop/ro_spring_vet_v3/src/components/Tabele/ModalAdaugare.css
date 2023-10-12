@@ -20,27 +20,67 @@
     height: 20%;
     display: flex;
     flex-direction: row;
+    margin-top: 3%;
+    padding-right: 1%;
+}
+
+.containerLinieStanga {
+    width: 40%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.containerLinieDreapta {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
 }
 
 .containerLinie input{
-    height: auto;
-    width: 33%;
-    margin-right: 10%;
+    width: 20%;
+    height: 10%;
+    flex: 1;
     color: cyan;
     background-color: #232B2B;
     border-radius: 0;
-    font-size: 1.5vw;
+    font-size: 1.3vw;
 }
+
 ::-webkit-calendar-picker-indicator {
     filter: invert(3);
 }
 
+.containerLinie textarea{
+    width: 80%;
+    height: 100%;
+    resize: none;
+    outline: none;
+    font-size: 1.3vw;
+}
+
+.containerLinie select{
+    height: 50%;
+    flex: 1;
+    background-color: #232B2B;
+    border-radius: 0;
+    font-size: 1.3vw;
+
+    text-align: center;
+    background-color: #232B2B;
+    border-radius: 0;
+    color: white;
+    outline: none;
+    border: 1px solid black;
+}
+
 .containerLinie label {
     height: auto;
-    width: 33%;
-    font-size: 1.5vw;
+    width: 40%;
+    font-size: 1.3vw;
 }
 
 .containerLinie button{
-    font-size: 1.5vw;
+    font-size: 1.3vw;
 }

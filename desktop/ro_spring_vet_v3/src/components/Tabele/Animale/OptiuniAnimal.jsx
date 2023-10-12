@@ -5,10 +5,11 @@ import { useEffect, useState } from "react"
 import { editAnimal, salvarePoza } from "../../AccesareAPI"
 import { toBase64 } from "../Utilities"
 import ProgramareNoua from "../Programari/ProgramareNoua";
+import VizitaNoua from "../Vizite/VizitaNoua"
 
 
 const OptiuniAnimal = (
-    { animale, vizite, programari, tratamente, animalCurent, setAnimalCurent, pozeAnimale, api, jwtToken }) => {
+    { animale, vizite, programari, angajati, tratamente, animalCurent, setAnimalCurent, pozeAnimale, api, jwtToken }) => {
     
     const handleClickInchidereOptiuniAnimal = () => {
         setAnimalCurent(null)
@@ -24,6 +25,7 @@ const OptiuniAnimal = (
     const [tratamenteActive,    setTratamenteActive]    = useState('0')
     const [raspuns,             setRaspuns]             = useState('')
     const [viewProgramareNoua,  setViewProgramareNoua]  = useState(false)
+    const [viewVizitaNoua,      setViewVizitaNoua]      = useState(false)
 
     const optiune = ''
     
@@ -120,7 +122,7 @@ const OptiuniAnimal = (
                 setViewProgramareNoua(true)
                 break;
             case "vizita_noua":
-
+                setViewVizitaNoua(true)
                 break;
             default:
                 break;
@@ -225,9 +227,22 @@ const OptiuniAnimal = (
                 setViewProgramareNoua = {setViewProgramareNoua}
                 api                   = {api}
                 jwtToken              = {jwtToken}
+                raspuns               = {raspuns}
                 setRaspuns            = {setRaspuns}
                 programari            = {programari}
             />)}
+            {viewVizitaNoua && (
+            <VizitaNoua 
+                animalCurent          = {animalCurent}
+                setViewVizitaNoua     = {setViewVizitaNoua}
+                api                   = {api}
+                jwtToken              = {jwtToken}
+                raspuns               = {raspuns}
+                setRaspuns            = {setRaspuns}
+                vizite                = {vizite}
+                angajati              = {angajati}
+            />
+            )}
             
         </div>
     )

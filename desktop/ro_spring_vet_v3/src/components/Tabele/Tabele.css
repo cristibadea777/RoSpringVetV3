@@ -16,6 +16,17 @@
     overflow: auto; 
 }
 
+.modalTabele{
+    position: absolute;
+    width: 100%; 
+    height: 91%; 
+    bottom: 0; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    background-color: rgba(0, 0, 0, 0.4)
+}
+
 .tabel{
     width: 100%;
     background-color: #232B2B;
@@ -46,11 +57,7 @@
     box-shadow: 0 2px 2px rgba(0, 0, 0, 0);
     background-color: #1e1e1e;
 }
-.tabel .tdButon{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+
 .tabel img{
     padding-left: 3px;
 }

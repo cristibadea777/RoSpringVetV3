@@ -2,11 +2,17 @@ import { faX } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 import "../ModalAdaugare.css"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { salvareProgramare } from "../../AccesareAPI"
 
-const ProgramareNoua = ({ animalCurent, setViewProgramareNoua, api, jwtToken, setRaspuns, raspuns, programari }) => {
+const ProgramareNoua = ({ animalCurent, setViewProgramareNoua, viewProgramareNoua, api, jwtToken, setRaspuns, raspuns, programari }) => {
     
+    useEffect(
+        () => {
+            if(viewProgramareNoua){ setRaspuns('') }
+        }, [viewProgramareNoua]
+    )
+
     const handleClickInchidere = () => {
         setViewProgramareNoua(false)
     }
@@ -67,7 +73,7 @@ const ProgramareNoua = ({ animalCurent, setViewProgramareNoua, api, jwtToken, se
                 <div id="dreapta"> 
                     <button className="butonInchidere" onClick={handleClickInchidere}>
                         <FontAwesomeIcon icon={faX} size={"1x"} color={"white"} />     
-                </button> 
+                    </button> 
                 </div>
             </div>
 

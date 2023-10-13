@@ -2,14 +2,32 @@ import { useState } from "react"
 import TitluSiFiltru from "../../Filtru/TitluSiFiltru"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faSearch } from "@fortawesome/free-solid-svg-icons"
+import Pagini from "../../Pagini/Pagini"
 
-const Vizite = ({vizite, pozeAnimale, pozeStapani, pozeAngajati}) => {
+const Vizite = ({vizite, viewVizite, pozeAnimale, pozeStapani}) => {
+
+    const [paginaVizite, setPaginaVizite] = useState([])
     
-    const [filtruVizite, setFiltruVizite] = useState('')
+    const [textFiltru, setTextFiltru] = useState('')
 
-    const handleChangeFiltruVizite = (event) => {
-        setFiltruVizite(event.target.value)
+    const handleChangeTextFiltru = (event) => {
+        setTextFiltru(event.target.value)
     }
+
+    const filtrareVizite = (vizite) => {
+        return vizite.filter((vizita) => {
+            const textCautat = textFiltru.toLowerCase()
+            return(
+                vizita.animalId.nume.toLowerCase().includes(textCautat) ||
+                vizita.stapanId.nume.toLowerCase().includes(textCautat) ||
+                vizita.angajatId.nume.toLowerCase().includes(textCautat) ||
+                vizita.motiv.toLowerCase().includes(textCautat) ||
+                vizita.dataVizita.toLowerCase().includes(textCautat) 
+            )
+        })
+    }
+
+    const viziteFiltrate = filtrareVizite(vizite)
 
     const handleShowModalVizita = () => {
 
@@ -20,8 +38,8 @@ const Vizite = ({vizite, pozeAnimale, pozeStapani, pozeAngajati}) => {
             
             <TitluSiFiltru 
                 titlu={"Vizite"}
-                filtru={filtruVizite}
-                functie={handleChangeFiltruVizite}
+                filtru={textFiltru}
+                functie={handleChangeTextFiltru}
             />
 
             <div className="containerTabel">
@@ -34,34 +52,24 @@ const Vizite = ({vizite, pozeAnimale, pozeStapani, pozeAngajati}) => {
                             <th>Stăpân</th>
                             <th>Motiv</th>
                             <th>Angajat</th>
-                            <th>Diagnostic, Tratament</th>
+                            <th>Detalii</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        {vizite.map((vizita, index)=>(
+                        {paginaVizite.map((vizita, index)=>(
                             <tr key={index}>
                                 <td>
-                                    <img 
-                                        src={pozeStapani[vizita.stapanId.stapanId]} 
-                                        height="55" width="55"
-                                    />
-                                    <img 
-                                        src={pozeAnimale[vizita.animalId.animalId]} 
-                                        height="55" width="55"
-                                    />
-                                    <img 
-                                        src={pozeAngajati[vizita.angajatId.angajatId]} 
-                                        height="55" width="55"
-                                    />
+                                    <img src={pozeStapani[vizita.stapanId.stapanId]} height="55" width="55"/>
+                                    <img src={pozeAnimale[vizita.animalId.animalId]} height="55" width="55"/>
                                 </td>
                                 <td>{vizita.dataVizita}</td>
                                 <td>{vizita.numeAnimal}</td>
                                 <td>{vizita.numeStapan}</td>
                                 <td>{vizita.motiv}</td>
                                 <td>{vizita.numeAngajat}</td>
-                                <td className="tdButon">
-                                    <button className="butonIconita"><FontAwesomeIcon icon={faSearch}/></button>
+                                <td>
+                                    <div> <button className="butonIconita"><FontAwesomeIcon icon={faSearch}/></button> </div>
                                 </td>
                                 <td>
                                     <div><button>Opțiuni</button></div>
@@ -71,6 +79,13 @@ const Vizite = ({vizite, pozeAnimale, pozeStapani, pozeAngajati}) => {
                     </tbody>
                 </table>
             </div>
+
+            <Pagini 
+                viewTabel             = {viewVizite}
+                listaObiecteFiltrate  = {viziteFiltrate}
+                setPaginaTabel        = {setPaginaVizite}
+                textFiltru            = {textFiltru} 
+            />
             
         </div>
     )

@@ -225,6 +225,7 @@ const OptiuniAnimal = (
             <ProgramareNoua 
                 animalCurent          = {animalCurent}
                 setViewProgramareNoua = {setViewProgramareNoua}
+                viewProgramareNoua    = {viewProgramareNoua}
                 api                   = {api}
                 jwtToken              = {jwtToken}
                 raspuns               = {raspuns}
@@ -233,6 +234,7 @@ const OptiuniAnimal = (
             />)}
             {viewVizitaNoua && (
             <VizitaNoua 
+                viewVizitaNoua        = {viewVizitaNoua}
                 animalCurent          = {animalCurent}
                 setViewVizitaNoua     = {setViewVizitaNoua}
                 api                   = {api}
@@ -241,6 +243,7 @@ const OptiuniAnimal = (
                 setRaspuns            = {setRaspuns}
                 vizite                = {vizite}
                 angajati              = {angajati}
+                tratamente            = {tratamente}
             />
             )}
             

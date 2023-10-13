@@ -1,16 +1,28 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import "./TitluSiFiltru.css"
+import { faPlus } from "@fortawesome/free-solid-svg-icons"
 
-const TitluSiFiltru = ({titlu, functie, filtru, viewProgramari, setTipProgramari, tipProgramari}) => {
+const TitluSiFiltru = ({titlu, functie, filtru, viewProgramari, setTipProgramari, tipProgramari, viewStapani, setViewStapanNou}) => {
 
     const handleChangeTipProgramari = (event) => {
         setTipProgramari(event.target.value)
     }
 
+    const handleDeschideModalStapanNou = () => {
+        setViewStapanNou(true)
+    }
+
     return (
         <div className="containerTitluSiFiltru">
             <div className="containerTitlu"><p className="text">{titlu}</p></div>
+            {viewStapani && (
+            <div className="containerSecundarTitluFiltru">
+                <div>
+                    <button onClick={handleDeschideModalStapanNou}><FontAwesomeIcon icon={faPlus} color="white"/> </button>
+                </div>
+            </div>)}
             {viewProgramari && (
-            <div className="containerAlegereTipProgramari">
+            <div className="containerSecundarTitluFiltru">
                 <div className="linieAlegereTipProgramari">
                     <label htmlFor="confirmate">Confirmate</label>
                     <input type="radio" id="confirmate" name="tip_programari" value={"Confirmate"} onChange={handleChangeTipProgramari} checked={tipProgramari==="Confirmate"}></input>

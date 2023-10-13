@@ -1,19 +1,25 @@
 import { faX } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { salvareVizita } from "../../AccesareAPI"
 
-const VizitaNoua = ({animalCurent, setViewVizitaNoua, api, jwtToken, setRaspuns, raspuns, vizite, angajati}) => {
+const VizitaNoua = ({animalCurent, setViewVizitaNoua, viewVizitaNoua, api, jwtToken, setRaspuns, raspuns, vizite, angajati, tratamente}) => {
     
     const handleClickInchidere = () => {
         setViewVizitaNoua(false)
     }
 
+    useEffect(
+        () => {
+            if(viewVizitaNoua){ setRaspuns('') }
+        }, [viewVizitaNoua]
+    )
+
     const [motiv,           setMotiv]           = useState('')
     const [diagnostic,      setDiagnostic]      = useState('')
     const [angajatId,       setAngajatId]       = useState(angajati[0].angajatId)
     const [metodaTratament, setMetodaTratament] = useState('')
-    const [dataInceput,     setDataInceput]     = useState('')
+    const [dataInceput,     setDataInceput]     = useState(new Date().toISOString().split('T')[0])
     const [dataSfarsit,     setDataSfarsit]     = useState('')
     
 
@@ -31,10 +37,10 @@ const VizitaNoua = ({animalCurent, setViewVizitaNoua, api, jwtToken, setRaspuns,
     const handleClickAdaugaVizita = async () => {
         const apiEndpoint = api + "/vizite/angajat/saveVizita"
         const raspunsApi = await salvareVizita(
-            {   apiEndpoint, jwtToken, dataVizita, 
-                motiv, diagnostic, animalId, 
-                stapanId, angajatId, metodaTratament, 
-                dataInceput, dataSfarsit
+            {   apiEndpoint,  jwtToken,    dataVizita, 
+                motiv,        diagnostic,  animalId, 
+                stapanId,     angajatId,   metodaTratament, 
+                dataInceput,  dataSfarsit
             }
         )
         if(raspunsApi.status === 200){
@@ -44,7 +50,9 @@ const VizitaNoua = ({animalCurent, setViewVizitaNoua, api, jwtToken, setRaspuns,
                 "data"   : "Vizită adăugată",
             }
             setRaspuns(raspuns)
+            //adaugat vizita si tratament in liste
             vizite.push(raspunsApi.data)
+            tratamente.push(raspunsApi.data.tratament)
             setViewVizitaNoua(false)
         }
         else{
@@ -102,15 +110,9 @@ const VizitaNoua = ({animalCurent, setViewVizitaNoua, api, jwtToken, setRaspuns,
                     <div className="containerLinie">
                         <div className="containerLinieStanga">
                         </div>
-                        <div className="containerLinie" style={{display: "flex", flexDirection: "column", flex: "1", justifyContent: "flex-end", alignItems: "center"}}>
-                            <div  style={{display: "flex", flexDirection: "row", width:"100%", alignItems: "center"}}>
-                                <label htmlFor="dataInceput">Tratament început</label>
-                                <input type="date" id="dataInceput" value={dataInceput} onChange={handleChangeDataInceput}></input>
-                            </div>
-                            <div  style={{display: "flex", flexDirection: "row", width:"100%", alignItems: "center"}}>
-                                <label htmlFor="dataSfarsit">Tratament sfârșit</label>
-                                <input type="date" id="dataSfarsit" value={dataSfarsit} onChange={handleChangeDataSfarsit}></input>
-                            </div>
+                        <div className="containerLinieDreapta">
+                            <label htmlFor="dataSfarsit">Tratament sfârșit</label>
+                            <input type="date" id="dataSfarsit" value={dataSfarsit} onChange={handleChangeDataSfarsit}></input>
                         </div>
                     </div>
                     

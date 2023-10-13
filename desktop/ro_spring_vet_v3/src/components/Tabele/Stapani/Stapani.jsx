@@ -1,7 +1,8 @@
 import { useState } from "react"
 import TitluSiFiltru from "../../Filtru/TitluSiFiltru"
+import StapanNou from "./StapanNou"
 
-const Stapani = ({stapani, pozeStapani}) => {
+const Stapani = ({stapani, viewStapani, pozeStapani}) => {
 
     const [filtruStapani, setFiltruStapani] = useState('')
 
@@ -9,17 +10,25 @@ const Stapani = ({stapani, pozeStapani}) => {
         setFiltruStapani(event.target.value)
     }
 
+    const [viewStapanNou,   setViewStapanNou] = useState(false)
+
     const handleShowModalVizita = () => {
 
     }
 
     return(
         <div className="containerPrincipal">
-            
+            {viewStapanNou && (
+            <StapanNou 
+                setViewStapanNou = {setViewStapanNou}
+            />
+            )}            
             <TitluSiFiltru 
-                titlu={"Stapani"}
-                filtru={filtruStapani}
-                functie={handleChangeFiltruStapani}
+                titlu            = {"Stapani"}
+                filtru           = {filtruStapani}
+                functie          = {handleChangeFiltruStapani}
+                viewStapani      = {viewStapani}
+                setViewStapanNou = {setViewStapanNou}
             />
 
             <div className="containerTabel">
@@ -52,8 +61,8 @@ const Stapani = ({stapani, pozeStapani}) => {
                         ))}
                     </tbody>
                 </table>
-            </div>
-            
+            </div>   
+              
         </div>
     )
 }

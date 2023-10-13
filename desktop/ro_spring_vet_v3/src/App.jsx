@@ -168,18 +168,20 @@ function App() {
       {viewStapani && (
       <Stapani 
         stapani               = {stapani}
+        viewStapani           = {viewStapani}
         pozeStapani           = {pozeStapani}
       />)}
       {viewVizite && (
       <Vizite 
         vizite                = {vizite}
+        viewVizite            = {viewVizite}
         pozeAnimale           = {pozeAnimale}
         pozeStapani           = {pozeStapani}
-        pozeAngajati          = {pozeAngajati}
       />)}
       {viewTratamente && (
       <Tratamente 
         tratamente            = {tratamente}
+        viewTratamente        = {viewTratamente}
         pozeAnimale           = {pozeAnimale}
       />)}
       {viewProgramari && (
@@ -202,9 +204,6 @@ function App() {
         api                   = {api}
         jwtToken              = {jwtToken}
       />)}
-
-
-
     </div>
   )
 }

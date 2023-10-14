@@ -2,6 +2,8 @@ package com.cristianbadea.services;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import com.cristianbadea.models.Angajat;
 import com.cristianbadea.models.Animal;
@@ -15,6 +17,7 @@ import com.cristianbadea.repositories.DiagnosticRepository;
 import com.cristianbadea.repositories.StapanRepository;
 import com.cristianbadea.repositories.TratamentRepository;
 import com.cristianbadea.repositories.VizitaRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class VizitaService {
@@ -38,9 +41,11 @@ public class VizitaService {
         return vizitaRepository.findAll();
     }
 
-    public String saveVizita(String dataVizita, long animalId, long stapanId, long angajatId, String motiv, String diagnostic_string, String metodaTratament, String dataInceput, String dataSfarsit) {
-        if(diagnostic_string.isBlank()) return "Diagnostic este gol";         
-        if(metodaTratament.isBlank())   return "Metoda tratament este goala";        
+    public ResponseEntity<String> saveVizita(String dataVizita, long animalId, long stapanId, long angajatId, String motiv, String diagnostic_string, String metodaTratament, String dataInceput, String dataSfarsit) {
+        if(diagnostic_string.isBlank()) return new ResponseEntity<String>("Diagnostic este gol", HttpStatus.CONFLICT);            
+        if(metodaTratament.isBlank())   return new ResponseEntity<String>("Metoda tratament este goala", HttpStatus.CONFLICT);        
+        if(dataInceput.isBlank())       return new ResponseEntity<String>("Data inceput este goala", HttpStatus.CONFLICT);
+        if(dataSfarsit.isBlank())       return new ResponseEntity<String>("Data sfarsit este goala", HttpStatus.CONFLICT);
         try {
             Animal  animal   = animalRepository.findById(animalId).get();
             Stapan  stapan   = stapanRepository.findById(stapanId).get();
@@ -52,15 +57,15 @@ public class VizitaService {
             tratamentRepository.save(tratament);
             diagnostic.setTratamentId(tratament);
             diagnosticRepository.save(diagnostic);
-            Vizita vizita = new Vizita(dataVizita, animal, stapan, angajat, stapan.getNume(), animal.getNume(), angajat.getNume(), motiv, diagnostic, tratament);
-            vizitaRepository.save(vizita);
+            Vizita vizita = vizitaRepository.save(new Vizita(dataVizita, animal, stapan, angajat, stapan.getNume(), animal.getNume(), angajat.getNume(), motiv, diagnostic, tratament));
             tratament.setVizitaId(vizita);
             tratamentRepository.save(tratament);
+            ObjectMapper objectMapper = new ObjectMapper();
+            String vizitaJson = objectMapper.writeValueAsString(vizita);
+            return ResponseEntity.ok(vizitaJson); 
         } catch (Exception e) {
-            System.out.println("Eroare salvare vizita: " + e);
-            return "Eroare";
+            return new ResponseEntity<String>("Eroare salvare vizita", HttpStatus.CONFLICT);
         }
-        return "";
     }
 
     public List<Vizita> getAllViziteStapan(Stapan stapanId){

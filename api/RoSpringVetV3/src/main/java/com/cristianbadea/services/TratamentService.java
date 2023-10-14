@@ -16,6 +16,10 @@ public class TratamentService {
         return tratamentRepository.findAll();
     }
 
+    public List<Tratament> getAllTratamenteActive(){
+        return tratamentRepository.findAllActive();
+    }
+
     public List<Tratament> getAllTratamenteStapan(long stapanId){
         return tratamentRepository.findAllByStapanId(stapanId);
     }

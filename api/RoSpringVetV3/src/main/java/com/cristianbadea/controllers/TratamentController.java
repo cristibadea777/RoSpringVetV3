@@ -25,7 +25,7 @@ public class TratamentController {
     
     @GetMapping("/angajat/getAllTratamente")
     public List<Tratament> getAllTratamente(){
-        return tratamentService.getAllTratamente();
+        return tratamentService.getAllTratamenteActive();
     }
 
     @GetMapping("/stapan/getAllTratamenteStapan")

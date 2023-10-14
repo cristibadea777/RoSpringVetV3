@@ -32,6 +32,9 @@ public class ProgramareService {
         return programareRepository.findAllByStapanId(stapanId);
     }
 
+    //TODO: programarile vechi sa se stearga cand se iau toate programarile (in serviciu sa se faca asta nu in controller)
+    //TODO: verificat daca programarea contine data si ora - daca nu da return eroare
+
     public ResponseEntity<String> saveProgramare(String dataProgramare, String motiv, long stapanId, long animalId, String stare){
         try {
             Stapan stapan = stapabRepository.findById(stapanId).get();

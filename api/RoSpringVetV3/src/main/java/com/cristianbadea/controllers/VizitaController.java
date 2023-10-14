@@ -2,6 +2,7 @@ package com.cristianbadea.controllers;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,7 +34,7 @@ public class VizitaController {
     }
 
     @PostMapping("/angajat/saveVizita")
-    public String saveVizita(@RequestBody VizitaDTO vizitaDTO){
+    public ResponseEntity<String> saveVizita(@RequestBody VizitaDTO vizitaDTO){
         return vizitaService.saveVizita(
             vizitaDTO.getDataVizita(), 
             vizitaDTO.getAnimalId(), 

@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 import "../ModalAdaugare.css"
 import { useEffect, useState } from "react"
-import { salvareProgramare } from "../../AccesareAPI"
+import { salvareEntitate } from "../../AccesareAPI"
 
 const ProgramareNoua = ({ animalCurent, setViewProgramareNoua, viewProgramareNoua, api, jwtToken, setRaspuns, raspuns, programari }) => {
     
@@ -13,30 +13,20 @@ const ProgramareNoua = ({ animalCurent, setViewProgramareNoua, viewProgramareNou
         }, [viewProgramareNoua]
     )
 
-    const handleClickInchidere = () => {
-        setViewProgramareNoua(false)
-    }
+    const handleClickInchidere = () => { setViewProgramareNoua(false) }
 
-    const handleChangeData = (event) => {
-        setDataAleasa(event.target.value)
-    }
-
-    const handleChangeMotiv = (event) => {
-        setMotiv(event.target.value)
-    }
+    const handleChangeData  = (event) => { setDataAleasa(event.target.value) }
+    const handleChangeMotiv = (event) => { setMotiv(event.target.value)      }
 
     const handleClickAdaugaProgramare = async () => {
         const apiEndpoint = api + "/programari/saveProgramare"
-        const raspunsApi = await salvareProgramare(
-            {
-                jwtToken, 
-                apiEndpoint, 
-                idAnimalCurent: animalCurent.animalId, 
-                idStapanCurent: animalCurent.stapan.stapanId,
-                dataProgramare: dataAleasa.replace("T", " "),
-                motiv         : motiv,
-            }
-        )
+        const cerere = {
+            "dataProgramare" : dataAleasa.replace("T", " "),
+            "motiv"          : motiv,
+            "stapanId"       : animalCurent.stapan.stapanId,
+            "animalId"       : animalCurent.animalId,
+        }
+        const raspunsApi = await salvareEntitate({jwtToken, apiEndpoint, cerere})
         if(raspunsApi.status === 200){
             //pt tag-ul <p> in OptiuniAnimal
             //pun mesajul de succes in data pt ca la succes se returneaza de la server nu mesaj, ci un obiect programare

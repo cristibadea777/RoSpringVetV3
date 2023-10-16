@@ -1,7 +1,7 @@
 import { faX } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useEffect, useState } from "react"
-import { salvareVizita } from "../../AccesareAPI"
+import { salvareEntitate } from "../../AccesareAPI"
 
 const VizitaNoua = ({animalCurent, setViewVizitaNoua, viewVizitaNoua, api, jwtToken, setRaspuns, raspuns, vizite, angajati, tratamente}) => {
     
@@ -36,13 +36,18 @@ const VizitaNoua = ({animalCurent, setViewVizitaNoua, viewVizitaNoua, api, jwtTo
     
     const handleClickAdaugaVizita = async () => {
         const apiEndpoint = api + "/vizite/angajat/saveVizita"
-        const raspunsApi = await salvareVizita(
-            {   apiEndpoint,  jwtToken,    dataVizita, 
-                motiv,        diagnostic,  animalId, 
-                stapanId,     angajatId,   metodaTratament, 
-                dataInceput,  dataSfarsit
-            }
-        )
+        const cerere = {
+            "dataVizita"        : dataVizita,
+            "animalId"          : animalId,
+            "stapanId"          : stapanId,
+            "angajatId"         : angajatId,
+            "motiv"             : motiv,
+            "diagnostic"        : diagnostic,
+            "metodaTratament"   : metodaTratament,
+            "dataInceput"       : dataInceput,
+            "dataSfarsit"       : dataSfarsit,
+        }
+        const raspunsApi = await salvareEntitate({apiEndpoint, jwtToken, cerere})
         if(raspunsApi.status === 200){
             //pun mesajul de succes in data pt ca la succes se returneaza de la server nu mesaj, ci un obiect vizita
             const raspuns = {

@@ -2,7 +2,7 @@ import { useState } from "react"
 import TitluSiFiltru from "../../Filtru/TitluSiFiltru"
 import StapanNou from "./StapanNou"
 
-const Stapani = ({stapani, viewStapani, pozeStapani}) => {
+const Stapani = ({stapani, viewStapani, pozeStapani, api, jwtToken}) => {
 
     const [filtruStapani, setFiltruStapani] = useState('')
 
@@ -20,7 +20,10 @@ const Stapani = ({stapani, viewStapani, pozeStapani}) => {
         <div className="containerPrincipal">
             {viewStapanNou && (
             <StapanNou 
+                viewStapanNou    = {viewStapanNou}
                 setViewStapanNou = {setViewStapanNou}
+                api              = {api}
+                jwtToken         = {jwtToken}
             />
             )}            
             <TitluSiFiltru 

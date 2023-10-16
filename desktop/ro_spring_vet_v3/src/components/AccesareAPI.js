@@ -157,13 +157,7 @@ const editAnimal = async ({jwtToken, apiEndpoint, idAnimalCurent, numeAnimalCure
     }
 }
 
-const salvareProgramare = async ({jwtToken, apiEndpoint, idAnimalCurent, idStapanCurent, dataProgramare, motiv}) => {
-    const cerere = {
-        "dataProgramare" : dataProgramare,
-        "motiv"          : motiv,
-        "stapanId"       : idStapanCurent,
-        "animalId"       : idAnimalCurent,
-    }
+const salvareEntitate = async ({jwtToken, apiEndpoint, cerere}) => {
     const customConfig = {
         headers: {
             'Authorization' : `Bearer ${jwtToken}`,
@@ -177,37 +171,9 @@ const salvareProgramare = async ({jwtToken, apiEndpoint, idAnimalCurent, idStapa
         const raspuns = await axios.post(apiEndpoint, cerere, customConfig)
         return raspuns
     } catch (error) {
-        console.log("EROARE LA SALVARE PROGRAMARE \n" + JSON.stringify(error))       
+        console.log("EROARE LA SALVARE\n" + JSON.stringify(error))       
     }
 }
 
-const salvareVizita = async ({apiEndpoint, jwtToken, dataVizita, motiv, diagnostic, animalId, stapanId, angajatId, metodaTratament, dataInceput, dataSfarsit }) => {
-    const cerere = {
-        "dataVizita"        : dataVizita,
-        "animalId"          : animalId,
-        "stapanId"          : stapanId,
-        "angajatId"         : angajatId,
-        "motiv"             : motiv,
-        "diagnostic"        : diagnostic,
-        "metodaTratament"   : metodaTratament,
-        "dataInceput"       : dataInceput,
-        "dataSfarsit"       : dataSfarsit,
-    }
-    const customConfig = {
-        headers: {
-            'Authorization' : `Bearer ${jwtToken}`,
-            'Content-Type': 'application/json'
-        },
-        validateStatus: (status) => {
-            return true 
-        }        
-    }
-    try {
-        const raspuns = await axios.post(apiEndpoint, cerere, customConfig)
-        return raspuns
-    } catch (error) {
-        console.log("EROARE LA SALVARE VIZITA \n" + JSON.stringify(error))       
-    }
-}
 
-export { registerUser, loginUser, getUserConectat, getPoza, logout, getAllObiecte, editAnimal, salvarePoza, salvareProgramare, salvareVizita }
+export { registerUser, loginUser, getUserConectat, getPoza, logout, getAllObiecte, editAnimal, salvarePoza, salvareEntitate }

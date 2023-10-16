@@ -170,6 +170,8 @@ function App() {
         stapani               = {stapani}
         viewStapani           = {viewStapani}
         pozeStapani           = {pozeStapani}
+        api                   = {api}
+        jwtToken              = {jwtToken}
       />)}
       {viewVizite && (
       <Vizite 

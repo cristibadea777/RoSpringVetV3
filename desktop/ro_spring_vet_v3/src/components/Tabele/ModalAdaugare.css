@@ -1,6 +1,6 @@
 .modalAdaugare {
-    width: 40%;
-    height: 40%;
+    width: 60%;
+    height: 70%;
     background-color: #1e1e1e;
     display: flex;
     flex-direction: column;
@@ -13,7 +13,7 @@
 }
 
 .coloanaInputuri{
-    display: flex";
+    display: flex;
     flex-direction: column;
     width: 60%;
     height: 100%;
@@ -24,7 +24,7 @@
     display: flex;
     flex-direction: row;
     width: 100%;
-    height: 12%;
+    height: 10%;
     margin-top: 3%;
 }
 
@@ -43,10 +43,55 @@
 
 .coloanaPoza{
     display: flex;
-    flexDirection: column;
+    flex-direction: column;
     width: 40%; 
     height: 100%;
-    background-color: yellow;
+}
+
+.linieColoanaInputButon{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 15%;
+    margin-top: 5%;
+    display: flex;
+    align-items: center; 
+    justify-content: flex-end;
+}
+
+.butonAdauga{
+    max-height: max-content;
+    margin: 7%;
+}
+
+.linieColoanaInputTextEroare{
+    display: flex;
+    width: 100%;
+    flex: 1;
+    display: flex;
+    align-items: center; 
+}
+
+.containerPozaModalAdauga{
+    width: 100%;
+    height: 70%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.containerInputPozaModalAdauga img{
+    max-height: 70%;
+    max-width: 100%;
+    width: auto;
+}
+
+.containerPozaModalAdauga {
+    width: 100%;
+    height: 70%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 

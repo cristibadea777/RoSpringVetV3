@@ -32,8 +32,8 @@ label{
 }
 
 input::selection {
-  background-color: #1e1e1e; /* Set the background color for selected text to be transparent */
-  color: #396cd8; /* Set the text color for selected text to be white (or your preferred color) */
+  background-color: #1e1e1e; 
+  color: #396cd8; 
 }
 
 input:-webkit-autofill, input:-webkit-autofill:focus {
@@ -41,7 +41,7 @@ input:-webkit-autofill, input:-webkit-autofill:focus {
 }
 
 button{
-  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 2px 2px black;
   border: 1px solid transparent;
 }
 

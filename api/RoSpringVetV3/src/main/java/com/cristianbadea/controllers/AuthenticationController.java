@@ -34,8 +34,8 @@ public class AuthenticationController {
             return "Nume este gol";
         if(body.getPassword() != null && body.getPassword().isBlank())
             return "Parola este goala";
-        authenticationService.registerUser(body.getUsername(), body.getPassword());
-        stapanService.saveStapan(body.getNume(), body.getTelefon(), body.getUsername());
+        //authenticationService.registerUser(body.getUsername(), body.getPassword());
+        stapanService.saveStapan(body.getNume(), body.getTelefon(), body.getUsername(), body.getPassword(), null);
         return "Registered succesfully";
     }
 

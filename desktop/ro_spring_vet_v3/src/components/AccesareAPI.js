@@ -173,7 +173,7 @@ const salvareEntitate = async ({jwtToken, apiEndpoint, cerere}) => {
     }
 }
 
-  //cale folder poze, poza (prima oara default din folder), lista de elemente (animale, stapani, angajati), setListaPoze
+  //cale folder poze, poza (prima oara default din folder), lista de elemente (animale, stapani, angajati), setListaPoze, jwtToken, api
   const getPozePagina = async ({caleFolderPoze, poza, lista, setListaPoze, jwtToken, api}) => {
     const pozaDefault = poza
     const poze = []

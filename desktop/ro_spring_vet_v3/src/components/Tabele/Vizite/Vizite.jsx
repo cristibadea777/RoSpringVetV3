@@ -1,13 +1,29 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import TitluSiFiltru from "../../Filtru/TitluSiFiltru"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faSearch } from "@fortawesome/free-solid-svg-icons"
 import Pagini from "../../Pagini/Pagini"
+import { getPozePagina } from "../../AccesareAPI"
 
-const Vizite = ({vizite, viewVizite, pozeAnimale, pozeStapani}) => {
+const Vizite = ({vizite, viewVizite, api, jwtToken}) => {
 
-    const [paginaVizite, setPaginaVizite] = useState([])
-    
+    const [paginaVizite, setPaginaVizite]  = useState([])
+    const [pozePagina,   setPozePagina]    = useState([])
+    useEffect(
+        () => {
+          if(paginaVizite.length !== 0){
+            getPozePagina({
+                caleFolderPoze: '/resources/poze_animale/', 
+                poza: 'animal_default.png', 
+                lista: paginaVizite, 
+                setListaPoze: setPozePagina, 
+                jwtToken, 
+                api,
+            })
+          }
+        }, [paginaVizite]
+    )
+
     const [textFiltru, setTextFiltru] = useState('')
 
     const handleChangeTextFiltru = (event) => {
@@ -60,8 +76,7 @@ const Vizite = ({vizite, viewVizite, pozeAnimale, pozeStapani}) => {
                         {paginaVizite.map((vizita, index)=>(
                             <tr key={index}>
                                 <td>
-                                    <img src={pozeStapani[vizita.stapanId.stapanId]} height="55" width="55"/>
-                                    <img src={pozeAnimale[vizita.animalId.animalId]} height="55" width="55"/>
+                                    <img src={pozePagina[index]} height="55" width="55"/>
                                 </td>
                                 <td>{vizita.dataVizita}</td>
                                 <td>{vizita.numeAnimal}</td>

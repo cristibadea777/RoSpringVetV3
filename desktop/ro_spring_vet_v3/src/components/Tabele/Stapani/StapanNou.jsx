@@ -3,9 +3,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useEffect, useState } from "react"
 import "../ModalAdaugare.css"
 import "../Tabele.css"
-import { getPoza, salvareEntitate } from "../../AccesareAPI"
+import { getPoza, salvareEntitate, salvarePoza } from "../../AccesareAPI"
 import { toBase64 } from "../Utilities"
-const StapanNou = ({viewStapanNou, setViewStapanNou, api, jwtToken}) => {
+const StapanNou = ({viewStapanNou, setViewStapanNou, api, jwtToken, stapani}) => {
     
     const handleClickInchidere = () =>{
         setViewStapanNou(false)
@@ -44,18 +44,29 @@ const StapanNou = ({viewStapanNou, setViewStapanNou, api, jwtToken}) => {
     
     const handleClickAdaugaStapanNou = async () => {
         const cerere = {
-            "nume"    : nume,
-            "telefon" : telefon,
-            "email"   : email,
-            "parola"  : parola,
+            "nume"      : nume,
+            "nrTelefon" : telefon,
+            "email"     : email,
+            "parola"    : parola,
+            "imagine"   : pozaCurenta,
         }
         const apiEndpoint = api + "/stapani/angajat/saveStapan"
         const raspunsApi = await salvareEntitate( {jwtToken, apiEndpoint, cerere} )
-        console.log(raspunsApi.data)
-        //if(pozaCurenta !== ''){
-            //const idEntitate = raspuns.data.stapanId
-            //await salvarePoza({api, pozaCurenta, jwtToken, folder: "poze_stapani", idEntitate, entitate: "stapan"})
-        //}
+        if(raspunsApi.status === 200){
+            const raspuns = { //pt tag-ul <p> la reusita
+                "status" : raspunsApi.status,
+                "data"   : "Stăpân adăugat",
+            }
+            setRaspuns(raspuns) 
+            stapani.push(raspunsApi.data) //raspunsul de la server este stapanul adaugat
+        }
+        else{
+            const raspuns = {
+                "status" : raspunsApi.status,
+                "data"   : raspunsApi.data, //la esec se returneaza mesajul de eroare de la server
+            }
+            setRaspuns(raspuns)
+        }
     }
 
     return(
@@ -94,11 +105,10 @@ const StapanNou = ({viewStapanNou, setViewStapanNou, api, jwtToken}) => {
                         <button onClick={handleClickAdaugaStapanNou} className="butonAdauga">Adaugă</button>
                     </div>
                     <div className="linieColoanaInputTextEroare">
-                        <p className="textEroare">{raspuns.data}</p>
+                        <p style={{color: (raspuns.status === 200) ? "cyan" : "red"}} className="textEroare">{raspuns.data}</p>
                     </div>
                 </div>
                 <div className="coloanaPoza">
-                    
                     <div className="containerInputPozaModalAdauga">
                         <div className="containerPozaModalAdauga">
                             <img src={pozaCurenta} />
@@ -116,8 +126,6 @@ const StapanNou = ({viewStapanNou, setViewStapanNou, api, jwtToken}) => {
                             </label>
                         </div>
                     </div>
-
-
                 </div>
             </div>
         </div>

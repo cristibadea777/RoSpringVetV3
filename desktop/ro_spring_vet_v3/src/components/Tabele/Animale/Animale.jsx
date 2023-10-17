@@ -4,9 +4,25 @@ import "../Tabele.css"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faBars } from "@fortawesome/free-solid-svg-icons"
 import Pagini from "../../Pagini/Pagini"
-const Animale = ( {animale, pozeAnimale, setAnimalCurent, viewAnimale} ) => {
+import { getPozePagina } from "../../AccesareAPI"
+const Animale = ( {animale, setAnimalCurent, viewAnimale, api, jwtToken} ) => {
 
     const [paginaAnimale,   setPaginaAnimale] = useState([])
+    const [pozePagina,      setPozePagina]      = useState([])
+    useEffect(
+        () => {
+          if(paginaAnimale.length !== 0){
+            getPozePagina({
+                caleFolderPoze: '/resources/poze_animale/', 
+                poza: 'animal_default.png', 
+                lista: paginaAnimale, 
+                setListaPoze: setPozePagina, 
+                jwtToken, 
+                api,
+            })
+          }
+        }, [paginaAnimale]
+    )
 
     const [textFiltru,      setTextFiltru] = useState('')
     const handleChangeTextFiltru = (event) => {
@@ -57,7 +73,7 @@ const Animale = ( {animale, pozeAnimale, setAnimalCurent, viewAnimale} ) => {
                             <tr key={index}>
                                 <td>
                                     <img 
-                                        src={pozeAnimale[animal.animalId]} 
+                                        src={pozePagina[index]} 
                                         height="55" width="55"
                                     />
                                 </td>

@@ -24,32 +24,37 @@ public class StapanService {
     }
 
     public ResponseEntity<String> saveStapan(String nume, String telefon, String email, String parola, String imagine){
-        //salvare intai user cu authentication service si apoi stapanul
-        try { authenticationService.registerUser(email, parola); } catch (Exception e) { return new ResponseEntity<String>("Userul exista deja", HttpStatus.CONFLICT);}
-        try {                
-            if(nume.isBlank())
-                return new ResponseEntity<String>("Nume gol", HttpStatus.CONFLICT);
-            if(telefon.isBlank())
-                return new ResponseEntity<String>("Telefon gol", HttpStatus.CONFLICT);
-            Stapan stapan = stapanRepository.save(new Stapan(nume, telefon, email, null, null, null, null));  
+        
+        if(email.isBlank())    return new ResponseEntity<String>("Email gol",    HttpStatus.CONFLICT);
+        if(parola.isBlank())   return new ResponseEntity<String>("Parola goală", HttpStatus.CONFLICT);
+        if(nume.isBlank())     return new ResponseEntity<String>("Nume gol",     HttpStatus.CONFLICT);
+        if(telefon.isBlank())  return new ResponseEntity<String>("Telefon gol",  HttpStatus.CONFLICT);
+
+        Stapan stapan;
+       
+        try { 
+             //salvare intai user cu authentication service si apoi stapanul   
+            authenticationService.registerUser(email, parola); 
+            stapan = stapanRepository.save(new Stapan(nume, telefon, email, null, null, null, null));
+        } catch (Exception e) { return new ResponseEntity<String>("Userul exista deja", HttpStatus.CONFLICT); }
+
+        try {                        
+            //dupa ce se salveaza iau id-ul ca sa salvez si imaginea cu numele id-ului in BD (daca s-a selectat o imagine)
             if(imagine != null){
-                //dupa ce se salveaza iau id-ul ca sa salvez si imaginea cu numele id-ului in BD (daca s-a selectat o imagine)
                 stapan.setImagine(String.valueOf(stapan.getStapanId()));
                 stapanRepository.save(stapan);
                 //salvare imagine (base64String) in folder
                 pozeService.salveazaPoza("poze_stapani", String.valueOf(stapan.getStapanId()), imagine, "stapan");
             }
+
+            //trimitere obiect JSON catre frontend
             ObjectMapper objectMapper = new ObjectMapper();
             String stapanJson = objectMapper.writeValueAsString(stapan);
             return ResponseEntity.ok(stapanJson);
-        } catch (Exception e) {
-            System.out.println("Eroare salvare stapan " + e);
-            return new ResponseEntity<String>("Eroare salvare stapan", HttpStatus.CONFLICT);
-        }
+        } catch (Exception e) { return new ResponseEntity<String>("Eroare salvare stapan", HttpStatus.CONFLICT); }
     }
 
     public Stapan findByEmail(String email){
         return stapanRepository.findByEmail(email);
     }
-
 }

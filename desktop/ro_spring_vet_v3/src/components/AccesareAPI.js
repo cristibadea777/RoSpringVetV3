@@ -146,7 +146,6 @@ const editAnimal = async ({jwtToken, apiEndpoint, idAnimalCurent, numeAnimalCure
         },
         validateStatus: (status) => {
             return true 
-            //pt a nu trata raspunsurile 406/etc ca erori, pt ca vreau raspunsul chiar daca nu e 200
         }
     }
     try {
@@ -163,9 +162,8 @@ const salvareEntitate = async ({jwtToken, apiEndpoint, cerere}) => {
             'Authorization' : `Bearer ${jwtToken}`,
             'Content-Type': 'application/json'
         },
-        validateStatus: (status) => {
-            return true 
-        }
+        //pt a nu trata raspunsurile 406/etc ca erori, pt ca vreau raspunsul chiar daca nu e 200
+        validateStatus: (status) => { return true }
     }
     try {
         const raspuns = await axios.post(apiEndpoint, cerere, customConfig)
@@ -175,5 +173,28 @@ const salvareEntitate = async ({jwtToken, apiEndpoint, cerere}) => {
     }
 }
 
+  //cale folder poze, poza (prima oara default din folder), lista de elemente (animale, stapani, angajati), setListaPoze
+  const getPozePagina = async ({caleFolderPoze, poza, lista, setListaPoze, jwtToken, api}) => {
+    const pozaDefault = poza
+    const poze = []
+    try {
+        for(let index = 0; index < lista.length; index++){
+            const elementLista = lista[index]
+            if(elementLista.imagine === undefined){
+                if((elementLista.animalId.imagine !== null) && (elementLista.animalId.imagine !== ""))
+                    poza = elementLista.animalId.imagine
+                else
+                    poza = pozaDefault
+            }
+            else if((elementLista.imagine !== null) && (elementLista.imagine !== ""))
+                poza = elementLista.imagine
+            else 
+                poza = pozaDefault 
+            const base64 = await getPoza({ jwtToken, apiEndpoint: `${api}${caleFolderPoze}${poza}` });
+            poze[index] =  base64
+        }
+      setListaPoze(poze);
+    } catch (error) { console.error(error) }
+  }
 
-export { registerUser, loginUser, getUserConectat, getPoza, logout, getAllObiecte, editAnimal, salvarePoza, salvareEntitate }
+export { registerUser, loginUser, getUserConectat, getPoza, logout, getAllObiecte, editAnimal, salvarePoza, salvareEntitate, getPozePagina }

@@ -1,20 +1,46 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import TitluSiFiltru from "../../Filtru/TitluSiFiltru"
 import StapanNou from "./StapanNou"
+import Pagini from "../../Pagini/Pagini"
+import { getPozePagina } from "../../AccesareAPI"
 
-const Stapani = ({stapani, viewStapani, pozeStapani, api, jwtToken}) => {
+const Stapani = ({stapani, viewStapani, api, jwtToken}) => {
 
-    const [filtruStapani, setFiltruStapani] = useState('')
-
-    const handleChangeFiltruStapani = (event) => {
-        setFiltruStapani(event.target.value)
-    }
-
+    const [paginaStapani,   setPaginaStapani]   = useState([])
+    const [pozePagina,      setPozePagina]      = useState([])
+    useEffect(
+        () => {
+          if(paginaStapani.length !== 0){
+            getPozePagina({
+                caleFolderPoze: '/resources/poze_stapani/', 
+                poza: 'stapan_default.png', 
+                lista: paginaStapani, 
+                setListaPoze: setPozePagina, 
+                jwtToken, 
+                api,
+            })
+          }
+        }, [paginaStapani]
+    )
+    
     const [viewStapanNou,   setViewStapanNou] = useState(false)
 
-    const handleShowModalVizita = () => {
-
+    const [textFiltru,      setTextFiltru] = useState('')
+    const handleChangeTextFiltru = (event) => {
+        setTextFiltru(event.target.value)
     }
+
+    const filtrareStapani = (stapani) => {
+        return stapani.filter((stapan) => {
+            const textCautat = textFiltru.toLowerCase()
+            return(
+                stapan.nume.toLowerCase().includes(textCautat) ||
+                stapan.nrTelefon.toLowerCase().includes(textCautat) ||
+                stapan.email.toLowerCase().includes(textCautat)
+            )
+        })
+    }
+    const stapaniFiltrati = filtrareStapani(stapani)
 
     return(
         <div className="containerPrincipal">
@@ -24,12 +50,13 @@ const Stapani = ({stapani, viewStapani, pozeStapani, api, jwtToken}) => {
                 setViewStapanNou = {setViewStapanNou}
                 api              = {api}
                 jwtToken         = {jwtToken}
+                stapani          = {stapani}
             />
             )}            
             <TitluSiFiltru 
                 titlu            = {"Stapani"}
-                filtru           = {filtruStapani}
-                functie          = {handleChangeFiltruStapani}
+                filtru           = {textFiltru}
+                functie          = {handleChangeTextFiltru}
                 viewStapani      = {viewStapani}
                 setViewStapanNou = {setViewStapanNou}
             />
@@ -46,11 +73,11 @@ const Stapani = ({stapani, viewStapani, pozeStapani, api, jwtToken}) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {stapani.map((stapan, index)=>(
-                            <tr key={index}>
+                        {paginaStapani.map((stapan, index)=>(
+                            <tr key={stapan.stapanId}>
                                 <td>
                                     <img 
-                                        src={pozeStapani[stapan.stapanId]} 
+                                        src={pozePagina[index]} 
                                         height="55" width="55"
                                     />
                                 </td>
@@ -65,6 +92,13 @@ const Stapani = ({stapani, viewStapani, pozeStapani, api, jwtToken}) => {
                     </tbody>
                 </table>
             </div>   
+
+            <Pagini 
+                viewTabel            = {viewStapani}
+                listaObiecteFiltrate = {stapaniFiltrati}
+                setPaginaTabel       = {setPaginaStapani}
+                textFiltru           = {textFiltru}
+            />
               
         </div>
     )

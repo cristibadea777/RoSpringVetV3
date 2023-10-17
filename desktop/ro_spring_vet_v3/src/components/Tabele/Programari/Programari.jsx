@@ -1,13 +1,29 @@
 import { useEffect, useState } from "react"
 import TitluSiFiltru from "../../Filtru/TitluSiFiltru"
 import Pagini from "../../Pagini/Pagini"
+import { getPozePagina } from "../../AccesareAPI"
 
 
-const Programari = ({programari, pozeAnimale, pozeStapani, viewProgramari}) => {
+const Programari = ({programari, viewProgramari, api, jwtToken}) => {
     
     const [textFiltru,          setTextFiltru]          = useState('')
 
     const [paginaProgramari,    setPaginaProgramari]    = useState([])
+    const [pozePagina,          setPozePagina]          = useState([])
+    useEffect(
+        () => {
+          if(paginaProgramari.length !== 0){
+            getPozePagina({
+                caleFolderPoze: '/resources/poze_animale/', 
+                poza: 'animal_default.png', 
+                lista: paginaProgramari, 
+                setListaPoze: setPozePagina, 
+                jwtToken, 
+                api,
+            })
+          }
+        }, [paginaProgramari]
+    )
 
     const [tipProgramari,       setTipProgramari]       = useState('Confirmate')
 
@@ -79,11 +95,7 @@ const Programari = ({programari, pozeAnimale, pozeStapani, viewProgramari}) => {
                             <tr key={index}>
                                 <td>
                                     <img 
-                                        src={pozeStapani[programare.stapanId.stapanId]} 
-                                        height={"50vh"} width={"50vw"}
-                                    />
-                                    <img 
-                                        src={pozeAnimale[programare.animalId.animalId]} 
+                                        src={pozePagina[index]} 
                                         height={"50vh"} width={"50vw"}
                                     />
                                 </td>

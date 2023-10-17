@@ -29,11 +29,7 @@ function App() {
   const [vizite,              setVizite]              = useState([])
   const [tratamente,          setTratamente]          = useState([])
   const [programari,          setProgramari]          = useState([])
-
-  const [pozeAnimale,         setPozeAnimale]         = useState([])
-  const [pozeAngajati,        setPozeAngajati]        = useState([])
-  const [pozeStapani,         setPozeStapani]         = useState([])
-
+  
   const [viewLoginRegister,   setViewLoginRegister]   = useState(true)
   const [viewDashboard,       setViewDashboard]       = useState(false)
   const [viewAngajati,        setViewAngajati]        = useState(false)
@@ -43,11 +39,7 @@ function App() {
   const [viewTratamente,      setViewTratamente]      = useState(false)
   const [viewProgramari,      setViewProgramari]      = useState(false)
 
-  
-
-
-
-  const [animalCurent,      setAnimalCurent]      = useState('')
+  const [animalCurent,        setAnimalCurent]      = useState('')
 
   const populareListeStapan = async ({jwtToken}) => {
     setAnimale   (await getAllObiecte({jwtToken, apiEndpoint: `${api}/animale/stapan/getAllAnimaleStapan`}))
@@ -65,25 +57,6 @@ function App() {
     setProgramari(await getAllObiecte({jwtToken, apiEndpoint: `${api}/programari/angajat/getAllProgramari`}))
   }
 
-  //cale folder poze, poza (prima oara default din folder), lista de elemente (animale, stapani, angajati)
-  const getPoze = async ({caleFolderPoze, poza, lista, setListaPoze}) => {
-    const pozaDefault = poza
-    const poze = {}
-    try {
-      const chei = Object.keys(lista[0]) //luam cheile din primul element
-      const cheieId = chei.find(key => key.includes('Id')) //luam numele cheii care contine 'Id' (animalId, stapanId, angajatId)
-      lista.map(async (elementLista) => {
-        if((elementLista.imagine !== null) && (elementLista.imagine !== ""))
-          poza = elementLista.imagine
-        else 
-          poza = pozaDefault 
-        const base64 = await getPoza({ jwtToken, apiEndpoint: `${api}${caleFolderPoze}${poza}` });
-        poze[elementLista[cheieId]] = base64 //pe pozitia ID-ului elementului din lista punem poza
-      })
-      setListaPoze(poze);
-    } catch (error) { console.error(error) }
-  }
-  
   useEffect(
     () => {
       if(authority === 'USER')
@@ -92,30 +65,6 @@ function App() {
         populareListeAngajat({jwtToken})
     }, [jwtToken]
   ) 
-
-  useEffect(
-    () => {
-      if(animale.length !== 0){
-        getPoze({caleFolderPoze: '/resources/poze_animale/', poza: 'animal_default.png', lista: animale, setListaPoze: setPozeAnimale})
-      }
-    }, [animale]
-  )
-
-  useEffect(
-    () => {
-      if(angajati.length !== 0){
-        getPoze({caleFolderPoze: '/resources/poze_angajati/', poza: 'angajat_default.png', lista: angajati, setListaPoze: setPozeAngajati})
-      }
-    }, [angajati]
-  )
-
-  useEffect(
-    () => {
-      if(stapani.length !== 0){
-        getPoze({caleFolderPoze: '/resources/poze_stapani/', poza: 'stapan_default.png', lista: stapani, setListaPoze: setPozeStapani})
-      }
-    }, [stapani]
-  )
 
   return (
     <div className="container-app">
@@ -156,20 +105,22 @@ function App() {
       {viewAnimale && (
       <Animale 
         animale               = {animale} 
-        pozeAnimale           = {pozeAnimale}
         setAnimalCurent       = {setAnimalCurent}
         viewAnimale           = {viewAnimale}
+        api                   = {api}
+        jwtToken              = {jwtToken}
       />)}
       {viewAngajati && (
       <Angajati
         angajati              = {angajati}
-        pozeAngajati          = {pozeAngajati}
+        viewAngajati          = {viewAngajati}
+        api                   = {api}
+        jwtToken              = {jwtToken}
       />)}
       {viewStapani && (
       <Stapani 
         stapani               = {stapani}
         viewStapani           = {viewStapani}
-        pozeStapani           = {pozeStapani}
         api                   = {api}
         jwtToken              = {jwtToken}
       />)}
@@ -177,21 +128,22 @@ function App() {
       <Vizite 
         vizite                = {vizite}
         viewVizite            = {viewVizite}
-        pozeAnimale           = {pozeAnimale}
-        pozeStapani           = {pozeStapani}
+        api                   = {api}
+        jwtToken              = {jwtToken}
       />)}
       {viewTratamente && (
       <Tratamente 
         tratamente            = {tratamente}
         viewTratamente        = {viewTratamente}
-        pozeAnimale           = {pozeAnimale}
+        api                   = {api}
+        jwtToken              = {jwtToken}
       />)}
       {viewProgramari && (
       <Programari
         programari            = {programari}
         viewProgramari        = {viewProgramari}
-        pozeAnimale           = {pozeAnimale}
-        pozeStapani           = {pozeStapani}
+        api                   = {api}
+        jwtToken              = {jwtToken}
       />)}
       {animalCurent && (
       <OptiuniAnimal
@@ -201,7 +153,6 @@ function App() {
         tratamente            = {tratamente}
         animalCurent          = {animalCurent}
         angajati              = {angajati}
-        pozeAnimale           = {pozeAnimale}
         setAnimalCurent       = {setAnimalCurent}
         api                   = {api}
         jwtToken              = {jwtToken}

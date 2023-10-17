@@ -1,13 +1,43 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import TitluSiFiltru from "../../Filtru/TitluSiFiltru"
+import Pagini from "../../Pagini/Pagini"
+import { getPozePagina } from "../../AccesareAPI"
 
-const Angajati = ({angajati, pozeAngajati}) => {
+const Angajati = ({angajati, viewAngajati, api, jwtToken}) => {
 
-    const [filtruAngajati, setFiltruAngajati] = useState('')
-
-    const handleChangeFiltruAngajati = (event) => {
-        setFiltruAngajati(event.target.value)
+    const [textFiltru, setTextFiltru] = useState('')
+    const handleChangeTextFiltru = (event) => {
+        setTextFiltru(event.target.value)
     }
+
+    const filtrareAngajati = (angajati) => {
+        return angajati.filter((angajat) => {
+            const textCautat = textFiltru.toLowerCase()
+            return(
+                angajat.nume.toLowerCase().includes(textCautat) ||
+                angajat.nrTelefon.toLowerCase().includes(textCautat) ||
+                angajat.email.toLowerCase().includes(textCautat)
+            )
+        })
+    }
+    const angajatiFiltrati = filtrareAngajati(angajati)
+
+    const [paginaAngajati,  setPaginaAngajati]  = useState('')
+    const [pozePagina,      setPozePagina]      = useState([])
+    useEffect(
+        () => {
+          if(paginaAngajati.length !== 0){
+            getPozePagina({
+                caleFolderPoze: '/resources/poze_angajati/', 
+                poza: 'angajat_default.png', 
+                lista: paginaAngajati, 
+                setListaPoze: setPozePagina, 
+                jwtToken, 
+                api,
+            })
+          }
+        }, [paginaAngajati]
+    )
 
     const handleShowModalAngajat = () => {
 
@@ -18,8 +48,8 @@ const Angajati = ({angajati, pozeAngajati}) => {
             
             <TitluSiFiltru 
                 titlu={"Angajati"}
-                filtru={filtruAngajati}
-                functie={handleChangeFiltruAngajati}
+                filtru={textFiltru}
+                functie={handleChangeTextFiltru}
             />
 
             <div className="containerTabel">
@@ -39,7 +69,7 @@ const Angajati = ({angajati, pozeAngajati}) => {
                             <tr key={index}>
                                 <td>
                                     <img 
-                                        src={pozeAngajati[angajat.angajatId]} 
+                                        src={pozePagina[index]} 
                                         height="55" width="55"
                                     />
                                 </td>
@@ -55,9 +85,16 @@ const Angajati = ({angajati, pozeAngajati}) => {
                     </tbody>
                 </table>
             </div>
+
+            
+            <Pagini 
+                viewTabel             = {viewAngajati}
+                listaObiecteFiltrate  = {angajatiFiltrati}
+                setPaginaTabel        = {setPaginaAngajati}
+                textFiltru            = {textFiltru} 
+            />
             
         </div>
     )
-
 }
 export default Angajati

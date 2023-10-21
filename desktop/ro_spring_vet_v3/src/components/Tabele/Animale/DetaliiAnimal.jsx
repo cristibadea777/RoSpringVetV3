@@ -1,15 +1,14 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import "../ModalOptiuni.css"
-import { faX } from "@fortawesome/free-solid-svg-icons"
+import "../ModalDetaliiEntitate.css"
 import { useEffect, useState } from "react"
 import { editAnimal, salvarePoza } from "../../AccesareAPI"
 import { toBase64 } from "../Utilities"
 import ProgramareNoua from "../Programari/ProgramareNoua";
 import VizitaNoua from "../Vizite/VizitaNoua"
+import { BaraModalEntitate, ContainerInputPoza } from "../ComponenteModale"
 
 
-const OptiuniAnimal = (
-    { animale, vizite, programari, angajati, tratamente, animalCurent, setAnimalCurent, pozeAnimale, api, jwtToken }) => {
+const DetaliiAnimal = (
+    { animale, setAnimale, vizite, programari, angajati, tratamente, animalCurent, setAnimalCurent, pozeAnimale, api, jwtToken, pozaAnimalCurent, setPozaAnimalCurent }) => {
     
     const handleClickInchidereOptiuniAnimal = () => {
         setAnimalCurent(null)
@@ -19,7 +18,6 @@ const OptiuniAnimal = (
     const [numeAnimalCurent,    setNumeAnimalCurent]    = useState('')
     const [rasaAnimalCurent,    setRasaAnimalCurent]    = useState('')
     const [specieAnimalCurent,  setSpecieAnimalCurent]  = useState('')
-    const [pozaAnimalCurent,    setPozaAnimalCurent]    = useState('')
     const [totalVizite,         setTotalVizite]         = useState('0')
     const [programariViitoare,  setProgramariViitoare]  = useState('0')
     const [tratamenteActive,    setTratamenteActive]    = useState('0')
@@ -36,7 +34,6 @@ const OptiuniAnimal = (
                 setNumeAnimalCurent  (animalCurent.nume)
                 setRasaAnimalCurent  (animalCurent.rasa)
                 setSpecieAnimalCurent(animalCurent.specie)
-                setPozaAnimalCurent  (pozeAnimale[animalCurent.animalId])
                 let dataCurenta  = new Date()
                 let nrVizite     = 0
                 let nrProgramari = 0
@@ -89,13 +86,18 @@ const OptiuniAnimal = (
                 "specie" : specieAnimalCurent,
                 "rasa"   : rasaAnimalCurent,            
             }
-            animale.map((animalLista, index) => {
+            
+            let animaleEditate = [...animale]
+            animaleEditate.map((animalLista, index) => {
                 if(animalLista.animalId === idAnimalCurent){
-                    animale[index] = animal
+                    animaleEditate[index] = animal
                 }
             })
+
+            setAnimale(animaleEditate)
             setAnimalCurent(animal)    
         }
+        
         setRaspuns(raspunsApi)
     }
 
@@ -112,113 +114,67 @@ const OptiuniAnimal = (
             default:
                 break
         }
-        
-    }
-
-    const handleChangeSelectAdauga = (event) => { 
-        const optiune = event.target.value 
-        switch (optiune) {
-            case "programare_noua":
-                setViewProgramareNoua(true)
-                break;
-            case "vizita_noua":
-                setViewVizitaNoua(true)
-                break;
-            default:
-                break;
-        }
     }
 
     const RowStatistica = ({label, valoare}) => (
-        <div className="linieStatistici">
-            <div className="statisticiStanga"><p>{label}</p></div>
-            <div className="statisticiDreapta"><p>{valoare}</p></div>
+        <div className="linieStatistica">
+            <div><p>{label}</p></div>
+            <p>{valoare}</p>
         </div>
     )
 
     return(
-        <div className="modal">
-            <div className="modalOptiuni">
-                <div className="baraModal">
-                    <div id="stanga">  
-                        <p className="textTitluModal">{animalCurent.nume} - Opțiuni</p> 
-                    </div>
-                    <div id="dreapta"> 
-                        <button className="butonInchidere" onClick={handleClickInchidereOptiuniAnimal}>
-                            <FontAwesomeIcon icon={faX} size={"1x"} color={"white"} />
-                        </button> 
-                    </div>
-                </div>
-               <div className="modalOptiuniInputuri">
-                    <div id="containerInputPoza">
-                        <div className="containerPoza">
-                            <img src={pozaAnimalCurent} />
+        <div className="modalTabele">
+            <div className="modalDetaliiEntitate">
+               <BaraModalEntitate 
+                    titluModal             = {animalCurent.nume}
+                    functieInchindereModal = {handleClickInchidereOptiuniAnimal}
+               />
+
+               <div className="inputuriDetaliiEntitate">
+                    <ContainerInputPoza 
+                        pozaCurenta      = {pozaAnimalCurent}
+                        handleChangePoza = {handleChangePoza}
+                    />
+
+                    <div className="inputuriTextDetaliiEntitate">
+                        <div className="linieInput">
+                            <label htmlFor="numeAnimalCurent">Nume</label>
+                            <input id="numeAnimalCurent" value={numeAnimalCurent} onChange={(e) => {setNumeAnimalCurent(e.target.value)}}></input>
                         </div>
-                        <div className="containerButonSchimbaPoza">
-                            <label>
-                                Schimbă poza
-                                <input
-                                    type="file"
-                                    accept="image/*"
-                                    style={{display: "none"}}
-                                    onChange={handleChangePoza}
-                                >
-                                </input>
-                            </label>
+                        <div className="linieInput">
+                            <label htmlFor="specieAnimalCurent">Specie</label>
+                            <input id="specieAnimalCurent" value={specieAnimalCurent} onChange={(e) => {setSpecieAnimalCurent(e.target.value)}}></input>
                         </div>
-                    </div>
-                    <div id="containerInputuriText">
-                        <div className="linieInputuriModalOptiuni">
-                            <input value={numeAnimalCurent} onChange={(e) => {setNumeAnimalCurent(e.target.value)}}></input>
-                        </div>
-                        <div className="linieInputuriModalOptiuni">
-                            <input value={specieAnimalCurent} onChange={(e) => {setSpecieAnimalCurent(e.target.value)}}></input>
-                        </div>
-                        <div className="linieInputuriModalOptiuni">
+                        <div className="linieInput">
+                            <label htmlFor="rasaAnimalCurent">Rasă</label>
                             <input value={rasaAnimalCurent} onChange={(e) => {setRasaAnimalCurent(e.target.value)}}></input>
                         </div>
-                        <div className="linieInputuriModalOptiuni">
-                            <div id="containerButonEdit">
-                                <button onClick={handleClickEditAnimal}>Editează</button>
-                            </div>
-                        </div>
+                        <div className="linieInput">
+                            <button onClick={handleClickEditAnimal}>Editează</button>
+                        </div>                          
                     </div>
-               </div>
-               <div className="modalOptiuniButoaneSiStatistici">
-                    <div className="modalOptiuniButoane">
-                            <div className="linieOptiuniButoane">
-                                <div className="optiuniButoaneStanga">
-                                    <p>Adaugă</p>
-                                </div>
-                                <select value={optiune} className="optiuniButoaneDreapta" onChange={handleChangeSelectAdauga}>
-                                    <option> - </option>
-                                    <option value={"programare_noua"}>Programare nouă</option>
-                                    <option value={"vizita_noua"}>Vizită nouă</option>
-                                </select>
-                            </div>
-                            <div className="linieOptiuniButoane">
-                                <div className="optiuniButoaneStanga">
-                                    <p>Vezi</p>
-                                </div>
-                                <select className="optiuniButoaneDreapta" onChange={handleChangeSelectVezi}>
-                                    <option> - </option>
-                                    <option value={"stapan"}>Stăpân</option>
-                                    <option value={"vizite"}>Vizite</option>
-                                    <option value={"programari"}>Programări</option>
-                                    <option value={"tratamente"}>Tratamente</option>
-                                </select>
-                            </div>
-                    </div>
-                    <div className="modalOptiuniStatistici">
+
+                    <div className="inputuriTextDetaliiEntitate">
                         <RowStatistica label={"Total Vizite"} valoare={totalVizite}/>
                         <RowStatistica label={"Programări viitoare"} valoare={programariViitoare}/>
                         <RowStatistica label={"Tratamente active"} valoare={tratamenteActive}/>
-                    </div>  
-                    
-               </div>
-               <div className="modalOptiuniRaspuns">
-                    <p style={{color: (raspuns.status === 200) ? "cyan" : "red"}}> {raspuns.data} </p>
-               </div>
+                    </div>
+
+                    <div className="inputuriTextDetaliiEntitate">
+                        <div className="linieInput">
+                            <button onClick={()=>{setViewProgramareNoua(true)}}>Programare nouă</button>
+                        </div>
+                        <div className="linieInput">
+                            <button>Vizită nouă</button>
+                        </div>
+                    </div>               
+                </div>
+
+                <div style={{height: "5%", width: "60%", display:"flex", alignItems: "center", justifyContent: "center"}}>
+                        <p style={{color: (raspuns.status === 200) ? "green" : "red"}}> {raspuns.data} </p>
+                </div>
+
             </div>
 
             {viewProgramareNoua && (
@@ -245,9 +201,8 @@ const OptiuniAnimal = (
                 angajati              = {angajati}
                 tratamente            = {tratamente}
             />
-            )}
-            
+            )} 
         </div>
     )
 }
-export default OptiuniAnimal
+export default DetaliiAnimal

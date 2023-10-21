@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 
 import "./Pagini.css"
 
-const Pagini = ({viewTabel, listaObiecteFiltrate, setPaginaTabel, textFiltru, tipProgramari}) => {
+const Pagini = ({lista, viewTabel, listaObiecteFiltrate, setPaginaTabel, textFiltru, tipProgramari}) => {
     //tipProgramari - doar pt tabelul programari 
     
     const [itemsPerPage,        setItemsPerPage]        = useState(8)
@@ -47,7 +47,7 @@ const Pagini = ({viewTabel, listaObiecteFiltrate, setPaginaTabel, textFiltru, ti
                 const upperBound = lowerBound + itemsPerPage
                 setPaginaTabel(listaObiecteFiltrate.slice(lowerBound, upperBound)) 
             }
-        }, [viewTabel, lowerBound, itemsPerPage, tipProgramari, textFiltru] 
+        }, [lista, viewTabel, lowerBound, itemsPerPage, tipProgramari, textFiltru] 
     )
 
     return(

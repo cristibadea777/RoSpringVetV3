@@ -1,0 +1,65 @@
+.modalDetaliiEntitate{
+    width: 100%;
+    height: 100%;
+    background-color: #1e1e1e;
+    display: flex;
+    flex-direction: column;
+}
+
+.inputuriDetaliiEntitate{
+    width: 100%;
+    height: 35%;
+    display: flex;
+    flex-direction: row;
+}   
+
+.inputuriTextDetaliiEntitate{
+    width: 25%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.linieInput{
+    width: 100%;
+    height: 15%;
+    display: flex;
+    flex-direction: row;
+    margin-top: 5%;
+    justify-content: flex-end;
+}
+.linieInput label{
+    width: 20%;
+    font-size: 1.2vw;
+    margin-right: 5%;
+}
+.linieInput input{
+    height: auto;
+    width: 60%;
+    color: cyan;
+    background-color: #232B2B;
+    border-radius: 0;
+    font-size: 1.2vw;
+}
+.linieInput button{
+    font-size: 1.2vw;
+    width: 50%;
+}
+
+.linieStatistica{
+    width: 100%;
+    height: 10%;
+    display: flex;
+    flex-direction: row;
+    margin-top: 5%;
+    justify-content: center;
+    text-align: start;
+}
+.linieStatistica label, p{
+    font-size: 1.2vw;
+    color: cyan;
+}
+.linieStatistica div{
+    width: 70%;    
+    color: cyan;
+}

@@ -9,7 +9,6 @@ import Stapani from "./components/Tabele/Stapani/Stapani";
 import Vizite from "./components/Tabele/Vizite/Vizite";
 import Tratamente from "./components/Tabele/Tratamente/Tratamente";
 import Programari from "./components/Tabele/Programari/Programari";
-import OptiuniAnimal from "./components/Tabele/Animale/OptiuniAnimal";
 
 function App() {
   
@@ -38,8 +37,6 @@ function App() {
   const [viewVizite,          setViewVizite]          = useState(false)
   const [viewTratamente,      setViewTratamente]      = useState(false)
   const [viewProgramari,      setViewProgramari]      = useState(false)
-
-  const [animalCurent,        setAnimalCurent]      = useState('')
 
   const populareListeStapan = async ({jwtToken}) => {
     setAnimale   (await getAllObiecte({jwtToken, apiEndpoint: `${api}/animale/stapan/getAllAnimaleStapan`}))
@@ -104,8 +101,12 @@ function App() {
       />)}
       {viewAnimale && (
       <Animale 
-        animale               = {animale} 
-        setAnimalCurent       = {setAnimalCurent}
+        animale               = {animale}
+        setAnimale            = {setAnimale}
+        vizite                = {vizite}
+        programari            = {programari}
+        tratamente            = {tratamente}
+        angajati              = {angajati} 
         viewAnimale           = {viewAnimale}
         api                   = {api}
         jwtToken              = {jwtToken}
@@ -142,18 +143,6 @@ function App() {
       <Programari
         programari            = {programari}
         viewProgramari        = {viewProgramari}
-        api                   = {api}
-        jwtToken              = {jwtToken}
-      />)}
-      {animalCurent && (
-      <OptiuniAnimal
-        animale               = {animale}
-        vizite                = {vizite}
-        programari            = {programari}
-        tratamente            = {tratamente}
-        animalCurent          = {animalCurent}
-        angajati              = {angajati}
-        setAnimalCurent       = {setAnimalCurent}
         api                   = {api}
         jwtToken              = {jwtToken}
       />)}

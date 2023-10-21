@@ -44,6 +44,7 @@ const Stapani = ({stapani, viewStapani, api, jwtToken}) => {
 
     return(
         <div className="containerPrincipal">
+            
             {viewStapanNou && (
             <StapanNou 
                 viewStapanNou    = {viewStapanNou}
@@ -51,8 +52,8 @@ const Stapani = ({stapani, viewStapani, api, jwtToken}) => {
                 api              = {api}
                 jwtToken         = {jwtToken}
                 stapani          = {stapani}
-            />
-            )}            
+            />)}
+
             <TitluSiFiltru 
                 titlu            = {"Stapani"}
                 filtru           = {textFiltru}

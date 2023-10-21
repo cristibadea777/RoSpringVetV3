@@ -5,9 +5,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faBars } from "@fortawesome/free-solid-svg-icons"
 import Pagini from "../../Pagini/Pagini"
 import { getPozePagina } from "../../AccesareAPI"
-const Animale = ( {animale, setAnimalCurent, viewAnimale, api, jwtToken} ) => {
+import DetaliiAnimal from "./DetaliiAnimal"
 
-    const [paginaAnimale,   setPaginaAnimale] = useState([])
+const Animale = ( {animale, setAnimale, vizite, programari, tratamente, angajati, viewAnimale, api, jwtToken} ) => {
+
+    const [paginaAnimale,   setPaginaAnimale]   = useState([])
     const [pozePagina,      setPozePagina]      = useState([])
     useEffect(
         () => {
@@ -42,13 +44,33 @@ const Animale = ( {animale, setAnimalCurent, viewAnimale, api, jwtToken} ) => {
     }
 
     const animaleFiltrate = filtrareAnimale(animale)
-
-    const handleShowModalAnimal = (animal) => {
+    
+    const [animalCurent,        setAnimalCurent]        = useState('')
+    const [pozaAnimalCurent,    setPozaAnimalCurent]    = useState('')
+    
+    const handleShowModalAnimal = (animal, index) => {
         setAnimalCurent(animal)
+        setPozaAnimalCurent(pozePagina[index])
     }
 
     return(
         <div className="containerPrincipal">
+
+            {animalCurent && (
+            <DetaliiAnimal
+                animale               = {animale}
+                setAnimale            = {setAnimale}
+                vizite                = {vizite}
+                programari            = {programari}
+                tratamente            = {tratamente}
+                angajati              = {angajati}
+                animalCurent          = {animalCurent}
+                setAnimalCurent       = {setAnimalCurent}
+                pozaAnimalCurent      = {pozaAnimalCurent}
+                setPozaAnimalCurent   = {setPozaAnimalCurent}
+                api                   = {api}
+                jwtToken              = {jwtToken}
+            />)}
             
             <TitluSiFiltru 
                 titlu={"Animale"}
@@ -82,7 +104,7 @@ const Animale = ( {animale, setAnimalCurent, viewAnimale, api, jwtToken} ) => {
                                 <td>{animal.specie}</td>
                                 <td>{animal.rasa}</td>
                                 <td>
-                                    <div><button onClick={() => handleShowModalAnimal(animal)}><FontAwesomeIcon icon={faBars} color="white"></FontAwesomeIcon></button></div>
+                                    <div><button onClick={() => handleShowModalAnimal(animal, index)}><FontAwesomeIcon icon={faBars} color="white"></FontAwesomeIcon></button></div>
                                 </td>
                             </tr>
                         ))}
@@ -91,6 +113,7 @@ const Animale = ( {animale, setAnimalCurent, viewAnimale, api, jwtToken} ) => {
             </div>
 
             <Pagini 
+                lista                = {animale} 
                 viewTabel            = {viewAnimale}
                 listaObiecteFiltrate = {animaleFiltrate}
                 setPaginaTabel       = {setPaginaAnimale}

@@ -28,10 +28,12 @@
     width: 100%;
     height: 90%;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-direction: column;
 }
 .containerButonSchimbaPoza {
+    margin-top: 5%;
     width: 100%;
     height: 10%;
     background-color: #11574a;
@@ -47,6 +49,7 @@
     cursor: pointer;
 }
 .containerPoza img {
+    margin-top: 5%;
     max-height: 90%;
     max-width: 100%;
     width: auto;

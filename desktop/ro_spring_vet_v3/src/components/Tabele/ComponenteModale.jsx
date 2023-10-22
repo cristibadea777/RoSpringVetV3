@@ -19,20 +19,22 @@ const ContainerInputPoza = ({pozaCurenta, handleChangePoza}) => (
     <div className="containerInputPoza">
         <div className="containerPoza">
             <img src={pozaCurenta} />
-        </div>
-        <div className="containerButonSchimbaPoza">
-            <label>
-                Schimbă poza
-                <input
-                    type="file"
-                    accept="image/*"
-                    style={{display: "none"}}
-                    onChange={handleChangePoza}
-                >
-                </input>
-            </label>
+            <div className="containerButonSchimbaPoza">
+                <label>
+                    Schimbă poza
+                    <input
+                        type="file"
+                        accept="image/*"
+                        style={{display: "none"}}
+                        onChange={handleChangePoza}
+                    >
+                    </input>
+                </label>
+            </div>
         </div>
     </div>
 )
+
+
 
 export { BaraModalEntitate, ContainerInputPoza }

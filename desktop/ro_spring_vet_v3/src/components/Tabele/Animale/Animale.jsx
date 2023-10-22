@@ -42,7 +42,6 @@ const Animale = ( {animale, setAnimale, vizite, programari, tratamente, angajati
             )
         })
     }
-
     const animaleFiltrate = filtrareAnimale(animale)
     
     const [animalCurent,        setAnimalCurent]        = useState('')

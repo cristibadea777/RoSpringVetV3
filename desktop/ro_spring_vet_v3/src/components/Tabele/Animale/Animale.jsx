@@ -5,9 +5,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faBars } from "@fortawesome/free-solid-svg-icons"
 import Pagini from "../../Pagini/Pagini"
 import { getPozePagina } from "../../AccesareAPI"
-import DetaliiAnimal from "./DetaliiAnimal"
+import ModalDetaliiEntitate from "../DetaliiEntitate/ModalDetaliiEntitate"
 
-const Animale = ( {animale, setAnimale, vizite, programari, tratamente, angajati, viewAnimale, api, jwtToken} ) => {
+const Animale = ( {animale, setAnimale, vizite, programari, tratamente, angajati, viewAnimale, api, jwtToken, entitateCurenta, setEntitateCurenta, viewDetaliiEntitate, setViewDetaliiEntitate, pozaEntitateCurenta, setPozaEntitateCurenta} ) => {
 
     const [paginaAnimale,   setPaginaAnimale]   = useState([])
     const [pozePagina,      setPozePagina]      = useState([])
@@ -43,32 +43,32 @@ const Animale = ( {animale, setAnimale, vizite, programari, tratamente, angajati
         })
     }
     const animaleFiltrate = filtrareAnimale(animale)
-    
-    const [animalCurent,        setAnimalCurent]        = useState('')
-    const [pozaAnimalCurent,    setPozaAnimalCurent]    = useState('')
-    
+        
     const handleShowModalAnimal = (animal, index) => {
-        setAnimalCurent(animal)
-        setPozaAnimalCurent(pozePagina[index])
+        setEntitateCurenta(animal)
+        setViewDetaliiEntitate(true)
+        setPozaEntitateCurenta(pozePagina[index])
     }
 
     return(
         <div className="containerPrincipal">
 
-            {animalCurent && (
-            <DetaliiAnimal
-                animale               = {animale}
-                setAnimale            = {setAnimale}
-                vizite                = {vizite}
-                programari            = {programari}
-                tratamente            = {tratamente}
-                angajati              = {angajati}
-                animalCurent          = {animalCurent}
-                setAnimalCurent       = {setAnimalCurent}
-                pozaAnimalCurent      = {pozaAnimalCurent}
-                setPozaAnimalCurent   = {setPozaAnimalCurent}
-                api                   = {api}
-                jwtToken              = {jwtToken}
+            {viewDetaliiEntitate && (
+            <ModalDetaliiEntitate
+                listaEntitate          = {animale}
+                setListaEntitate       = {setAnimale}
+                viewAnimale            = {viewAnimale}
+                entitateCurenta        = {entitateCurenta}
+                vizite                 = {vizite}
+                programari             = {programari}
+                tratamente             = {tratamente}
+                angajati               = {angajati}
+                pozaEntitateCurenta    = {pozaEntitateCurenta}
+                setPozaEntitateCurenta = {setPozaEntitateCurenta}
+                setEntitateCurenta     = {setEntitateCurenta}
+                setViewDetaliiEntitate = {setViewDetaliiEntitate}
+                api                    = {api}
+                jwtToken               = {jwtToken}
             />)}
             
             <TitluSiFiltru 

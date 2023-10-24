@@ -52,7 +52,7 @@
     height: 10%;
     display: flex;
     flex-direction: row;
-    margin-top: 5%;
+    margin-top: 3%;
     justify-content: center;
     text-align: start;
 }
@@ -63,4 +63,9 @@
 .linieStatistica div{
     width: 70%;    
     color: cyan;
+}
+
+.raspunsApi{
+    color: white;
+    padding-bottom: 7%;
 }

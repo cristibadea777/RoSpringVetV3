@@ -38,6 +38,9 @@ function App() {
   const [viewTratamente,      setViewTratamente]      = useState(false)
   const [viewProgramari,      setViewProgramari]      = useState(false)
 
+  const [entitateCurenta,     setEntitateCurenta]     = useState(false)
+  const [pozaEntitateCurenta, setPozaEntitateCurenta] = useState('')
+
   const populareListeStapan = async ({jwtToken}) => {
     setAnimale   (await getAllObiecte({jwtToken, apiEndpoint: `${api}/animale/stapan/getAllAnimaleStapan`}))
     setVizite    (await getAllObiecte({jwtToken, apiEndpoint: `${api}/vizite/stapan/getAllViziteStapan`}))
@@ -62,7 +65,9 @@ function App() {
         populareListeAngajat({jwtToken})
     }, [jwtToken]
   ) 
-
+    
+  const [viewDetaliiEntitate, setViewDetaliiEntitate] = useState(false)
+  
   return (
     <div className="container-app">
       <Navbar 
@@ -76,6 +81,7 @@ function App() {
         viewLoginRegister       = {viewLoginRegister}
         setViewLoginRegister    = {setViewLoginRegister}
         setViewDashboard        = {setViewDashboard}
+        setViewDetaliiEntitate  = {setViewDetaliiEntitate}
         authority               = {authority}
         setAuthority            = {setAuthority}
         jwtToken                = {jwtToken}
@@ -83,68 +89,88 @@ function App() {
       />
       {viewLoginRegister && (
       <LoginRegister
-        api                   = {api}
-        setViewLoginRegister  = {setViewLoginRegister}
-        setViewDashboard      = {setViewDashboard}
-        setJwtToken           = {setJwtToken}
-        setUsername           = {setUsername}
-        setAuthority          = {setAuthority}
-        setUserConectat       = {setUserConectat}
-        setPozaProfil         = {setPozaProfil}
+        api                     = {api}
+        setViewLoginRegister    = {setViewLoginRegister}
+        setViewDashboard        = {setViewDashboard}
+        setJwtToken             = {setJwtToken}
+        setUsername             = {setUsername}
+        setAuthority            = {setAuthority}
+        setUserConectat         = {setUserConectat}
+        setPozaProfil           = {setPozaProfil}
       />)}
       {viewDashboard && (
       <Dashboard 
-        username              = {username}
-        authority             = {authority}
-        userConectat          = {userConectat}
-        pozaProfil            = {pozaProfil}
+        username                = {username}
+        authority               = {authority}
+        userConectat            = {userConectat}
+        pozaProfil              = {pozaProfil}
       />)}
       {viewAnimale && (
       <Animale 
-        animale               = {animale}
-        setAnimale            = {setAnimale}
-        vizite                = {vizite}
-        programari            = {programari}
-        tratamente            = {tratamente}
-        angajati              = {angajati} 
-        viewAnimale           = {viewAnimale}
-        api                   = {api}
-        jwtToken              = {jwtToken}
-      />)}
+        animale                 = {animale}
+        setAnimale              = {setAnimale}
+        viewAnimale             = {viewAnimale}
+        vizite                  = {vizite}
+        programari              = {programari}
+        tratamente              = {tratamente}
+        angajati                = {angajati} 
+        api                     = {api}
+        jwtToken                = {jwtToken}
+        setViewDetaliiEntitate  = {setViewDetaliiEntitate}
+        viewDetaliiEntitate     = {viewDetaliiEntitate}
+        setEntitateCurenta      = {setEntitateCurenta}
+        entitateCurenta         = {entitateCurenta}
+        pozaEntitateCurenta     = {pozaEntitateCurenta}
+        setPozaEntitateCurenta  = {setPozaEntitateCurenta}
+      />)}    
       {viewAngajati && (
       <Angajati
-        angajati              = {angajati}
-        viewAngajati          = {viewAngajati}
-        api                   = {api}
-        jwtToken              = {jwtToken}
+        angajati                = {angajati}
+        viewAngajati            = {viewAngajati}
+        api                     = {api}
+        jwtToken                = {jwtToken}
+        setEntitateCurenta      = {setEntitateCurenta}
       />)}
       {viewStapani && (
       <Stapani 
-        stapani               = {stapani}
-        viewStapani           = {viewStapani}
-        api                   = {api}
-        jwtToken              = {jwtToken}
+        stapani                 = {stapani}
+        setStapani              = {setStapani}
+        viewStapani             = {viewStapani}
+        setViewStapani          = {setViewStapani}
+        animale                 = {animale}
+        setViewAnimale          = {setViewAnimale}
+        vizite                  = {vizite}
+        programari              = {programari}
+        tratamente              = {tratamente}
+        api                     = {api}
+        jwtToken                = {jwtToken}
+        setViewDetaliiEntitate  = {setViewDetaliiEntitate}
+        viewDetaliiEntitate     = {viewDetaliiEntitate}
+        setEntitateCurenta      = {setEntitateCurenta}
+        entitateCurenta         = {entitateCurenta}
+        pozaEntitateCurenta     = {pozaEntitateCurenta}
+        setPozaEntitateCurenta  = {setPozaEntitateCurenta}
       />)}
       {viewVizite && (
       <Vizite 
-        vizite                = {vizite}
-        viewVizite            = {viewVizite}
-        api                   = {api}
-        jwtToken              = {jwtToken}
+        vizite                  = {vizite}
+        viewVizite              = {viewVizite}
+        api                     = {api}
+        jwtToken                = {jwtToken}
       />)}
       {viewTratamente && (
       <Tratamente 
-        tratamente            = {tratamente}
-        viewTratamente        = {viewTratamente}
-        api                   = {api}
-        jwtToken              = {jwtToken}
+        tratamente              = {tratamente}
+        viewTratamente          = {viewTratamente}
+        api                     = {api}
+        jwtToken                = {jwtToken}
       />)}
       {viewProgramari && (
       <Programari
-        programari            = {programari}
-        viewProgramari        = {viewProgramari}
-        api                   = {api}
-        jwtToken              = {jwtToken}
+        programari              = {programari}
+        viewProgramari          = {viewProgramari}
+        api                     = {api}
+        jwtToken                = {jwtToken}
       />)}
     </div>
   )

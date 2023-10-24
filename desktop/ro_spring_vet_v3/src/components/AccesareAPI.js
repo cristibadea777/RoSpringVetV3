@@ -132,13 +132,7 @@ const getAllObiecte = async ({jwtToken, apiEndpoint}) => {
     } catch (error) { console.log(error) }
 }
 
-const editAnimal = async ({jwtToken, apiEndpoint, idAnimalCurent, numeAnimalCurent, specieAnimalCurent, rasaAnimalCurent}) => {
-    const cerere = {
-        "animalId"    :   idAnimalCurent,        
-        "nume"        :   numeAnimalCurent,
-        "specie"      :   specieAnimalCurent,
-        "rasa"        :   rasaAnimalCurent,
-    }
+const editEntitate = async ({jwtToken, apiEndpoint, cerere}) => {
     const customConfig = {
         headers: {
             'Authorization' : `Bearer ${jwtToken}`,
@@ -152,7 +146,7 @@ const editAnimal = async ({jwtToken, apiEndpoint, idAnimalCurent, numeAnimalCure
         const raspuns = await axios.post(apiEndpoint, cerere, customConfig)
         return raspuns
     } catch (error) {
-        console.log("EROARE LA EDITARE ANIMAL \n" + JSON.stringify(error))
+        console.log("EROARE LA EDITARE \n" + JSON.stringify(error))
     }
 }
 
@@ -197,4 +191,4 @@ const salvareEntitate = async ({jwtToken, apiEndpoint, cerere}) => {
     } catch (error) { console.error(error) }
   }
 
-export { registerUser, loginUser, getUserConectat, getPoza, logout, getAllObiecte, editAnimal, salvarePoza, salvareEntitate, getPozePagina }
+export { registerUser, loginUser, getUserConectat, getPoza, logout, getAllObiecte, editEntitate, salvarePoza, salvareEntitate, getPozePagina }

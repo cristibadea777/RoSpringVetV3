@@ -1,18 +1,11 @@
 import { faX } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-
 import "../ModalAdaugare.css"
 import { useEffect, useState } from "react"
 import { salvareEntitate } from "../../AccesareAPI"
 
-const ProgramareNoua = ({ animalCurent, setViewProgramareNoua, viewProgramareNoua, api, jwtToken, setRaspuns, raspuns, programari }) => {
+const ProgramareNoua = ({ animalCurent, setViewProgramareNoua, api, jwtToken, setTextRaspuns, setViewRaspuns, programari }) => {
     
-    useEffect(
-        () => {
-            if(viewProgramareNoua){ setRaspuns('') }
-        }, [viewProgramareNoua]
-    )
-
     const handleClickInchidere = () => { setViewProgramareNoua(false) }
 
     const handleChangeData  = (event) => { setDataAleasa(event.target.value) }
@@ -34,18 +27,20 @@ const ProgramareNoua = ({ animalCurent, setViewProgramareNoua, viewProgramareNou
                 "status" : raspunsApi.status,
                 "data"   : "Programare adăugată",
             }
-            setRaspuns(raspuns)
+            setTextRaspuns(raspuns)
             //obiectul programare din raspunsApi.data trebuie pus in lista de programari
             programari.push(raspunsApi.data)
+            setViewProgramareNoua(false)
         }
         else{
             const raspuns = {
                 "status" : raspunsApi.status,
                 "data"   : raspunsApi.data, //la esec se returneaza mesajul de eroare de la server
             }
-            setRaspuns(raspuns)
+            setTextRaspuns(raspuns)
+           
         }
-        setViewProgramareNoua(false)
+        setViewRaspuns(true)
     }
 
     const [dataAleasa, setDataAleasa]   = useState(new Date().toISOString().split('T')[0])
@@ -82,9 +77,6 @@ const ProgramareNoua = ({ animalCurent, setViewProgramareNoua, viewProgramareNou
                     <button onClick={handleClickAdaugaProgramare}>Adaugă</button>
                 </div>
 
-                <div className="containerLinie">
-                    <p className="textEroare">{raspuns.data}</p>
-                </div>
             </div>
         </div>
     </div>

@@ -3,17 +3,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useEffect, useState } from "react"
 import { salvareEntitate } from "../../AccesareAPI"
 
-const VizitaNoua = ({animalCurent, setViewVizitaNoua, viewVizitaNoua, api, jwtToken, setRaspuns, raspuns, vizite, angajati, tratamente}) => {
+const VizitaNoua = ({animalCurent, setViewVizitaNoua, api, jwtToken, setTextRaspuns, setViewRaspuns, vizite, angajati, tratamente}) => {
     
     const handleClickInchidere = () => {
         setViewVizitaNoua(false)
     }
-
-    useEffect(
-        () => {
-            if(viewVizitaNoua){ setRaspuns('') }
-        }, [viewVizitaNoua]
-    )
 
     const [motiv,           setMotiv]           = useState('')
     const [diagnostic,      setDiagnostic]      = useState('')
@@ -22,7 +16,6 @@ const VizitaNoua = ({animalCurent, setViewVizitaNoua, viewVizitaNoua, api, jwtTo
     const [dataInceput,     setDataInceput]     = useState(new Date().toISOString().split('T')[0])
     const [dataSfarsit,     setDataSfarsit]     = useState('')
     
-
     const handleChangeDiagnostic       = (event) => { setDiagnostic(event.target.value)      }
     const handleChangeMotiv            = (event) => { setMotiv(event.target.value)           }
     const handleChangeAngajatId        = (event) => { setAngajatId(event.target.value)       }  
@@ -54,7 +47,7 @@ const VizitaNoua = ({animalCurent, setViewVizitaNoua, viewVizitaNoua, api, jwtTo
                 "status" : raspunsApi.status,
                 "data"   : "Vizită adăugată",
             }
-            setRaspuns(raspuns)
+            setTextRaspuns(raspuns)
             //adaugat vizita si tratament in liste
             vizite.push(raspunsApi.data)
             tratamente.push(raspunsApi.data.tratament)
@@ -65,8 +58,9 @@ const VizitaNoua = ({animalCurent, setViewVizitaNoua, viewVizitaNoua, api, jwtTo
                 "status" : raspunsApi.status,
                 "data"   : raspunsApi.data, //la esec se returneaza mesajul de eroare de la server direct in data
             }
-            setRaspuns(raspuns) 
+            setTextRaspuns(raspuns) 
         }
+        setViewRaspuns(true)
     }
 
     return (
@@ -125,9 +119,6 @@ const VizitaNoua = ({animalCurent, setViewVizitaNoua, viewVizitaNoua, api, jwtTo
                         <button onClick={handleClickAdaugaVizita}>Adaugă</button>
                     </div>
 
-                    <div className="containerLinie">
-                        <p className="textEroare">{raspuns.data}</p>
-                    </div>
                 </div>
 
             </div>

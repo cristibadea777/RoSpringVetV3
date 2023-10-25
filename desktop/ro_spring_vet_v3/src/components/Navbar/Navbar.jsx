@@ -2,7 +2,7 @@ import { logout } from "../AccesareAPI"
 import "./Navbar.css"
 
 const Navbar = ( { api, viewLoginRegister, setViewLoginRegister, setViewDashboard, authority, setAuthority, jwtToken, setJwtToken, 
-                   setViewAngajati, setViewStapani, setViewAnimale, setViewVizite, setViewTratamente, setViewProgramari, setViewDetaliiEntitate
+                   setViewAngajati, setViewStapani, setViewAnimale, setViewVizite, setViewTratamente, setViewProgramari, setViewDetaliiAnimal
                  }) => {
 
     const setAllFalse = () => {
@@ -14,7 +14,7 @@ const Navbar = ( { api, viewLoginRegister, setViewLoginRegister, setViewDashboar
         setViewVizite(false)
         setViewTratamente(false)
         setViewProgramari(false)
-        setViewDetaliiEntitate(false)
+        setViewDetaliiAnimal(false)
     }
 
     const handleClickDashboard  = () => { setAllFalse(), setViewDashboard  (true) }

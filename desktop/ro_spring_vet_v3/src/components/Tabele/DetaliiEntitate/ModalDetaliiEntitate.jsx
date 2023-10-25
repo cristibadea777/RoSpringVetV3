@@ -10,13 +10,12 @@ import BaraTabelDetalii from "./BaraTabelDetalii";
 
 
 const ModalDetaliiEntitate = (
-    { listaEntitate, setListaEntitate, animale, vizite, programari, angajati, tratamente, api, jwtToken, setViewDetaliiEntitate,
-      viewAnimale, viewStapani, viewAngajati, pozaEntitateCurenta, setPozaEntitateCurenta, setEntitateCurenta, entitateCurenta,
-      setViewAnimale, setViewStapani
+    {   animale, stapani, angajati, vizite, programari, tratamente, api, jwtToken, pozePagina, indexEntitateCurenta,
+        numeEntitati, setListaEntitati, pozaEntitate, setPozaEntitate, entitateCurenta, setViewDetaliiEntitate 
     }) => {
     
     const handleClickInchidereOptiuniEntitate = () => {
-        setViewDetaliiEntitate(false)
+        setViewDetaliiEntitate(false) 
     }
 
     //campuri comune
@@ -95,7 +94,7 @@ const ModalDetaliiEntitate = (
                 let p = []
                 let a = []
 
-                if(viewAnimale){
+                if(numeEntitati === 'animale'){
                     setIdEntitateCurenta    (entitateCurenta.animalId)
                     setNumeEntitateCurenta  (entitateCurenta.nume)
                     setRasaAnimalCurent     (entitateCurenta.rasa)
@@ -113,7 +112,7 @@ const ModalDetaliiEntitate = (
                     setOptiune('vizite'),
                     setListaTabel(v)
                 }
-                else if(viewStapani){
+                else if(numeEntitati === 'stapani'){
                     setIdEntitateCurenta     (entitateCurenta.stapanId)
                     setNumeEntitateCurenta   (entitateCurenta.nume)
                     setTelefonEntitateCurenta(entitateCurenta.nrTelefon)
@@ -154,38 +153,54 @@ const ModalDetaliiEntitate = (
         try{
             const poza       = await toBase64(file)
             const idEntitate = entitateCurenta.animalId
-            setPozaEntitateCurenta(poza)
             const raspunsApi = await salvarePoza({api, poza, jwtToken, folder: "poze_animale", idEntitate, entitate: "animal"}) 
-            setTextRaspuns(raspunsApi)
-            setViewRaspuns(true)
+            console.log(raspunsApi.status)
+            if(raspunsApi.status === 200){
+                setTextRaspuns(raspunsApi)
+                setViewRaspuns(true)
+                setPozaEntitate(poza)
+                pozePagina[indexEntitateCurenta] = poza
+            }  
         } catch(error){ 
             setTextRaspuns("EROARE")
         }
     }
 
     const updateListaAnimale = (entitate) => {
-        let animaleEditate = [...listaEntitate]
+        let animaleEditate = [...animale]
         animaleEditate.map((animalLista, index) => {
             if(animalLista.animalId === idEntitateCurenta){
                 animaleEditate[index] = entitate
             }
         })
-        return animaleEditate
+        setListaEntitati(animaleEditate)
     }
     
-    const updateListaStapani = () => {
-
+    const updateListaStapani = (entitate) => {
+        let stapaniEditati = [...stapani]
+        stapaniEditati.map((stapanLista, index) => {
+            if(stapanLista.stapanId === idEntitateCurenta){
+                stapaniEditati[index] = entitate
+            }
+        })
+        setListaEntitati(stapaniEditati)
     }
+
     const updateListaAngajati = () => {
 
     }
-    
+
+
+        //////aici de schimbat viewAnimale/viewStapan/....
+
+            //////aici de schimbat viewAnimale/viewStapan/....
+
     const handleClickEditEntitate = async () => {
         let apiEndpoint = ''
         let cerere      = ''
         let entitate    = ''
 
-        if(viewAnimale){
+        if(numeEntitati === 'animale'){
             apiEndpoint = api + '/animale/editAnimal'
             cerere = {
                 "animalId"    :   idEntitateCurenta,        
@@ -200,24 +215,29 @@ const ModalDetaliiEntitate = (
                 "rasa"   : rasaAnimalCurent,            
             }
         }
-        else if(viewStapani){
+        else if(numeEntitati === 'stapani'){
 
         }
-        else if(viewAngajati){
+        else if(numeEntitati === 'angajati'){
 
         }
         
         const raspunsApi = await editEntitate({jwtToken, apiEndpoint, cerere})
         
+
+
+        //////aici de schimbat viewAnimale/viewStapan/....
+
+                //////aici de schimbat viewAnimale/viewStapan/....
+
         if(raspunsApi.status === 200){
             let listaEditata = []
-            if(viewAnimale)
-                listaEditata = updateListaAnimale(entitate)
-            else if(viewStapani)
-                listaEditata = updateListaStapani(entitate)
-            else if(viewAngajati)
-                listaEditata = updateListaAngajati(entitate)
-            setListaEntitate(listaEditata)
+            if(numeEntitati === 'animale')
+                updateListaAnimale(entitate)
+            else if(numeEntitati === 'stapani')
+                updateListaStapani(entitate)
+            else if(numeEntitati === 'angajati')
+                updateListaAngajati(entitate)
         }
 
         setTextRaspuns(raspunsApi)
@@ -242,7 +262,7 @@ const ModalDetaliiEntitate = (
 
                <div className="inputuriDetaliiEntitate">
                     <ContainerInputPoza 
-                        pozaCurenta      = {pozaEntitateCurenta}
+                        pozaCurenta      = {pozaEntitate}
                         handleChangePoza = {handleChangePoza}
                     />
 
@@ -253,7 +273,7 @@ const ModalDetaliiEntitate = (
                             <input id="numeEntitateCurenta" value={numeEntitateCurenta} onChange={(e) => {setNumeEntitateCurenta(e.target.value)}}></input>
                         </div>
 
-                        {viewAnimale && (
+                        {(numeEntitati === 'animale') && (
                         <>
                         <div className="linieInput">
                             <label htmlFor="specieAnimalCurent">Specie</label>
@@ -265,7 +285,7 @@ const ModalDetaliiEntitate = (
                         </div>
                         </>)}
 
-                        {(viewStapani || viewAngajati) && (
+                        {(numeEntitati === 'stapani' || numeEntitati === 'angajati') && (
                         <>
                         <div className="linieInput">
                             <label htmlFor="emailEntitateCurenta">Email</label>
@@ -277,7 +297,7 @@ const ModalDetaliiEntitate = (
                         </div>
                         </>)}
 
-                        {viewAngajati && (
+                        {numeEntitati === 'angajati' && (
                         <>
                         <div className="linieInput">
                             <label htmlFor="functieEntitateCurenta">Functie</label>
@@ -292,18 +312,18 @@ const ModalDetaliiEntitate = (
 
                     <div className="inputuriTextDetaliiEntitate">
                         <RowStatistica label={"Total Vizite"}        valoare={totalVizite}/>
-                        {(viewAnimale || viewStapani) && (
+                        {(numeEntitati === 'animale' || numeEntitati === 'stapani') && (
                         <>
                         <RowStatistica label={"Programări viitoare"} valoare={programariViitoare}/>
                         <RowStatistica label={"Tratamente active"}   valoare={tratamenteActive}/>
                         </>)}   
-                        {viewStapani && (
+                        {numeEntitati === 'stapani' && (
                         <RowStatistica label={"Total animale"}        valoare={totalAnimale}/>
                         )}
                     </div>
 
                     <div className="inputuriTextDetaliiEntitate">
-                        {viewAnimale && (
+                        {numeEntitati === 'animale' && (
                         <>
                         <div className="linieInput">
                             <button onClick={() => {setViewProgramareNoua(true)}}>Programare nouă</button>
@@ -320,7 +340,11 @@ const ModalDetaliiEntitate = (
 
                 <div style={{width: "100%", height: "7%"}}>
                     <BaraTabelDetalii 
-                        butoaneBara         = {viewAnimale ? butoaneBara.butoaneAnimale : viewStapani ? butoaneBara.butoaneStapani : butoaneBara.butoaneAngajati}
+                        butoaneBara = {
+                            (numeEntitati === 'animale') ? butoaneBara.butoaneAnimale : 
+                            (numeEntitati === 'stapani')  ? butoaneBara.butoaneStapani : 
+                            butoaneBara.butoaneAngajati
+                        }
                         textFiltru          = {textFiltru}
                         functieFiltru       = {handleChangeTextFiltru}
                     />
@@ -331,10 +355,6 @@ const ModalDetaliiEntitate = (
                     optiune                = {optiune} 
                     textFiltru             = {textFiltru}
                     viewTabel              = {entitateCurenta}
-                    setPozaEntitateCurenta = {setPozaEntitateCurenta}
-                    setEntitateCurenta     = {setEntitateCurenta}
-                    setViewAnimale         = {setViewAnimale}
-                    setViewStapani         = {setViewStapani}
                     setOptiune             = {setOptiune}
                     jwtToken               = {jwtToken}
                     api                    = {api}  

@@ -7,7 +7,7 @@ import ModalDetaliiEntitate from "../DetaliiEntitate/ModalDetaliiEntitate"
 import { faBars } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
-const Stapani = ({stapani, setStapani, viewStapani, setViewStapani, animale, setViewAnimale, vizite, programari, tratamente, api, jwtToken, entitateCurenta, setEntitateCurenta, viewDetaliiEntitate, setViewDetaliiEntitate, pozaEntitateCurenta, setPozaEntitateCurenta}) => {
+const Stapani = ({stapani, setStapani, viewStapani, setListaEntitate, api, jwtToken}) => {
 
     const [paginaStapani,   setPaginaStapani]   = useState([])
     const [pozePagina,      setPozePagina]      = useState([])
@@ -48,7 +48,7 @@ const Stapani = ({stapani, setStapani, viewStapani, setViewStapani, animale, set
 
     const handleShowModalAnimal = (stapan, index) => {
         setEntitateCurenta(stapan)
-        setViewDetaliiEntitate(true)
+        setListaEntitate(stapani)
         setPozaEntitateCurenta(pozePagina[index])
     }
 
@@ -59,18 +59,10 @@ const Stapani = ({stapani, setStapani, viewStapani, setViewStapani, animale, set
             <ModalDetaliiEntitate
                 listaEntitate          = {stapani}
                 setListaEntitate       = {setStapani}
-                viewStapani            = {viewStapani}
-                setViewStapani         = {setViewStapani}
-                entitateCurenta        = {entitateCurenta}
                 animale                = {animale}
                 vizite                 = {vizite}
                 programari             = {programari}
                 tratamente             = {tratamente}
-                pozaEntitateCurenta    = {pozaEntitateCurenta}
-                setPozaEntitateCurenta = {setPozaEntitateCurenta}
-                setEntitateCurenta     = {setEntitateCurenta}
-                setViewAnimale         = {setViewAnimale}
-                setViewDetaliiEntitate = {setViewDetaliiEntitate}
                 api                    = {api}
                 jwtToken               = {jwtToken}
             />)}

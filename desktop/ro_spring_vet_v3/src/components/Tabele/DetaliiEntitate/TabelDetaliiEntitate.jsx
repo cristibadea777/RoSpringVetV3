@@ -12,7 +12,8 @@ const TabelDetaliiEntitate = ({listaTabel, optiune, textFiltru, viewTabel, setPo
     //entitateCurenta - de pus in animal/stapan/angajat curent - ca sa se poate deschide multiple modale (modal stapan, sa poate deschida modal animal / modal animal sa poate deschida modal stapan)
     //viewStapani/viewAnimale/viewAngajati - de pus regandit alte constante - ca sa nu se schimbe tabu de entitati 
                 //view/set detaliiStapan/Animal/Angajat
-
+    //modal sa se deschida cu animal/stapan/angajat curent
+    
     const [paginaEntitate,  setPaginaEntitate] = useState([])
     const [pozePagina,      setPozePagina]     = useState([])
 

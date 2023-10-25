@@ -4,27 +4,9 @@ import "../Tabele.css"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faBars } from "@fortawesome/free-solid-svg-icons"
 import Pagini from "../../Pagini/Pagini"
-import { getPozePagina } from "../../AccesareAPI"
-import ModalDetaliiEntitate from "../DetaliiEntitate/ModalDetaliiEntitate"
 
-const Animale = ( {animale, setAnimale, vizite, programari, tratamente, angajati, viewAnimale, api, jwtToken, entitateCurenta, setEntitateCurenta, viewDetaliiEntitate, setViewDetaliiEntitate, pozaEntitateCurenta, setPozaEntitateCurenta} ) => {
+const Animale = ( {animale, viewAnimale, setAnimalCurent, paginaAnimale, setPaginaAnimale, pozePaginaAnimale, setIndexAnimalCurent, setPozaAnimalCurent, setViewDetaliiAnimal} ) => {
 
-    const [paginaAnimale,   setPaginaAnimale]   = useState([])
-    const [pozePagina,      setPozePagina]      = useState([])
-    useEffect(
-        () => {
-          if(paginaAnimale.length !== 0){
-            getPozePagina({
-                caleFolderPoze: '/resources/poze_animale/', 
-                poza: 'animal_default.png', 
-                lista: paginaAnimale, 
-                setListaPoze: setPozePagina, 
-                jwtToken, 
-                api,
-            })
-          }
-        }, [paginaAnimale]
-    )
 
     const [textFiltru,      setTextFiltru] = useState('')
     const handleChangeTextFiltru = (event) => {
@@ -43,33 +25,16 @@ const Animale = ( {animale, setAnimale, vizite, programari, tratamente, angajati
         })
     }
     const animaleFiltrate = filtrareAnimale(animale)
-        
+    
     const handleShowModalAnimal = (animal, index) => {
-        setEntitateCurenta(animal)
-        setViewDetaliiEntitate(true)
-        setPozaEntitateCurenta(pozePagina[index])
+        setAnimalCurent(animal)
+        setViewDetaliiAnimal(true)
+        setPozaAnimalCurent(pozePaginaAnimale[index])
+        setIndexAnimalCurent(index)
     }
 
     return(
         <div className="containerPrincipal">
-
-            {viewDetaliiEntitate && (
-            <ModalDetaliiEntitate
-                listaEntitate          = {animale}
-                setListaEntitate       = {setAnimale}
-                viewAnimale            = {viewAnimale}
-                entitateCurenta        = {entitateCurenta}
-                vizite                 = {vizite}
-                programari             = {programari}
-                tratamente             = {tratamente}
-                angajati               = {angajati}
-                pozaEntitateCurenta    = {pozaEntitateCurenta}
-                setPozaEntitateCurenta = {setPozaEntitateCurenta}
-                setEntitateCurenta     = {setEntitateCurenta}
-                setViewDetaliiEntitate = {setViewDetaliiEntitate}
-                api                    = {api}
-                jwtToken               = {jwtToken}
-            />)}
             
             <TitluSiFiltru 
                 titlu={"Animale"}
@@ -93,10 +58,7 @@ const Animale = ( {animale, setAnimale, vizite, programari, tratamente, angajati
                         {paginaAnimale.map((animal, index)=>(
                             <tr key={index}>
                                 <td>
-                                    <img 
-                                        src={pozePagina[index]} 
-                                        height="55" width="55"
-                                    />
+                                    <img src={pozePaginaAnimale[index]} height="55" width="55"/>
                                 </td>
                                 <td>{animal.nume}</td>
                                 <td>{animal.stapan.nume}</td>

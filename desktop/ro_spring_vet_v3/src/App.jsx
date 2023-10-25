@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 import LoginRegister from "./components/LoginRegister/LoginRegister";
 import Dashboard from "./components/Dashboard/Dashboard";
 import Navbar from "./components/Navbar/Navbar";
-import { getAllObiecte, getPoza } from "./components/AccesareAPI";
+import { getAllObiecte, getPoza, getPozePagina } from "./components/AccesareAPI";
 import Animale from "./components/Tabele/Animale/Animale";
 import Angajati from "./components/Tabele/Angajati/Angajati";
 import Stapani from "./components/Tabele/Stapani/Stapani";
 import Vizite from "./components/Tabele/Vizite/Vizite";
 import Tratamente from "./components/Tabele/Tratamente/Tratamente";
 import Programari from "./components/Tabele/Programari/Programari";
+import ModalDetaliiEntitate from "./components/Tabele/DetaliiEntitate/ModalDetaliiEntitate";
 
 function App() {
   
@@ -65,9 +66,37 @@ function App() {
         populareListeAngajat({jwtToken})
     }, [jwtToken]
   ) 
-    
-  const [viewDetaliiEntitate, setViewDetaliiEntitate] = useState(false)
   
+  const [animalCurent,      setAnimalCurent]      = useState('')
+  const [indexAnimalCurent, setIndexAnimalCurent] = useState(0)
+  const [pozaAnimalCurent,  setPozaAnimalCurent]  = useState('')
+  const [pozePaginaAnimale, setPozePaginaAnimale] = useState([]) 
+  const [paginaAnimale,     setPaginaAnimale]     = useState([])
+
+
+  useEffect(
+    () => {
+      console.log('aaaa')
+      if(paginaAnimale.length !== 0){
+        getPozePagina({
+            caleFolderPoze: '/resources/poze_animale/', 
+            poza: 'animal_default.png', 
+            lista: paginaAnimale, 
+            setListaPoze: setPozePaginaAnimale, 
+            jwtToken, 
+            api,
+          }
+        )
+      }
+    }, [paginaAnimale]
+)
+
+
+  const [viewDetaliiStapan, setViewDetaliiStapan] = useState(false)
+  const [viewDetaliiAnimal, setViewDetaliiAnimal] = useState(false)
+  
+
+
   return (
     <div className="container-app">
       <Navbar 
@@ -81,7 +110,8 @@ function App() {
         viewLoginRegister       = {viewLoginRegister}
         setViewLoginRegister    = {setViewLoginRegister}
         setViewDashboard        = {setViewDashboard}
-        setViewDetaliiEntitate  = {setViewDetaliiEntitate}
+        setViewDetaliiStapan    = {setViewDetaliiStapan}
+        setViewDetaliiAnimal    = {setViewDetaliiAnimal}
         authority               = {authority}
         setAuthority            = {setAuthority}
         jwtToken                = {jwtToken}
@@ -108,20 +138,14 @@ function App() {
       {viewAnimale && (
       <Animale 
         animale                 = {animale}
-        setAnimale              = {setAnimale}
         viewAnimale             = {viewAnimale}
-        vizite                  = {vizite}
-        programari              = {programari}
-        tratamente              = {tratamente}
-        angajati                = {angajati} 
-        api                     = {api}
-        jwtToken                = {jwtToken}
-        setViewDetaliiEntitate  = {setViewDetaliiEntitate}
-        viewDetaliiEntitate     = {viewDetaliiEntitate}
-        setEntitateCurenta      = {setEntitateCurenta}
-        entitateCurenta         = {entitateCurenta}
-        pozaEntitateCurenta     = {pozaEntitateCurenta}
-        setPozaEntitateCurenta  = {setPozaEntitateCurenta}
+        setAnimalCurent         = {setAnimalCurent}
+        setIndexAnimalCurent    = {setIndexAnimalCurent}
+        pozePaginaAnimale       = {pozePaginaAnimale}
+        setPozaAnimalCurent     = {setPozaAnimalCurent}
+        setViewDetaliiAnimal    = {setViewDetaliiAnimal}
+        paginaAnimale           = {paginaAnimale}
+        setPaginaAnimale        = {setPaginaAnimale}
       />)}    
       {viewAngajati && (
       <Angajati
@@ -129,27 +153,14 @@ function App() {
         viewAngajati            = {viewAngajati}
         api                     = {api}
         jwtToken                = {jwtToken}
-        setEntitateCurenta      = {setEntitateCurenta}
       />)}
       {viewStapani && (
       <Stapani 
         stapani                 = {stapani}
-        setStapani              = {setStapani}
         viewStapani             = {viewStapani}
-        setViewStapani          = {setViewStapani}
-        animale                 = {animale}
-        setViewAnimale          = {setViewAnimale}
-        vizite                  = {vizite}
-        programari              = {programari}
-        tratamente              = {tratamente}
+        setListaEntitate        = {setListaEntitate}
         api                     = {api}
         jwtToken                = {jwtToken}
-        setViewDetaliiEntitate  = {setViewDetaliiEntitate}
-        viewDetaliiEntitate     = {viewDetaliiEntitate}
-        setEntitateCurenta      = {setEntitateCurenta}
-        entitateCurenta         = {entitateCurenta}
-        pozaEntitateCurenta     = {pozaEntitateCurenta}
-        setPozaEntitateCurenta  = {setPozaEntitateCurenta}
       />)}
       {viewVizite && (
       <Vizite 
@@ -172,6 +183,28 @@ function App() {
         api                     = {api}
         jwtToken                = {jwtToken}
       />)}
+      
+      {viewDetaliiAnimal && (
+      <ModalDetaliiEntitate
+        paginaEntitate          = {paginaAnimale}
+        setPaginaEntitate       = {setPaginaAnimale}
+        numeEntitati            = {"animale"}
+        animale                 = {animale}
+        pozePagina              = {pozePaginaAnimale}
+        setListaEntitati        = {setAnimale}
+        setViewDetaliiEntitate  = {setViewDetaliiAnimal}
+        entitateCurenta         = {animalCurent}
+        indexEntitateCurenta    = {indexAnimalCurent}
+        pozaEntitate            = {pozaAnimalCurent}
+        setPozaEntitate         = {setPozaAnimalCurent}
+        angajati                = {angajati}
+        vizite                  = {vizite}
+        programari              = {programari}
+        tratamente              = {tratamente}
+        api                     = {api}
+        jwtToken                = {jwtToken}
+      />)}
+
     </div>
   )
 }

@@ -89,6 +89,9 @@ const salvarePoza = async ({api, poza, folder, idEntitate, jwtToken, entitate}) 
             'Authorization' : `Bearer ${jwtToken}`,
             'Content-Type'  : 'application/json',
         },
+        validateStatus: (status) => {
+            return true 
+        }
     }
     const cerere = {
         "base64String"      :   poza,

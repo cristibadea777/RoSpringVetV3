@@ -6,16 +6,10 @@ import Pagini from "../../Pagini/Pagini"
 import { getPozePagina } from "../../AccesareAPI"
 
 
-const TabelDetaliiEntitate = ({listaTabel, optiune, textFiltru, viewTabel, setPozaEntitateCurenta, setEntitateCurenta, setOptiune, setViewAnimale, setViewStapani, jwtToken, api}) => {
-
-
-    //entitateCurenta - de pus in animal/stapan/angajat curent - ca sa se poate deschide multiple modale (modal stapan, sa poate deschida modal animal / modal animal sa poate deschida modal stapan)
-    //viewStapani/viewAnimale/viewAngajati - de pus regandit alte constante - ca sa nu se schimbe tabu de entitati 
-                //view/set detaliiStapan/Animal/Angajat
-    //modal sa se deschida cu animal/stapan/angajat curent
+const TabelDetaliiEntitate = ({listaTabel, optiune, textFiltru, viewTabel, jwtToken, api}) => {
     
-    const [paginaEntitate,  setPaginaEntitate] = useState([])
-    const [pozePagina,      setPozePagina]     = useState([])
+    const [paginaEntitate,               setPaginaEntitate] = useState([])
+    const [pozePaginaAnimaleStapan,      setPozePaginaAnimaleStapan]     = useState([])
 
     const filtrareEntitati = (listaTabel) => {
         return listaTabel.filter((entitate) => {
@@ -53,12 +47,8 @@ const TabelDetaliiEntitate = ({listaTabel, optiune, textFiltru, viewTabel, setPo
     }
     const entitatiFiltrate = filtrareEntitati(listaTabel)
 
-    const handleShowModalEntitate = (entitate, index) => {
-        setEntitateCurenta(entitate)
-        setPozaEntitateCurenta(pozePagina[index])
-        setOptiune('animale')
-        setViewAnimale(true)
-        setViewStapani(false)
+    const handleShowModalAnimal = (animal, index) => {
+        
     }
 
 
@@ -71,7 +61,7 @@ const TabelDetaliiEntitate = ({listaTabel, optiune, textFiltru, viewTabel, setPo
                         caleFolderPoze: '/resources/poze_animale/', 
                         poza: 'animal_default.png', 
                         lista: paginaEntitate, 
-                        setListaPoze: setPozePagina, 
+                        setListaPoze: setPozePaginaAnimaleStapan, 
                         jwtToken, 
                         api,
                     })
@@ -145,13 +135,13 @@ const TabelDetaliiEntitate = ({listaTabel, optiune, textFiltru, viewTabel, setPo
                             ) : optiune === 'animale' ? (
                                 <tr key={index}>
                                     <td> 
-                                        <img src={pozePagina[index]} height="55" width="55"/> 
+                                        <img src={pozePaginaAnimaleStapan[index]} height="55" width="55"/> 
                                     </td>
                                     <td>{entitate.nume}</td>
                                     <td>{entitate.specie}</td>
                                     <td>{entitate.rasa}</td>
                                     <td>
-                                        <div><button onClick={() => handleShowModalEntitate(entitate, index)}><FontAwesomeIcon icon={faBars} color="white"></FontAwesomeIcon></button></div>
+                                        <div><button onClick={() => handleShowModalAnimal(entitate, index)}><FontAwesomeIcon icon={faBars} color="white"></FontAwesomeIcon></button></div>
                                     </td>
                                 </tr>
                             ) : (

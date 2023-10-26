@@ -7,26 +7,8 @@ import ModalDetaliiEntitate from "../DetaliiEntitate/ModalDetaliiEntitate"
 import { faBars } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
-const Stapani = ({stapani, setStapani, viewStapani, setListaEntitate, api, jwtToken}) => {
+const Stapani = ({stapani, viewStapani, api, jwtToken, paginaStapani, setPaginaStapani, pozePaginaStapani, setStapanCurent, setViewDetaliiStapan}) => {
 
-    const [paginaStapani,   setPaginaStapani]   = useState([])
-    const [pozePagina,      setPozePagina]      = useState([])
-    
-    useEffect(
-        () => {
-          if(paginaStapani.length !== 0){
-            getPozePagina({
-                caleFolderPoze: '/resources/poze_stapani/', 
-                poza: 'stapan_default.png', 
-                lista: paginaStapani, 
-                setListaPoze: setPozePagina, 
-                jwtToken, 
-                api,
-            })
-          }
-        }, [paginaStapani]
-    )
-    
     const [viewStapanNou,   setViewStapanNou] = useState(false)
 
     const [textFiltru,      setTextFiltru] = useState('')
@@ -46,26 +28,20 @@ const Stapani = ({stapani, setStapani, viewStapani, setListaEntitate, api, jwtTo
     }
     const stapaniFiltrati = filtrareStapani(stapani)
 
-    const handleShowModalAnimal = (stapan, index) => {
-        setEntitateCurenta(stapan)
-        setListaEntitate(stapani)
-        setPozaEntitateCurenta(pozePagina[index])
+    const handleShowModalStapan = (stapan, index) => {
+        setStapanCurent(
+            {
+                "tipEntitate"   : "stapan",
+                "entitate"      : stapan,
+                "pozaEntitate"  : pozePaginaStapani[index],
+                "indexInPagina" : index
+            }
+        )
+        setViewDetaliiStapan(true)
     }
 
     return(
         <div className="containerPrincipal">
-
-            {viewDetaliiEntitate && (
-            <ModalDetaliiEntitate
-                listaEntitate          = {stapani}
-                setListaEntitate       = {setStapani}
-                animale                = {animale}
-                vizite                 = {vizite}
-                programari             = {programari}
-                tratamente             = {tratamente}
-                api                    = {api}
-                jwtToken               = {jwtToken}
-            />)}
             
             {viewStapanNou && (
             <StapanNou 
@@ -100,7 +76,7 @@ const Stapani = ({stapani, setStapani, viewStapani, setListaEntitate, api, jwtTo
                             <tr key={stapan.stapanId}>
                                 <td>
                                     <img 
-                                        src={pozePagina[index]} 
+                                        src={pozePaginaStapani[index]} 
                                         height="55" width="55"
                                     />
                                 </td>
@@ -108,7 +84,7 @@ const Stapani = ({stapani, setStapani, viewStapani, setListaEntitate, api, jwtTo
                                 <td>{stapan.nrTelefon}</td>
                                 <td>{stapan.email}</td>
                                 <td>
-                                    <div><button onClick={() => handleShowModalAnimal(stapan, index)}><FontAwesomeIcon icon={faBars} color="white"></FontAwesomeIcon></button></div>
+                                    <div><button onClick={() => handleShowModalStapan(stapan, index)}><FontAwesomeIcon icon={faBars} color="white"></FontAwesomeIcon></button></div>
                                 </td>
                             </tr>
                         ))}

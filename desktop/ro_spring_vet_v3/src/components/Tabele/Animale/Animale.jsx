@@ -4,9 +4,17 @@ import "../Tabele.css"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faBars } from "@fortawesome/free-solid-svg-icons"
 import Pagini from "../../Pagini/Pagini"
+import DetaliiAnimal from "./DetaliiAnimal"
+import { getPozePagina } from "../../AccesareAPI"
 
-const Animale = ( {animale, viewAnimale, setAnimalCurent, paginaAnimale, setPaginaAnimale, pozePaginaAnimale, setIndexAnimalCurent, setPozaAnimalCurent, setViewDetaliiAnimal} ) => {
+const Animale = ( {
+                    animale, setAnimale, viewAnimale,
+                    vizite, programari, tratamente, angajati, api, jwtToken} ) => {
 
+
+
+    const [viewDetaliiAnimal,   setViewDetaliiAnimal]   = useState('')
+    const [animalCurent,        setAnimalCurent]        = useState('')
 
     const [textFiltru,      setTextFiltru] = useState('')
     const handleChangeTextFiltru = (event) => {
@@ -25,16 +33,59 @@ const Animale = ( {animale, viewAnimale, setAnimalCurent, paginaAnimale, setPagi
         })
     }
     const animaleFiltrate = filtrareAnimale(animale)
+
+    const [pozePaginaAnimale, setPozePaginaAnimale] = useState([]) 
+    const [paginaAnimale,     setPaginaAnimale]     = useState([])
+    const updatePozePagina = async () => {
+        if(paginaAnimale.length !== 0){
+            await getPozePagina({
+                caleFolderPoze: '/resources/poze_animale/', 
+                poza:           'animal_default.png', 
+                lista:          paginaAnimale, 
+                setListaPoze:   setPozePaginaAnimale, 
+                jwtToken, 
+                api,
+            })
+        }
+    }
+    useEffect(
+        () => {
+            updatePozePagina()
+        }, [paginaAnimale]
+    )
+
     
     const handleShowModalAnimal = (animal, index) => {
-        setAnimalCurent(animal)
+        setAnimalCurent(
+            {
+                "tipEntitate"   : "animal",
+                "entitate"      : animal,
+                "pozaEntitate"  : pozePaginaAnimale[index],
+                "indexInPagina" : index
+            }
+        )
         setViewDetaliiAnimal(true)
-        setPozaAnimalCurent(pozePaginaAnimale[index])
-        setIndexAnimalCurent(index)
     }
 
     return(
         <div className="containerPrincipal">
+
+            {viewDetaliiAnimal && (
+                <DetaliiAnimal 
+                    animalCurent            = {animalCurent}
+                    animale                 = {animale}
+                    setAnimale              = {setAnimale}
+                    programari              = {programari}
+                    tratamente              = {tratamente}
+                    vizite                  = {vizite}
+                    angajati                = {angajati}
+                    pozePagina              = {pozePaginaAnimale}
+                    updatePozePagina        = {updatePozePagina}
+                    setViewDetaliiAnimal    = {setViewDetaliiAnimal}
+                    api                     = {api}
+                    jwtToken                = {jwtToken}
+                />
+            )}
             
             <TitluSiFiltru 
                 titlu={"Animale"}

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import LoginRegister from "./components/LoginRegister/LoginRegister";
 import Dashboard from "./components/Dashboard/Dashboard";
 import Navbar from "./components/Navbar/Navbar";
-import { getAllObiecte, getPoza, getPozePagina } from "./components/AccesareAPI";
+import { getAllObiecte, getPozePagina } from "./components/AccesareAPI";
 import Animale from "./components/Tabele/Animale/Animale";
 import Angajati from "./components/Tabele/Angajati/Angajati";
 import Stapani from "./components/Tabele/Stapani/Stapani";
@@ -39,8 +39,6 @@ function App() {
   const [viewTratamente,      setViewTratamente]      = useState(false)
   const [viewProgramari,      setViewProgramari]      = useState(false)
 
-  const [entitateCurenta,     setEntitateCurenta]     = useState(false)
-  const [pozaEntitateCurenta, setPozaEntitateCurenta] = useState('')
 
   const populareListeStapan = async ({jwtToken}) => {
     setAnimale   (await getAllObiecte({jwtToken, apiEndpoint: `${api}/animale/stapan/getAllAnimaleStapan`}))
@@ -66,37 +64,31 @@ function App() {
         populareListeAngajat({jwtToken})
     }, [jwtToken]
   ) 
-  
-  const [animalCurent,      setAnimalCurent]      = useState('')
-  const [indexAnimalCurent, setIndexAnimalCurent] = useState(0)
-  const [pozaAnimalCurent,  setPozaAnimalCurent]  = useState('')
-  const [pozePaginaAnimale, setPozePaginaAnimale] = useState([]) 
-  const [paginaAnimale,     setPaginaAnimale]     = useState([])
+
+  const [animalCurent,      setAnimalCurent]      = useState({})
+  const [stapanCurent,      setStapanCurent]      = useState({})
 
 
-  useEffect(
-    () => {
-      console.log('aaaa')
-      if(paginaAnimale.length !== 0){
-        getPozePagina({
-            caleFolderPoze: '/resources/poze_animale/', 
-            poza: 'animal_default.png', 
-            lista: paginaAnimale, 
-            setListaPoze: setPozePaginaAnimale, 
-            jwtToken, 
-            api,
-          }
-        )
-      }
-    }, [paginaAnimale]
+const [paginaStapani,          setPaginaStapani]      = useState([])
+const [pozePaginaStapani,      setPozePaginaStapani]  = useState([])
+useEffect(
+  () => {
+    if(paginaStapani.length !== 0){
+      getPozePagina({
+          caleFolderPoze: '/resources/poze_stapani/', 
+          poza: 'stapan_default.png', 
+          lista: paginaStapani, 
+          setListaPoze: setPozePaginaStapani, 
+          jwtToken, 
+          api,
+      })
+    }
+  }, [paginaStapani]
 )
-
 
   const [viewDetaliiStapan, setViewDetaliiStapan] = useState(false)
   const [viewDetaliiAnimal, setViewDetaliiAnimal] = useState(false)
   
-
-
   return (
     <div className="container-app">
       <Navbar 
@@ -138,14 +130,14 @@ function App() {
       {viewAnimale && (
       <Animale 
         animale                 = {animale}
+        setAnimale              = {setAnimale}
         viewAnimale             = {viewAnimale}
-        setAnimalCurent         = {setAnimalCurent}
-        setIndexAnimalCurent    = {setIndexAnimalCurent}
-        pozePaginaAnimale       = {pozePaginaAnimale}
-        setPozaAnimalCurent     = {setPozaAnimalCurent}
-        setViewDetaliiAnimal    = {setViewDetaliiAnimal}
-        paginaAnimale           = {paginaAnimale}
-        setPaginaAnimale        = {setPaginaAnimale}
+        vizite                  = {vizite}
+        programari              = {programari}
+        tratamente              = {tratamente}
+        angajati                = {angajati}
+        api                     = {api}
+        jwtToken                = {jwtToken}
       />)}    
       {viewAngajati && (
       <Angajati
@@ -158,7 +150,11 @@ function App() {
       <Stapani 
         stapani                 = {stapani}
         viewStapani             = {viewStapani}
-        setListaEntitate        = {setListaEntitate}
+        setStapanCurent         = {setStapanCurent}
+        setPaginaStapani        = {setPaginaStapani}
+        paginaStapani           = {paginaStapani}
+        pozePaginaStapani       = {pozePaginaStapani}
+        setViewDetaliiStapan    = {setViewDetaliiStapan}
         api                     = {api}
         jwtToken                = {jwtToken}
       />)}
@@ -184,26 +180,28 @@ function App() {
         jwtToken                = {jwtToken}
       />)}
       
-      {viewDetaliiAnimal && (
-      <ModalDetaliiEntitate
-        paginaEntitate          = {paginaAnimale}
-        setPaginaEntitate       = {setPaginaAnimale}
-        numeEntitati            = {"animale"}
+      {viewDetaliiStapan && (
+      <ModalDetaliiEntitate 
+        viewDetaliiStapan       = {viewDetaliiStapan}
+        viewDetaliiAnimal       = {viewDetaliiAnimal}
+        paginaEntitate          = {paginaStapani}
+        setPaginaEntitate       = {setPaginaStapani}
+        pozePagina              = {pozePaginaStapani}
+        setListaEntitati        = {setStapani}
+        setViewDetaliiAnimal    = {setViewDetaliiAnimal}
+        setViewDetaliiStapan    = {setViewDetaliiStapan}
+        entitateCurenta         = {stapanCurent}
+        listaEntitati           = {stapani}
         animale                 = {animale}
-        pozePagina              = {pozePaginaAnimale}
-        setListaEntitati        = {setAnimale}
-        setViewDetaliiEntitate  = {setViewDetaliiAnimal}
-        entitateCurenta         = {animalCurent}
-        indexEntitateCurenta    = {indexAnimalCurent}
-        pozaEntitate            = {pozaAnimalCurent}
-        setPozaEntitate         = {setPozaAnimalCurent}
+        setAnimalCurent         = {setAnimalCurent}
         angajati                = {angajati}
         vizite                  = {vizite}
         programari              = {programari}
         tratamente              = {tratamente}
         api                     = {api}
         jwtToken                = {jwtToken}
-      />)}
+      />
+      )}
 
     </div>
   )

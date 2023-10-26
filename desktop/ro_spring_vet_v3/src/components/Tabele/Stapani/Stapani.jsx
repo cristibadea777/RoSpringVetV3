@@ -6,10 +6,14 @@ import { getPozePagina } from "../../AccesareAPI"
 import ModalDetaliiEntitate from "../DetaliiEntitate/ModalDetaliiEntitate"
 import { faBars } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import DetaliiStapan from "./DetaliiStapan"
 
-const Stapani = ({stapani, viewStapani, api, jwtToken, paginaStapani, setPaginaStapani, pozePaginaStapani, setStapanCurent, setViewDetaliiStapan}) => {
+const Stapani = ({stapani, setStapani, viewStapani, vizite, programari, tratamente, angajati, api, jwtToken}) => {
 
     const [viewStapanNou,   setViewStapanNou] = useState(false)
+
+    const [viewDetaliiStapan,   setViewDetaliiStapan]   = useState('')
+    const [stapanCurent,        setStapanCurent]        = useState('')
 
     const [textFiltru,      setTextFiltru] = useState('')
     const handleChangeTextFiltru = (event) => {
@@ -28,13 +32,27 @@ const Stapani = ({stapani, viewStapani, api, jwtToken, paginaStapani, setPaginaS
     }
     const stapaniFiltrati = filtrareStapani(stapani)
 
+    const [paginaStapani,          setPaginaStapani]      = useState([])
+    const [pozePaginaStapani,      setPozePaginaStapani]  = useState([])
+    const updatePozePagina = () => {
+        if(paginaStapani.length !== 0){
+            getPozePagina({
+                caleFolderPoze: '/resources/poze_stapani/', 
+                poza:           'stapan_default.png', 
+                lista:          paginaStapani, 
+                setListaPoze:   setPozePaginaStapani, 
+                jwtToken, 
+                api,
+            })
+        }
+    }
+    useEffect( () => { updatePozePagina() }, [paginaStapani] )
+
     const handleShowModalStapan = (stapan, index) => {
         setStapanCurent(
             {
-                "tipEntitate"   : "stapan",
                 "entitate"      : stapan,
                 "pozaEntitate"  : pozePaginaStapani[index],
-                "indexInPagina" : index
             }
         )
         setViewDetaliiStapan(true)
@@ -42,6 +60,23 @@ const Stapani = ({stapani, viewStapani, api, jwtToken, paginaStapani, setPaginaS
 
     return(
         <div className="containerPrincipal">
+
+            {viewDetaliiStapan && (
+                <DetaliiStapan
+                    stapanCurent            = {stapanCurent}
+                    stapani                 = {stapani}
+                    setStapani              = {setStapani}
+                    animale                 = {animale}
+                    setAnimale              = {setAnimale}
+                    programari              = {programari}
+                    tratamente              = {tratamente}
+                    vizite                  = {vizite}
+                    angajati                = {angajati}
+                    setViewDetaliiStapan    = {setViewDetaliiStapan}
+                    api                     = {api}
+                    jwtToken                = {jwtToken}
+                />
+            )}
             
             {viewStapanNou && (
             <StapanNou 

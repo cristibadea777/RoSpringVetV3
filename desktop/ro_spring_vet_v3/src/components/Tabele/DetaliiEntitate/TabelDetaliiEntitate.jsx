@@ -51,7 +51,6 @@ const TabelDetaliiEntitate = ({listaTabel, optiune, textFiltru, viewTabel, jwtTo
         
     }
 
-
     //luare poze pt animalele stapanului
     useEffect(
         () => {
@@ -59,9 +58,9 @@ const TabelDetaliiEntitate = ({listaTabel, optiune, textFiltru, viewTabel, jwtTo
                 if(paginaEntitate.length !== 0){
                     getPozePagina({
                         caleFolderPoze: '/resources/poze_animale/', 
-                        poza: 'animal_default.png', 
-                        lista: paginaEntitate, 
-                        setListaPoze: setPozePaginaAnimaleStapan, 
+                        poza:           'animal_default.png', 
+                        lista:          paginaEntitate, 
+                        setListaPoze:   setPozePaginaAnimaleStapan, 
                         jwtToken, 
                         api,
                     })

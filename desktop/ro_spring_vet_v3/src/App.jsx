@@ -65,27 +65,6 @@ function App() {
     }, [jwtToken]
   ) 
 
-  const [animalCurent,      setAnimalCurent]      = useState({})
-  const [stapanCurent,      setStapanCurent]      = useState({})
-
-
-const [paginaStapani,          setPaginaStapani]      = useState([])
-const [pozePaginaStapani,      setPozePaginaStapani]  = useState([])
-useEffect(
-  () => {
-    if(paginaStapani.length !== 0){
-      getPozePagina({
-          caleFolderPoze: '/resources/poze_stapani/', 
-          poza: 'stapan_default.png', 
-          lista: paginaStapani, 
-          setListaPoze: setPozePaginaStapani, 
-          jwtToken, 
-          api,
-      })
-    }
-  }, [paginaStapani]
-)
-
   const [viewDetaliiStapan, setViewDetaliiStapan] = useState(false)
   const [viewDetaliiAnimal, setViewDetaliiAnimal] = useState(false)
   
@@ -132,6 +111,8 @@ useEffect(
         animale                 = {animale}
         setAnimale              = {setAnimale}
         viewAnimale             = {viewAnimale}
+        stapani                 = {stapani}
+        setStapani              = {setStapani}
         vizite                  = {vizite}
         programari              = {programari}
         tratamente              = {tratamente}
@@ -150,11 +131,11 @@ useEffect(
       <Stapani 
         stapani                 = {stapani}
         viewStapani             = {viewStapani}
-        setStapanCurent         = {setStapanCurent}
-        setPaginaStapani        = {setPaginaStapani}
-        paginaStapani           = {paginaStapani}
-        pozePaginaStapani       = {pozePaginaStapani}
-        setViewDetaliiStapan    = {setViewDetaliiStapan}
+        setStapani              = {setStapani}
+        vizite                  = {vizite}
+        programari              = {programari}
+        tratamente              = {tratamente}
+        angajati                = {angajati}
         api                     = {api}
         jwtToken                = {jwtToken}
       />)}
@@ -179,30 +160,6 @@ useEffect(
         api                     = {api}
         jwtToken                = {jwtToken}
       />)}
-      
-      {viewDetaliiStapan && (
-      <ModalDetaliiEntitate 
-        viewDetaliiStapan       = {viewDetaliiStapan}
-        viewDetaliiAnimal       = {viewDetaliiAnimal}
-        paginaEntitate          = {paginaStapani}
-        setPaginaEntitate       = {setPaginaStapani}
-        pozePagina              = {pozePaginaStapani}
-        setListaEntitati        = {setStapani}
-        setViewDetaliiAnimal    = {setViewDetaliiAnimal}
-        setViewDetaliiStapan    = {setViewDetaliiStapan}
-        entitateCurenta         = {stapanCurent}
-        listaEntitati           = {stapani}
-        animale                 = {animale}
-        setAnimalCurent         = {setAnimalCurent}
-        angajati                = {angajati}
-        vizite                  = {vizite}
-        programari              = {programari}
-        tratamente              = {tratamente}
-        api                     = {api}
-        jwtToken                = {jwtToken}
-      />
-      )}
-
     </div>
   )
 }

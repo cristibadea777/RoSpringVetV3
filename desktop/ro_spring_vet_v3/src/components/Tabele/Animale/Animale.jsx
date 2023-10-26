@@ -7,11 +7,7 @@ import Pagini from "../../Pagini/Pagini"
 import DetaliiAnimal from "./DetaliiAnimal"
 import { getPozePagina } from "../../AccesareAPI"
 
-const Animale = ( {
-                    animale, setAnimale, viewAnimale,
-                    vizite, programari, tratamente, angajati, api, jwtToken} ) => {
-
-
+const Animale = ( {animale, setAnimale, stapani, setStapani, viewAnimale, vizite, programari, tratamente, angajati, api, jwtToken} ) => {
 
     const [viewDetaliiAnimal,   setViewDetaliiAnimal]   = useState('')
     const [animalCurent,        setAnimalCurent]        = useState('')
@@ -36,9 +32,9 @@ const Animale = ( {
 
     const [pozePaginaAnimale, setPozePaginaAnimale] = useState([]) 
     const [paginaAnimale,     setPaginaAnimale]     = useState([])
-    const updatePozePagina = async () => {
+    const updatePozePagina = () => {
         if(paginaAnimale.length !== 0){
-            await getPozePagina({
+            getPozePagina({
                 caleFolderPoze: '/resources/poze_animale/', 
                 poza:           'animal_default.png', 
                 lista:          paginaAnimale, 
@@ -48,20 +44,14 @@ const Animale = ( {
             })
         }
     }
-    useEffect(
-        () => {
-            updatePozePagina()
-        }, [paginaAnimale]
-    )
+    useEffect( () => { updatePozePagina() }, [paginaAnimale] )
 
     
     const handleShowModalAnimal = (animal, index) => {
         setAnimalCurent(
             {
-                "tipEntitate"   : "animal",
                 "entitate"      : animal,
                 "pozaEntitate"  : pozePaginaAnimale[index],
-                "indexInPagina" : index
             }
         )
         setViewDetaliiAnimal(true)
@@ -75,12 +65,12 @@ const Animale = ( {
                     animalCurent            = {animalCurent}
                     animale                 = {animale}
                     setAnimale              = {setAnimale}
+                    stapani                 = {stapani}
+                    setStapani              = {setStapani}
                     programari              = {programari}
                     tratamente              = {tratamente}
                     vizite                  = {vizite}
                     angajati                = {angajati}
-                    pozePagina              = {pozePaginaAnimale}
-                    updatePozePagina        = {updatePozePagina}
                     setViewDetaliiAnimal    = {setViewDetaliiAnimal}
                     api                     = {api}
                     jwtToken                = {jwtToken}
@@ -108,9 +98,7 @@ const Animale = ( {
                     <tbody>
                         {paginaAnimale.map((animal, index)=>(
                             <tr key={index}>
-                                <td>
-                                    <img src={pozePaginaAnimale[index]} height="55" width="55"/>
-                                </td>
+                                <td><img src={pozePaginaAnimale[index]} height="55" width="55"/></td>
                                 <td>{animal.nume}</td>
                                 <td>{animal.stapan.nume}</td>
                                 <td>{animal.specie}</td>

@@ -5,13 +5,17 @@ import java.nio.file.Paths;
 import java.util.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import com.cristianbadea.dto.RaspunsPozaDTO;
 import com.cristianbadea.models.Angajat;
 import com.cristianbadea.models.Animal;
 import com.cristianbadea.models.Stapan;
 import com.cristianbadea.repositories.AngajatRepository;
 import com.cristianbadea.repositories.AnimalRepository;
 import com.cristianbadea.repositories.StapanRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class PozeService {
@@ -26,10 +30,13 @@ public class PozeService {
     @Value("${external.resources.path}")
 	private String path;
     
-    public String salveazaPoza(String folderPoza, String numePozaDB, String base64String, String entitate){
+    public ResponseEntity<String> salveazaPoza(String folderPoza, String numePozaDB, String base64String, String entitate){
 
         String calePoza     = path + folderPoza + "/" + numePozaDB;  
         long   idEntitate   = Long.valueOf(numePozaDB);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        RaspunsPozaDTO raspunsPozaDTO = new RaspunsPozaDTO();
 
         try {
             String[] prefixuriBase64  = {"data:image/png;base64,", "data:image/jpg;base64,", "data:image/jpeg;base64,"};
@@ -45,7 +52,7 @@ public class PozeService {
 
             byte[] decodedImage = Base64.getDecoder().decode(base64String);
             Files.write(Paths.get(calePoza), decodedImage);
-
+            
             switch (entitate) {
                 case "animal":
                     Animal animal = animalRepository.findById(idEntitate).get();
@@ -63,13 +70,15 @@ public class PozeService {
                     angajatRepository.save(angajat);
                     break;
                 default:
-                    return "Eroare salvare in baza de date";
+                    return new ResponseEntity<String>("Eroare - entitate necunoscută", HttpStatus.CONFLICT);
             }
 
-            return "Poză salvată cu succes";
+            raspunsPozaDTO.setRaspuns("Poză salvată cu succes");
+            raspunsPozaDTO.setNumePoza(numePozaDB);
+            return ResponseEntity.ok(objectMapper.writeValueAsString(raspunsPozaDTO));
+            
         } catch (Exception e) {
-            System.out.println("Eroare salvare poza \n" + e);
-            return "Eroare";
+            return new ResponseEntity<String>("Eroare salvare poză în folder", HttpStatus.CONFLICT);
         }
 
     }

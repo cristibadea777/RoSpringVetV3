@@ -47,7 +47,12 @@ public class AnimalController {
 
     @PostMapping("/editAnimal")
     public ResponseEntity<String> editAnimal(@RequestBody AnimalDTO animalDTO){
-        return animalService.editAnimal(animalDTO.getAnimalId(), animalDTO.getNume(), animalDTO.getSpecie(), animalDTO.getRasa());
+        return animalService.editAnimal(
+            animalDTO.getAnimalId(), 
+            animalDTO.getNume(), 
+            animalDTO.getSpecie(), 
+            animalDTO.getRasa()
+        );
     }
 
     //TODO: facut si pt angajat cand ia toate animalele stapanului

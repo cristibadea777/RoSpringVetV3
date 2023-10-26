@@ -1,6 +1,7 @@
 package com.cristianbadea.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +17,7 @@ public class PozeController {
     private PozeService         pozeService;
     
     @PostMapping("/salvarePoza")
-    public String salvarePoza(@RequestBody PozaDTO pozaDTO){
+    public ResponseEntity<String> salvarePoza(@RequestBody PozaDTO pozaDTO){
 
             String folderPoza   = pozaDTO.getFolder();
             String numePozaDB   = pozaDTO.getNumePoza();

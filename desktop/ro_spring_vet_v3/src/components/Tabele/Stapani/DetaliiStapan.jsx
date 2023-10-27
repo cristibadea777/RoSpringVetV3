@@ -4,6 +4,7 @@ import { toBase64 } from "../Utilities"
 import { BaraModalEntitate, ContainerInputPoza } from "../ComponenteModale"
 import BaraTabelDetalii from "../DetaliiEntitate/BaraTabelDetalii"
 import TabelDetaliiEntitate from "../DetaliiEntitate/TabelDetaliiEntitate"
+import DetaliiAnimal from "../Animale/DetaliiAnimal"
 
 const DetaliiStapan = (
     {   
@@ -21,12 +22,20 @@ const DetaliiStapan = (
     const [tratamenteActive,       setTratamenteActive]       = useState('0')
     const [totalAnimale,           setTotalAnimale]           = useState('0')
     
-
+///////
+    ///////
+////////////////////
+        ////////
+    /////////////
+    /////
     ////const pt view Animal nou aici ...............\\
-
-
-
-    ////
+////////
+     ///////
+/////
+    ///////
+////////////////////
+        ////////
+    /////
 
 
     const [listaTabel,             setListaTabel]             = useState([])
@@ -40,6 +49,16 @@ const DetaliiStapan = (
     const [textRaspuns,            setTextRaspuns]            = useState('')
     const [viewRaspuns,            setViewRaspuns]            = useState(false)
 
+    //pt detalii animal
+    const [animalCurent,           setAnimalCurent]        = useState('')
+    const [viewDetaliiAnimal,      setViewDetaliiAnimal]   = useState(false)
+    const getPozaAnimal = async (animal) => {
+        let cale_poza = 'animal_default.png'
+        if(animal.imagine !== null){ cale_poza = animal.imagine } 
+        const apiEndpoint = api + '/resources/poze_animale/' + cale_poza
+        const poza = await getPoza({ jwtToken, apiEndpoint })
+        return poza
+    }    
 
     const [textFiltru,      setTextFiltru] = useState('')
     const handleChangeTextFiltru = (event) => {
@@ -128,24 +147,20 @@ const DetaliiStapan = (
                 updateListaStapani(stapanCurent.entitate)
             }  
         } catch(error){ 
-            console.log(error)
             setTextRaspuns("EROARE")
         }
     }
 
-
-
-    const handleShowModalAnimal = (animal) => {
+    const handleShowModalAnimal = async (animal) => {
+        const poza = await getPozaAnimal(animal)
         setAnimalCurent(
             {
                 "entitate"      : animal,
-                "pozaEntitate"  : null,
+                "pozaEntitate"  : poza
             }
         )
         setViewDetaliiAnimal(true)
     }
-
-
 
     const updateListaStapani = (stapanEditat) => {
         let stapaniEditati = [...stapani]        
@@ -157,6 +172,15 @@ const DetaliiStapan = (
         setStapani(stapaniEditati)
     }
 
+    const updateStapanListaAnimale = (stapanEditat) => {
+        let animaleEditate = [...animale]
+        animaleEditate.map((animal, index) => {
+            if(animal.stapan.stapanId === stapanEditat.stapanId){
+                animaleEditate[index].stapan = stapanEditat
+            }
+        })
+        setAnimale(animaleEditate)
+    }
 
     const handleClickEditStapan = async () => {
         const apiEndpoint = api + '/stapani/editStapan'
@@ -173,10 +197,16 @@ const DetaliiStapan = (
             "email"       :   emailEntitateCurenta,         
         }
         const raspunsApi = await editEntitate({jwtToken, apiEndpoint, cerere})
-        if(raspunsApi.status === 200)
+        if(raspunsApi.status === 200){
+            //update in lista stapani
             updateListaStapani(stapanEditat)
-        console.log(raspunsApi.status)
-        console.log(raspunsApi)
+            //update stapan curent in modal detalii animal
+            stapanCurent.entitate.nume      = stapanEditat.nume
+            stapanCurent.entitate.nrTelefon = stapanEditat.nrTelefon
+            stapanCurent.entitate.email     = stapanEditat.email
+            //update stapan in lista de animale - ca sa apara numele editat si in tabel
+            updateStapanListaAnimale(stapanEditat)
+        }
         setTextRaspuns(raspunsApi)
         setViewRaspuns(true)
     }
@@ -190,6 +220,24 @@ const DetaliiStapan = (
 
     return(
         <div className="modalTabele"> 
+
+            {viewDetaliiAnimal && (
+                <DetaliiAnimal 
+                    animalCurent            = {animalCurent}
+                    animale                 = {animale}
+                    setAnimale              = {setAnimale}
+                    stapani                 = {stapani}
+                    setStapani              = {setStapani}
+                    programari              = {programari}
+                    tratamente              = {tratamente}
+                    vizite                  = {vizite}
+                    angajati                = {angajati}
+                    setViewDetaliiAnimal    = {setViewDetaliiAnimal}
+                    api                     = {api}
+                    jwtToken                = {jwtToken}
+                />
+            )}
+
             <div className="modalDetaliiEntitate" >
                <BaraModalEntitate 
                     titluModal             = {stapanCurent.entitate.nume}
@@ -256,6 +304,7 @@ const DetaliiStapan = (
                     optiune                = {optiune} 
                     textFiltru             = {textFiltru}
                     viewTabel              = {stapanCurent}
+                    handleShowModalAnimal  = {handleShowModalAnimal}
                     setOptiune             = {setOptiune}
                     jwtToken               = {jwtToken}
                     api                    = {api}  

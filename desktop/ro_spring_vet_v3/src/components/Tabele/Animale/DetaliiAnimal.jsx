@@ -1,6 +1,6 @@
 import "../DetaliiEntitate/ModalDetaliiEntitate.css"
 import { useEffect, useState } from "react"
-import { editEntitate, getPoza, salvarePoza } from "../../AccesareAPI"
+import { editEntitate, getEntitate, getPoza, salvarePoza } from "../../AccesareAPI"
 import { toBase64 } from "../Utilities"
 import ProgramareNoua from "../Programari/ProgramareNoua";
 import VizitaNoua from "../Vizite/VizitaNoua"
@@ -57,6 +57,21 @@ const DetaliiAnimal = (
         ],
     }
 
+    const [stapan,      setStapan    ] = useState('')
+    const [pozaStapan,  setPozaStapan] = useState('')
+    const getStapan = async () => {
+        const apiEndpoint = api + '/stapani/getStapan' + '?stapanId=' + animalCurent.entitate.stapan.stapanId
+        const stapan = await getEntitate({ jwtToken, apiEndpoint }) 
+        setStapan(stapan)
+    }
+    const getPozaStapan = async () => {
+        let cale_poza = 'stapan_default.png'
+        const apiEndpoint = api + '/resources/poze_stapani/' + cale_poza
+        if(stapan.imagine !== null){ cale_poza = stapan.imagine } 
+        const poza = await getPoza({ jwtToken, apiEndpoint })
+        setPozaStapan(poza)
+    }    
+
     useEffect(
         () => {            
             if(animalCurent.entitate){
@@ -95,6 +110,10 @@ const DetaliiAnimal = (
                 setViziteEntitate(v)
                 setProgramariEntitate(p) 
                 setTratamenteEntitate(t)
+
+                getStapan()
+                getPozaStapan()
+                                    
             }
         }, [animalCurent]
     )
@@ -161,12 +180,8 @@ const DetaliiAnimal = (
         </div>
     )
 
-    const stapan = animalCurent.entitate.stapan
-    const pozaStapan = null
-
     const [viewDetaliiStapan,   setViewDetaliiStapan] = useState(false)
     const handleShowModalStapan = () => {
-        console.log(stapan)
         setViewDetaliiStapan(true)
     }
 

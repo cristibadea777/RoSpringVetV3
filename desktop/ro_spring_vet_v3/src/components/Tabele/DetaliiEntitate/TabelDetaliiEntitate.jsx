@@ -6,7 +6,7 @@ import Pagini from "../../Pagini/Pagini"
 import { getPozePagina } from "../../AccesareAPI"
 
 
-const TabelDetaliiEntitate = ({listaTabel, optiune, textFiltru, viewTabel, jwtToken, api}) => {
+const TabelDetaliiEntitate = ({listaTabel, optiune, textFiltru, viewTabel, handleShowModalAnimal, jwtToken, api}) => {
     
     const [paginaEntitate,               setPaginaEntitate] = useState([])
     const [pozePaginaAnimaleStapan,      setPozePaginaAnimaleStapan]     = useState([])
@@ -46,10 +46,6 @@ const TabelDetaliiEntitate = ({listaTabel, optiune, textFiltru, viewTabel, jwtTo
         })
     }
     const entitatiFiltrate = filtrareEntitati(listaTabel)
-
-    const handleShowModalAnimal = (animal, index) => {
-        
-    }
 
     //luare poze pt animalele stapanului
     useEffect(
@@ -140,7 +136,7 @@ const TabelDetaliiEntitate = ({listaTabel, optiune, textFiltru, viewTabel, jwtTo
                                     <td>{entitate.specie}</td>
                                     <td>{entitate.rasa}</td>
                                     <td>
-                                        <div><button onClick={() => handleShowModalAnimal(entitate, index)}><FontAwesomeIcon icon={faBars} color="white"></FontAwesomeIcon></button></div>
+                                        <div><button onClick={() => handleShowModalAnimal(entitate)}><FontAwesomeIcon icon={faBars} color="white"></FontAwesomeIcon></button></div>
                                     </td>
                                 </tr>
                             ) : (

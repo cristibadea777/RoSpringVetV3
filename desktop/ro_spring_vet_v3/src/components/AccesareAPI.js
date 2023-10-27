@@ -194,4 +194,20 @@ const salvareEntitate = async ({jwtToken, apiEndpoint, cerere}) => {
     } catch (error) { console.error(error) }
   }
 
-export { registerUser, loginUser, getUserConectat, getPoza, logout, getAllObiecte, editEntitate, salvarePoza, salvareEntitate, getPozePagina }
+  const getEntitate = async ({jwtToken, apiEndpoint}) => {
+    const customConfig = {
+        headers: {
+            'Authorization' : `Bearer ${jwtToken}`,
+            'Content-Type': 'application/json'
+        },
+    }
+    try {
+        const raspuns = await axios.get(apiEndpoint, customConfig)
+        return raspuns.data
+    } catch (error) {
+        console.log(error)
+        console.log("EROARE GET ENTITATE\n" + JSON.stringify(error))       
+    }
+  }
+
+export { registerUser, loginUser, getUserConectat, getPoza, logout, getAllObiecte, editEntitate, salvarePoza, salvareEntitate, getPozePagina, getEntitate }

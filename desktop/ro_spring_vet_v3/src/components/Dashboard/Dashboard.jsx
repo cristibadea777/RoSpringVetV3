@@ -3,7 +3,7 @@ import "./Dashboard.css"
 const Dashboard = ( {username, authority, userConectat, pozaProfil} ) => {
 
     const test = () => {
-
+        
     }
 
     const RowInfo = ({label, valoare}) => (

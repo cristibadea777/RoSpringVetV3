@@ -3,12 +3,11 @@ import TitluSiFiltru from "../../Filtru/TitluSiFiltru"
 import StapanNou from "./StapanNou"
 import Pagini from "../../Pagini/Pagini"
 import { getPozePagina } from "../../AccesareAPI"
-import ModalDetaliiEntitate from "../DetaliiEntitate/ModalDetaliiEntitate"
 import { faBars } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import DetaliiStapan from "./DetaliiStapan"
 
-const Stapani = ({stapani, setStapani, viewStapani, vizite, programari, tratamente, angajati, api, jwtToken}) => {
+const Stapani = ({stapani, setStapani, viewStapani, animale, setAnimale, vizite, programari, tratamente, angajati, api, jwtToken}) => {
 
     const [viewStapanNou,   setViewStapanNou] = useState(false)
 
@@ -46,13 +45,12 @@ const Stapani = ({stapani, setStapani, viewStapani, vizite, programari, tratamen
             })
         }
     }
-    useEffect( () => { updatePozePagina() }, [paginaStapani] )
+    useEffect( () => { updatePozePagina() }, [stapani, paginaStapani] )
 
     const handleShowModalStapan = (stapan, index) => {
         setStapanCurent(
             {
                 "entitate"      : stapan,
-                "pozaEntitate"  : pozePaginaStapani[index],
             }
         )
         setViewDetaliiStapan(true)

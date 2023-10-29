@@ -9,7 +9,6 @@ import Stapani from "./components/Tabele/Stapani/Stapani";
 import Vizite from "./components/Tabele/Vizite/Vizite";
 import Tratamente from "./components/Tabele/Tratamente/Tratamente";
 import Programari from "./components/Tabele/Programari/Programari";
-import ModalDetaliiEntitate from "./components/Tabele/DetaliiEntitate/ModalDetaliiEntitate";
 
 function App() {
   
@@ -132,6 +131,8 @@ function App() {
         stapani                 = {stapani}
         viewStapani             = {viewStapani}
         setStapani              = {setStapani}
+        animale                 = {animale}
+        setAnimale              = {setAnimale}
         vizite                  = {vizite}
         programari              = {programari}
         tratamente              = {tratamente}

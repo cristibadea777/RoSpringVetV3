@@ -47,11 +47,10 @@ const Animale = ( {animale, setAnimale, stapani, setStapani, viewAnimale, vizite
     useEffect( () => { updatePozePagina() }, [paginaAnimale] )
 
     
-    const handleShowModalAnimal = (animal, index) => {
+    const handleShowModalAnimal = (animal) => {
         setAnimalCurent(
             {
                 "entitate"      : animal,
-                "pozaEntitate"  : pozePaginaAnimale[index],
             }
         )
         setViewDetaliiAnimal(true)

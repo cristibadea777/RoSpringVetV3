@@ -21,6 +21,15 @@ const DetaliiStapan = (
     const [programariViitoare,     setProgramariViitoare]     = useState('0')
     const [tratamenteActive,       setTratamenteActive]       = useState('0')
     const [totalAnimale,           setTotalAnimale]           = useState('0')
+
+    const [pozaStapan,  setPozaStapan] = useState('')
+    const getPozaStapan = async () => {
+        let cale_poza = 'stapan_default.png'
+        if(stapanCurent.entitate.imagine !== null){ cale_poza = stapanCurent.entitate.imagine }
+        const apiEndpoint = api + '/resources/poze_stapani/' + cale_poza
+        const poza = await getPoza({ jwtToken, apiEndpoint })
+        setPozaStapan(poza)
+    }    
     
 ///////
     ///////
@@ -52,13 +61,6 @@ const DetaliiStapan = (
     //pt detalii animal
     const [animalCurent,           setAnimalCurent]        = useState('')
     const [viewDetaliiAnimal,      setViewDetaliiAnimal]   = useState(false)
-    const getPozaAnimal = async (animal) => {
-        let cale_poza = 'animal_default.png'
-        if(animal.imagine !== null){ cale_poza = animal.imagine } 
-        const apiEndpoint = api + '/resources/poze_animale/' + cale_poza
-        const poza = await getPoza({ jwtToken, apiEndpoint })
-        return poza
-    }    
 
     const [textFiltru,      setTextFiltru] = useState('')
     const handleChangeTextFiltru = (event) => {
@@ -124,9 +126,22 @@ const DetaliiStapan = (
                 setTratamenteEntitate(t)
                 setAnimaleEntitate(a)
 
+                getPozaStapan()
+
             }
         }, [stapanCurent]
     )
+
+    
+    const updateStapanListaAnimale = (stapanEditat) => {
+        let animaleEditate = [...animale]
+        animaleEditate.map((animal, index) => {
+            if(animal.stapan.stapanId === stapanEditat.stapanId){
+                animaleEditate[index].stapan = stapanEditat
+            }
+        })
+        setAnimale(animaleEditate)
+    }
 
     const handleChangePoza = async (evt) => {
         const file = evt.target.files[0]
@@ -140,11 +155,10 @@ const DetaliiStapan = (
             }
             setTextRaspuns(raspuns)
             setViewRaspuns(true)
-
             if(raspunsApi.status === 200){
-                stapanCurent.pozaEntitate = poza
                 stapanCurent.entitate.imagine = raspunsApi.data.numePoza
                 updateListaStapani(stapanCurent.entitate)
+                updateStapanListaAnimale(stapanCurent.entitate)
             }  
         } catch(error){ 
             setTextRaspuns("EROARE")
@@ -152,11 +166,9 @@ const DetaliiStapan = (
     }
 
     const handleShowModalAnimal = async (animal) => {
-        const poza = await getPozaAnimal(animal)
         setAnimalCurent(
             {
                 "entitate"      : animal,
-                "pozaEntitate"  : poza
             }
         )
         setViewDetaliiAnimal(true)
@@ -170,16 +182,6 @@ const DetaliiStapan = (
             }
         })
         setStapani(stapaniEditati)
-    }
-
-    const updateStapanListaAnimale = (stapanEditat) => {
-        let animaleEditate = [...animale]
-        animaleEditate.map((animal, index) => {
-            if(animal.stapan.stapanId === stapanEditat.stapanId){
-                animaleEditate[index].stapan = stapanEditat
-            }
-        })
-        setAnimale(animaleEditate)
     }
 
     const handleClickEditStapan = async () => {
@@ -246,7 +248,7 @@ const DetaliiStapan = (
 
                <div className="inputuriDetaliiEntitate">
                     <ContainerInputPoza 
-                        pozaCurenta      = {stapanCurent.pozaEntitate}
+                        pozaCurenta      = {pozaStapan}
                         handleChangePoza = {handleChangePoza}
                     />
 

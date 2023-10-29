@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: row;
     width: 100%;
-    height: 7%;
+    height: 4%;
     background-color: #11574a;
 } 
 .baraModalDetaliiEntitate #baraStanga {
@@ -17,6 +17,10 @@
     justify-content: flex-end;
     margin-right: 1%;
     width: 40%;
+}
+.baraModalDetaliiEntitate button{
+    max-width: fit-content;
+    font-size: small;
 }
 .containerInputPoza{
     width: 10%;

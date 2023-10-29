@@ -1,6 +1,6 @@
 import "./ModalDetaliiEntitate.css"
 import { useEffect, useState } from "react"
-import { editEntitate, getPoza, salvarePoza } from "../../AccesareAPI"
+import { editEntitate, salvarePoza } from "../../AccesareAPI"
 import { toBase64 } from "../Utilities"
 import ProgramareNoua from "../Programari/ProgramareNoua";
 import VizitaNoua from "../Vizite/VizitaNoua"

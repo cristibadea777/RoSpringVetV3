@@ -9,7 +9,6 @@ import BaraTabelDetalii from "../DetaliiEntitate/BaraTabelDetalii";
 import TabelDetaliiEntitate from "../DetaliiEntitate/TabelDetaliiEntitate";
 import DetaliiStapan from "../Stapani/DetaliiStapan";
 
-
 const DetaliiAnimal = (
     {   
         animalCurent, animale, setAnimale, stapani, setStapani, api, jwtToken, vizite, programari, tratamente, angajati, setViewDetaliiAnimal
@@ -39,7 +38,15 @@ const DetaliiAnimal = (
     const [textRaspuns,            setTextRaspuns]            = useState('')
     const [viewRaspuns,            setViewRaspuns]            = useState(false)
 
-
+    const [pozaAnimal,  setPozaAnimal] = useState('')
+    const getPozaAnimal = async () => {
+        let cale_poza = 'animal_default.png'
+        if(animalCurent.entitate.imagine !== null){ cale_poza = animalCurent.entitate.imagine }
+        const apiEndpoint = api + '/resources/poze_animale/' + cale_poza
+        const poza = await getPoza({ jwtToken, apiEndpoint })
+        setPozaAnimal(poza)
+    }    
+    
     const [textFiltru,      setTextFiltru] = useState('')
     const handleChangeTextFiltru = (event) => {
         setTextFiltru(event.target.value)
@@ -58,19 +65,11 @@ const DetaliiAnimal = (
     }
 
     const [stapan,      setStapan    ] = useState('')
-    const [pozaStapan,  setPozaStapan] = useState('')
     const getStapan = async () => {
         const apiEndpoint = api + '/stapani/getStapan' + '?stapanId=' + animalCurent.entitate.stapan.stapanId
         const stapan = await getEntitate({ jwtToken, apiEndpoint }) 
         setStapan(stapan)
     }
-    const getPozaStapan = async () => {
-        let cale_poza = 'stapan_default.png'
-        const apiEndpoint = api + '/resources/poze_stapani/' + cale_poza
-        if(stapan.imagine !== null){ cale_poza = stapan.imagine } 
-        const poza = await getPoza({ jwtToken, apiEndpoint })
-        setPozaStapan(poza)
-    }    
 
     useEffect(
         () => {            
@@ -111,11 +110,11 @@ const DetaliiAnimal = (
                 setProgramariEntitate(p) 
                 setTratamenteEntitate(t)
 
-                getStapan()
-                getPozaStapan()
-                                    
+                getPozaAnimal()
+
+                getStapan()                                    
             }
-        }, [animalCurent]
+        }, [animalCurent, animale]
     )
 
     const handleChangePoza = async (evt) => {
@@ -130,14 +129,12 @@ const DetaliiAnimal = (
             }
             setTextRaspuns(raspuns)
             setViewRaspuns(true)
-
             if(raspunsApi.status === 200){
-                animalCurent.pozaEntitate = poza
                 animalCurent.entitate.imagine = raspunsApi.data.numePoza
                 updateListaAnimale(animalCurent.entitate)
+                getPozaAnimal()
             }  
         } catch(error){ 
-            console.log(error)
             setTextRaspuns("EROARE")
         }
     }
@@ -189,10 +186,9 @@ const DetaliiAnimal = (
         <div className="modalTabele"> 
             {viewDetaliiStapan&&(
                 <DetaliiStapan 
-                    stapanCurent         = {
+                    stapanCurent = {
                         {
                             "entitate"      : stapan,
-                            "pozaEntitate"  : pozaStapan,
                         }
                     }
                     setViewDetaliiStapan = {setViewDetaliiStapan}
@@ -217,7 +213,7 @@ const DetaliiAnimal = (
 
                <div className="inputuriDetaliiEntitate">
                     <ContainerInputPoza 
-                        pozaCurenta      = {animalCurent.pozaEntitate}
+                        pozaCurenta      = {pozaAnimal}
                         handleChangePoza = {handleChangePoza}
                     />
 

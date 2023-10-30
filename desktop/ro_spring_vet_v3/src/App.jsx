@@ -63,9 +63,6 @@ function App() {
         populareListeAngajat({jwtToken})
     }, [jwtToken]
   ) 
-
-  const [viewDetaliiStapan, setViewDetaliiStapan] = useState(false)
-  const [viewDetaliiAnimal, setViewDetaliiAnimal] = useState(false)
   
   return (
     <div className="container-app">
@@ -80,8 +77,6 @@ function App() {
         viewLoginRegister       = {viewLoginRegister}
         setViewLoginRegister    = {setViewLoginRegister}
         setViewDashboard        = {setViewDashboard}
-        setViewDetaliiStapan    = {setViewDetaliiStapan}
-        setViewDetaliiAnimal    = {setViewDetaliiAnimal}
         authority               = {authority}
         setAuthority            = {setAuthority}
         jwtToken                = {jwtToken}
@@ -104,6 +99,15 @@ function App() {
         authority               = {authority}
         userConectat            = {userConectat}
         pozaProfil              = {pozaProfil}
+        setPozaProfil           = {setPozaProfil}
+        angajati                = {angajati}
+        animale                 = {animale}
+        tratamente              = {tratamente}
+        vizite                  = {vizite}
+        programari              = {programari}
+        setAngajati             = {setAngajati}
+        api                     = {api}
+        jwtToken                = {jwtToken}
       />)}
       {viewAnimale && (
       <Animale 

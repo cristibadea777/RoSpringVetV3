@@ -37,19 +37,18 @@ const LoginRegister = ({ setViewLoginRegister, setViewDashboard, setJwtToken, se
         if(raspuns.user === null || raspuns.jwt === null)
             setTextEroare("Credențiale invalide")
         else{
+            const jwtToken = raspuns.jwt
+            setJwtToken(jwtToken)
+            const username = raspuns.user.username
+            setUsername(username)
+            const authority = raspuns.user.authorities[0].authority
 
+            setAuthority(authority)         
             setViewRegister(false)
             setViewLogin(false)
             setViewLoginRegister(false)
             setViewDashboard(true)
 
-            const jwtToken = raspuns.jwt
-            const username = raspuns.user.username
-            const authority = raspuns.user.authorities[0].authority
-            setJwtToken(jwtToken)
-            setUsername(username)
-            setAuthority(authority)            
-            
             if(authority === 'USER'){
                 const apiEndpoint = `${api}/stapani/stapan/getStapanConectat`
                 const stapan = await getUserConectat({jwtToken, apiEndpoint})
@@ -57,7 +56,7 @@ const LoginRegister = ({ setViewLoginRegister, setViewDashboard, setJwtToken, se
                 if(stapan.imagine === null){
                     setPozaProfil(await getPoza({jwtToken, apiEndpoint: `${api}/resources/poze_stapani/stapan_default.png`}))
                 }else{
-                    setPozaProfil(await getPoza({jwtToken, apiEndpoint: `${stapan.imagine}`}))
+                    setPozaProfil(await getPoza({jwtToken, apiEndpoint: `${api}/resources/poze_stapani/${stapan.imagine}`}))
                 }
             }
             if(authority === 'ADMIN'){
@@ -67,7 +66,7 @@ const LoginRegister = ({ setViewLoginRegister, setViewDashboard, setJwtToken, se
                 if(admin.imagine === null){
                     setPozaProfil(await getPoza({jwtToken, apiEndpoint: `${api}/resources/poze_angajati/angajat_default.png`}))
                 }else{
-                    setPozaProfil(await getPoza({jwtToken, apiEndpoint: `${admin.imagine}`}))
+                    setPozaProfil(await getPoza({jwtToken, apiEndpoint: `${api}/resources/poze_angajati/${admin.imagine}`}))
                 }
             } 
         }        

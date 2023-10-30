@@ -128,15 +128,13 @@ const DetaliiAnimal = (
                 "data"   : raspunsApi.data.raspuns
             }
             setTextRaspuns(raspuns)
-            setViewRaspuns(true)
             if(raspunsApi.status === 200){
                 animalCurent.entitate.imagine = raspunsApi.data.numePoza
                 updateListaAnimale(animalCurent.entitate)
                 getPozaAnimal()
             }  
-        } catch(error){ 
-            setTextRaspuns("EROARE")
-        }
+        } catch(error){  setTextRaspuns("EROARE") }
+        setViewRaspuns(true)
     }
 
     const updateListaAnimale = (animalEditat) => {

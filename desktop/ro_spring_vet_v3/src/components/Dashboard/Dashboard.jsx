@@ -1,73 +1,173 @@
+import { useEffect, useState } from "react"
 import "./Dashboard.css"
+import { toBase64 } from "../Tabele/Utilities"
+import { salvarePoza } from "../AccesareAPI"
 
-const Dashboard = ( {username, authority, userConectat, pozaProfil} ) => {
+const Dashboard = ( {username, authority, userConectat, pozaProfil, setPozaProfil, angajati, animale, tratamente, programari, vizite, setAngajati, api, jwtToken} ) => {
+    //username     = email
+    //authority    = ADMIN/USER (stapan/doctor)
+    //userConectat = json al obiectului stapan/doctor
 
-    const test = () => {
+    const [numeEntitateCurenta,    setNumeEntitateCurenta]    = useState('')
+    const [emailEntitateCurenta,   setEmailEntitateCurenta]   = useState('')
+    const [telefonEntitateCurenta, setTelefonEntitateCurenta] = useState('')
+    const [functieEntitateCurenta, setFunctieEntitateCurenta] = useState('')
+  
+    const [totalVizite,            setTotalVizite]            = useState('0')
+    const [programariViitoare,     setProgramariViitoare]     = useState('0')
+    const [tratamenteActive,       setTratamenteActive]       = useState('0')
+    const [totalAnimale,           setTotalAnimale]           = useState('0')
+
+    useEffect(
+        () => {            
+            if(userConectat){
+                let dataCurenta  = new Date()
+                let nrVizite     = 0
+                let nrProgramari = 0
+                let nrTratamente = 0
+                let nrAnimale    = 0
+
+                setNumeEntitateCurenta   (userConectat.nume)
+                setTelefonEntitateCurenta(userConectat.nrTelefon)
+                setEmailEntitateCurenta  (userConectat.email)
+                
+                nrProgramari = programari?.length
+                nrTratamente = tratamente?.length
+                nrAnimale = animale?.length
+                if(authority === "ADMIN"){
+                    setFunctieEntitateCurenta(userConectat.functie)
+                    vizite && vizite.map((vizita) => { 
+                        if(vizita.angajatId.angajatId === userConectat.angajatId){ nrVizite = nrVizite + 1 } 
+                    })
+                }
+                else{ nrVizite  = vizite?.length }    
+                
+                setTotalVizite(nrVizite)
+                setProgramariViitoare(nrProgramari)
+                setTratamenteActive(nrTratamente)
+                setTotalAnimale(nrAnimale)
+            }
+        }, [userConectat, vizite, animale, programari, tratamente]
+    )
+
+    const [textRaspuns,            setTextRaspuns]            = useState('')
+    const [viewRaspuns,            setViewRaspuns]            = useState(false)
+
+    const updateListaAngajati = (angajatEditat) => {
+        let angajatiEdidati = [...angajati]
+        angajatiEdidati.map((angajat, index) => {
+            if(angajat.angajatId === angajatEditat.angajatId){
+                angajatiEdidati[index] = angajatEditat
+            }
+        })
+        setAngajati(angajatiEdidati)
+    }
+
+    const handleEditEntitate = async () => {
         
     }
 
-    const RowInfo = ({label, valoare}) => (
-        <div className="containerLinie">
-            <div className="containerLinieStanga">  
-                <p className="text">{label}</p> 
-            </div>
-            <div className="containerLinieDreapta"> 
-                <p className="text">{valoare}</p> 
-            </div>
+    const handleChangePoza = async (evt) => {
+        const file = evt.target.files[0]
+        try {
+            const poza       = await toBase64(file)
+            const idEntitate = (authority === 'ADMIN') ? userConectat.angajatId : userConectat.stapanId
+            const folder     = (authority === 'ADMIN') ? "poze_angajati"        : "poze_stapani"
+            const entitate   = (authority === 'ADMIN') ? "angajat"              : "stapan"
+            const raspunsApi = await salvarePoza({api, poza, jwtToken, folder, idEntitate, entitate})
+            const raspuns = {
+                "status" : raspunsApi.status,
+                "data"   : raspunsApi.data.raspuns
+            } 
+            setPozaProfil(poza)
+            setTextRaspuns(raspuns)   
+            //pt angajati - update lista angajati
+            if( authority === "ADMIN" && raspunsApi.status === 200){
+                userConectat.imagine = raspunsApi.data.numePoza
+                updateListaAngajati(userConectat)
+            }          
+        } catch (error) { setTextRaspuns("Eroare schimbare poză") }
+        setViewRaspuns(true)
+    }
+
+    const RowStatistica = ({label, valoare}) => (
+        <div className="linieStatistica">
+            <div><p>{label}</p></div>
+            <p>{valoare}</p>
         </div>
     )
 
-    const RowInfoSecundar = ({label, valoare, functie}) => (
-        <div className="containerLinie">
-            <div className="containerLinieStanga">  
-                <p className="text">{label}</p>
-            </div>
-            <div className="containerLinieDreapta"> 
-                <button className="buton" onClick={functie}>{valoare}</button>
-            </div>
-        </div>
-    )
-
-    return(
+    return(   
         <div className="containerDashboard">
-            <div className="containerInfo">
-                <div className="containerPoza">
-                    <div className="poza">
+            <div className="containerInputuriDashboard">
+                <div className="containerInputPozaDashboard">
+
+                    <div className="containerPozaDashboard">
                         <img src={pozaProfil} />
+                        <div className="containerButonSchimbaPozaDashboard">
+                            <label>
+                                Schimbă poza
+                                <input type="file" accept="image/*" style={{display: "none"}} onChange={handleChangePoza}></input>
+                            </label>
+                        </div>
+                    </div>
+               </div>
+
+
+                <div className="containerInputSiStatisticiDashboard">
+                    <div className="containerTextInputuriDashboard">
+                        <div className="linieInputDashboard">
+                            <label htmlFor="numeEntitateCurenta">Nume</label>
+                            <input id="numeEntitateCurenta" value={numeEntitateCurenta} onChange={(e) => {setNumeEntitateCurenta(e.target.value)}}></input>
+                        </div>
+
+                        <div className="linieInputDashboard">
+                            <label htmlFor="emailEntitateCurenta">Email</label>
+                            <input value={emailEntitateCurenta} onChange={(e) => {setEmailEntitateCurenta(e.target.value)}}></input>
+                        </div>
+
+                        <div className="linieInputDashboard">
+                            <label htmlFor="telefonEntitateCurenta">Telefon</label>
+                            <input value={telefonEntitateCurenta} onChange={(e) => {setTelefonEntitateCurenta(e.target.value)}}></input>
+                        </div>
+
+                        {authority === "ADMIN" && (
+                            <div className="linieInputDashboard">
+                                <label htmlFor="functieEntitateCurenta">Funcție</label>
+                                <input value={functieEntitateCurenta} onChange={(e) => {setFunctieEntitateCurenta(e.target.value)}}></input>
+                            </div>
+                        )}
+
+                        <div className="linieInputDashboard">
+                            <button onClick={handleEditEntitate}>Editează</button>
+                        </div>
+                    </div>
+                    <div className="containerStatisticiDashboard">
+
                     </div>
                 </div>
-                <div className="containerTextInfo">
-                    <RowInfo label={"Utilizator"}   valoare={userConectat.nume} />
-                    <RowInfo label={"Telefon"}      valoare={userConectat.nrTelefon} />
-                    <RowInfo label={"Email"}        valoare={username} />
-                    {authority === 'ADMIN' &&(
-                    <RowInfo label={"Funcție"}      valoare={userConectat.functie} />
-                    )}
-                    <div className="containerLinie">
-                        <div className="containerLinieStanga"></div>
-                        <div className="containerLinieDreapta"> <button className="buton">Setări</button></div>
-                    </div>
-                </div>
+            
+            
             </div>
-            <div className="containerSecundar">
-                <div className="containerSecundarStanga">
-                    <RowInfoSecundar label={"Programări"} valoare={"Nr"} functie={test}/>
-                    <RowInfoSecundar label={"Programări azi"} valoare={"Nr"} functie={test}/>
-                    <RowInfoSecundar label={"Programări mâine"} valoare={"Nr"} functie={test}/>
-                    <RowInfoSecundar label={"Tratamente azi"} valoare={"Nr"} functie={test}/>
-                    <RowInfoSecundar label={"Tratamente mâine"} valoare={"Nr"} functie={test}/>         
-                </div>
-                <div className="cotainerSecundarDreapta">
-                    <div className="linieContainerSecundarDreapta">
-                        <RowInfo label={"Vizite efectuate"} valoare={"Total"} />
-                    </div>
-                    <div className="linieContainerSecundarDreapta">
-                        <RowInfo label={"Total animale"} valoare={"Total"} />
-                    </div>
-                </div>
+
+            <div className="containerStatisticiDashboard">
+                <RowStatistica label={"Vizite efectuate"}    valoare={totalVizite}/>
+                <RowStatistica label={"Programări viitoare"} valoare={programariViitoare} />
+                <RowStatistica label={"Tratamente active"}   valoare={tratamenteActive}/>
+                <RowStatistica label={"Total animale"}       valoare={totalAnimale}/>
             </div>
-            <div className="container"></div>
-        </div>    
+
+            {viewRaspuns && (
+                <div className="modalTabele"> 
+                    <div style={{width:"25%", height:"33%", backgroundColor:"#232B2B", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", border: "1px solid white"}}>
+                        <p className="raspunsApi" style={{color: (textRaspuns.status === 200) ? "green" : "red"}}> {textRaspuns.data} </p>
+                        <button onClick={() => {setViewRaspuns(false)}}>OK</button>
+                    </div>
+                </div>
+            )}
+            
+        </div>
+
     )
 
 }

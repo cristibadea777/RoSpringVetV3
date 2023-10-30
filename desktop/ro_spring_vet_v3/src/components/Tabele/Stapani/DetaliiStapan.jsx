@@ -103,7 +103,7 @@ const DetaliiStapan = (
                     if(vizita.stapanId.stapanId === stapanCurent.entitate.stapanId){ nrVizite = nrVizite + 1, v.push(vizita) } 
                 })
                 programari && programari.map((programare) => { 
-                    if(programare.stapanId.stapanId === stapanCurent.entitate.animalId && programare.stare === 'confirmata'){ nrProgramari = nrProgramari + 1, p.push(programare) }
+                    if(programare.stapanId.stapanId === stapanCurent.entitate.stapanId && programare.stare === 'confirmata'){ nrProgramari = nrProgramari + 1, p.push(programare) }
                 })
                 tratamente && tratamente.map((tratament)  => { 
                     const dataSfarsit = new Date(tratament.dataSfarsit)
@@ -131,7 +131,6 @@ const DetaliiStapan = (
             }
         }, [stapanCurent, stapani]
     )
-
     
     const updateStapanListaAnimale = (stapanEditat) => {
         let animaleEditate = [...animale]
@@ -154,15 +153,13 @@ const DetaliiStapan = (
                 "data"   : raspunsApi.data.raspuns
             }
             setTextRaspuns(raspuns)
-            setViewRaspuns(true)
             if(raspunsApi.status === 200){
                 stapanCurent.entitate.imagine = raspunsApi.data.numePoza
                 updateListaStapani(stapanCurent.entitate)
                 updateStapanListaAnimale(stapanCurent.entitate)
             }  
-        } catch(error){ 
-            setTextRaspuns("EROARE")
-        }
+        } catch(error){ setTextRaspuns("EROARE") }
+        setViewRaspuns(true)
     }
 
     const handleShowModalAnimal = async (animal) => {

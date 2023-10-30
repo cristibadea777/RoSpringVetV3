@@ -14,7 +14,6 @@ const Navbar = ( { api, viewLoginRegister, setViewLoginRegister, setViewDashboar
         setViewVizite(false)
         setViewTratamente(false)
         setViewProgramari(false)
-        setViewDetaliiAnimal(false)
     }
 
     const handleClickDashboard  = () => { setAllFalse(), setViewDashboard  (true) }

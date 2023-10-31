@@ -47,12 +47,8 @@ const Stapani = ({stapani, setStapani, viewStapani, animale, setAnimale, vizite,
     }
     useEffect( () => { updatePozePagina() }, [stapani, paginaStapani] )
 
-    const handleShowModalStapan = (stapan, index) => {
-        setStapanCurent(
-            {
-                "entitate"      : stapan,
-            }
-        )
+    const handleShowModalStapan = (stapan) => {
+        setStapanCurent(stapan)
         setViewDetaliiStapan(true)
     }
 
@@ -117,7 +113,7 @@ const Stapani = ({stapani, setStapani, viewStapani, animale, setAnimale, vizite,
                                 <td>{stapan.nrTelefon}</td>
                                 <td>{stapan.email}</td>
                                 <td>
-                                    <div><button onClick={() => handleShowModalStapan(stapan, index)}><FontAwesomeIcon icon={faBars} color="white"></FontAwesomeIcon></button></div>
+                                    <div><button onClick={() => handleShowModalStapan(stapan)}><FontAwesomeIcon icon={faBars} color="white"></FontAwesomeIcon></button></div>
                                 </td>
                             </tr>
                         ))}

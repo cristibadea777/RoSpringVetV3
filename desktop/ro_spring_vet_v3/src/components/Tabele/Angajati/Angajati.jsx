@@ -2,8 +2,14 @@ import { useEffect, useState } from "react"
 import TitluSiFiltru from "../../Filtru/TitluSiFiltru"
 import Pagini from "../../Pagini/Pagini"
 import { getPozePagina } from "../../AccesareAPI"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faBars } from "@fortawesome/free-solid-svg-icons"
+import DetaliiAngajat from "./DetaliiAngajat"
 
-const Angajati = ({angajati, viewAngajati, api, jwtToken}) => {
+const Angajati = ({angajati, viewAngajati, setAngajati, vizite, api, jwtToken}) => {
+
+    const [viewDetaliiAngajat, setViewDetaliiAngajat] = useState('')
+    const [angajatCurent,      setAngajatCurent]      = useState('')
 
     const [textFiltru, setTextFiltru] = useState('')
     const handleChangeTextFiltru = (event) => {
@@ -16,7 +22,8 @@ const Angajati = ({angajati, viewAngajati, api, jwtToken}) => {
             return(
                 angajat.nume.toLowerCase().includes(textCautat) ||
                 angajat.nrTelefon.toLowerCase().includes(textCautat) ||
-                angajat.email.toLowerCase().includes(textCautat)
+                angajat.email.toLowerCase().includes(textCautat) ||
+                angajat.functie.toLowerCase().includes(textCautat)
             )
         })
     }
@@ -39,12 +46,25 @@ const Angajati = ({angajati, viewAngajati, api, jwtToken}) => {
         }, [paginaAngajati]
     )
 
-    const handleShowModalAngajat = () => {
-
+    const handleShowModalAngajat = (angajat) => {
+        setViewDetaliiAngajat(true)
+        setAngajatCurent(angajat)
     }
 
     return(
         <div className="containerPrincipal">
+
+            {viewDetaliiAngajat && (
+                <DetaliiAngajat 
+                    angajatCurent           = {angajatCurent}
+                    angajati                = {angajati}
+                    setAngajati             = {setAngajati}
+                    setViewDetaliiAngajat   = {setViewDetaliiAngajat}
+                    vizite                  = {vizite}
+                    jwtToken                = {jwtToken}
+                    api                     = {api}
+                />
+            )}
             
             <TitluSiFiltru 
                 titlu={"Angajati"}
@@ -67,19 +87,12 @@ const Angajati = ({angajati, viewAngajati, api, jwtToken}) => {
                     <tbody>
                         {angajati.map((angajat, index)=>(
                             <tr key={index}>
-                                <td>
-                                    <img 
-                                        src={pozePagina[index]} 
-                                        height="55" width="55"
-                                    />
-                                </td>
+                                <td><img src={pozePagina[index]} height="55" width="55"/></td>
                                 <td>{angajat.nume}</td>
                                 <td>{angajat.functie}</td>
                                 <td>{angajat.nrTelefon}</td>
                                 <td>{angajat.email}</td>
-                                <td>
-                                    <div><button>Opțiuni</button></div>
-                                </td>
+                                <td><div><button onClick={() => {handleShowModalAngajat(angajat)}}><FontAwesomeIcon icon={faBars} color="white"></FontAwesomeIcon></button></div></td>
                             </tr>
                         ))}
                     </tbody>

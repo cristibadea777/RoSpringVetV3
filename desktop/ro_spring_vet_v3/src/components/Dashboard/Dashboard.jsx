@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react"
 import "./Dashboard.css"
 import { toBase64 } from "../Tabele/Utilities"
-import { salvarePoza } from "../AccesareAPI"
+import { editEntitate, salvarePoza } from "../AccesareAPI"
 
 const Dashboard = ( {username, authority, userConectat, pozaProfil, setPozaProfil, angajati, animale, tratamente, programari, vizite, setAngajati, api, jwtToken} ) => {
     //username     = email
     //authority    = ADMIN/USER (stapan/doctor)
     //userConectat = json al obiectului stapan/doctor
 
+    const [idEntitateCurenta,      setIdEntitateCurenta]      = useState('')
     const [numeEntitateCurenta,    setNumeEntitateCurenta]    = useState('')
     const [emailEntitateCurenta,   setEmailEntitateCurenta]   = useState('')
     const [telefonEntitateCurenta, setTelefonEntitateCurenta] = useState('')
@@ -27,6 +28,7 @@ const Dashboard = ( {username, authority, userConectat, pozaProfil, setPozaProfi
                 let nrTratamente = 0
                 let nrAnimale    = 0
 
+                setIdEntitateCurenta     ((authority === 'ADMIN') ? userConectat.angajatId : userConectat.stapanId)
                 setNumeEntitateCurenta   (userConectat.nume)
                 setTelefonEntitateCurenta(userConectat.nrTelefon)
                 setEmailEntitateCurenta  (userConectat.email)
@@ -63,15 +65,67 @@ const Dashboard = ( {username, authority, userConectat, pozaProfil, setPozaProfi
         setAngajati(angajatiEdidati)
     }
 
-    const handleEditEntitate = async () => {
-        
+    const handleEditEntitate = () => {
+        (authority === "ADMIN") ? handleEditAngajat() : handleEditStapan()
+    }
+
+    const handleEditStapan = async () => {
+        const apiEndpoint = api + '/stapani/editStapan'
+        const cerere = {
+            "stapanId"    :   idEntitateCurenta,      
+            "nume"        :   numeEntitateCurenta,
+            "nrTelefon"   :   telefonEntitateCurenta,
+            "email"       :   emailEntitateCurenta,
+        }
+        const raspunsApi = await editEntitate({jwtToken, apiEndpoint, cerere})
+        setTextRaspuns(raspunsApi)
+        setViewRaspuns(true)
+        if(raspunsApi.status === 200){
+            //update in dashboard
+            userConectat.nume       = numeEntitateCurenta
+            userConectat.email      = emailEntitateCurenta
+            userConectat.nrTelefon  = telefonEntitateCurenta
+            userConectat.functie    = functieEntitateCurenta
+        }
+    }
+
+    const handleEditAngajat = async () => {
+        const apiEndpoint = api + '/angajati/editAngajat'
+        const cerere = {
+            "angajatId"   :   idEntitateCurenta,      
+            "nume"        :   numeEntitateCurenta,
+            "nrTelefon"   :   telefonEntitateCurenta,
+            "email"       :   emailEntitateCurenta,
+            "functie"     :   functieEntitateCurenta,
+        }
+        const angajatEditat = {    
+            ...userConectat,
+            "nume"        :   numeEntitateCurenta,
+            "nrTelefon"   :   telefonEntitateCurenta,
+            "email"       :   emailEntitateCurenta,         
+            "functie"     :   functieEntitateCurenta,
+        }
+        const raspunsApi = await editEntitate({jwtToken, apiEndpoint, cerere})
+        if(raspunsApi.status === 200){
+            //update in dashboard
+            userConectat.nume       = numeEntitateCurenta
+            userConectat.email      = emailEntitateCurenta
+            userConectat.nrTelefon  = telefonEntitateCurenta
+            userConectat.functie    = functieEntitateCurenta
+            //update lista angajati daca este admin (sa apara modificarile si in lista de angajati)
+            if(authority === "ADMIN")
+                updateListaAngajati(angajatEditat)
+            
+        }
+        setTextRaspuns(raspunsApi)
+        setViewRaspuns(true)
     }
 
     const handleChangePoza = async (evt) => {
         const file = evt.target.files[0]
         try {
             const poza       = await toBase64(file)
-            const idEntitate = (authority === 'ADMIN') ? userConectat.angajatId : userConectat.stapanId
+            const idEntitate = idEntitateCurenta
             const folder     = (authority === 'ADMIN') ? "poze_angajati"        : "poze_stapani"
             const entitate   = (authority === 'ADMIN') ? "angajat"              : "stapan"
             const raspunsApi = await salvarePoza({api, poza, jwtToken, folder, idEntitate, entitate})
@@ -142,20 +196,17 @@ const Dashboard = ( {username, authority, userConectat, pozaProfil, setPozaProfi
                             <button onClick={handleEditEntitate}>Editează</button>
                         </div>
                     </div>
+
                     <div className="containerStatisticiDashboard">
-
-                    </div>
+                        <RowStatistica label={"Vizite efectuate"}    valoare={totalVizite}/>
+                        <RowStatistica label={"Programări viitoare"} valoare={programariViitoare} />
+                        <RowStatistica label={"Tratamente active"}   valoare={tratamenteActive}/>
+                        <RowStatistica label={"Total animale"}       valoare={totalAnimale}/>
+                    </div>            
                 </div>
-            
-            
             </div>
 
-            <div className="containerStatisticiDashboard">
-                <RowStatistica label={"Vizite efectuate"}    valoare={totalVizite}/>
-                <RowStatistica label={"Programări viitoare"} valoare={programariViitoare} />
-                <RowStatistica label={"Tratamente active"}   valoare={tratamenteActive}/>
-                <RowStatistica label={"Total animale"}       valoare={totalAnimale}/>
-            </div>
+
 
             {viewRaspuns && (
                 <div className="modalTabele"> 

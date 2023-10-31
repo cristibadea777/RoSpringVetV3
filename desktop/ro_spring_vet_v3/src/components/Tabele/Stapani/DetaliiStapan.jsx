@@ -25,7 +25,7 @@ const DetaliiStapan = (
     const [pozaStapan,  setPozaStapan] = useState('')
     const getPozaStapan = async () => {
         let cale_poza = 'stapan_default.png'
-        if(stapanCurent.entitate.imagine !== null){ cale_poza = stapanCurent.entitate.imagine }
+        if(stapanCurent.imagine !== null){ cale_poza = stapanCurent.imagine }
         const apiEndpoint = api + '/resources/poze_stapani/' + cale_poza
         const poza = await getPoza({ jwtToken, apiEndpoint })
         setPozaStapan(poza)
@@ -62,7 +62,7 @@ const DetaliiStapan = (
     const [animalCurent,           setAnimalCurent]        = useState('')
     const [viewDetaliiAnimal,      setViewDetaliiAnimal]   = useState(false)
 
-    const [textFiltru,      setTextFiltru] = useState('')
+    const [textFiltru,  setTextFiltru] = useState('')
     const handleChangeTextFiltru = (event) => {
         setTextFiltru(event.target.value)
     }
@@ -83,7 +83,7 @@ const DetaliiStapan = (
 
     useEffect(
         () => {            
-            if(stapanCurent.entitate){
+            if(stapanCurent){
                 let dataCurenta  = new Date()
                 let nrVizite     = 0
                 let nrProgramari = 0
@@ -95,22 +95,22 @@ const DetaliiStapan = (
                 let p = []
                 let a = []
 
-                setIdEntitateCurenta     (stapanCurent.entitate.stapanId)
-                setNumeEntitateCurenta   (stapanCurent.entitate.nume)
-                setTelefonEntitateCurenta(stapanCurent.entitate.nrTelefon)
-                setEmailEntitateCurenta  (stapanCurent.entitate.email)
+                setIdEntitateCurenta     (stapanCurent.stapanId)
+                setNumeEntitateCurenta   (stapanCurent.nume)
+                setTelefonEntitateCurenta(stapanCurent.nrTelefon)
+                setEmailEntitateCurenta  (stapanCurent.email)
                 vizite && vizite.map((vizita) => { 
-                    if(vizita.stapanId.stapanId === stapanCurent.entitate.stapanId){ nrVizite = nrVizite + 1, v.push(vizita) } 
+                    if(vizita.stapanId.stapanId === stapanCurent.stapanId){ nrVizite = nrVizite + 1, v.push(vizita) } 
                 })
                 programari && programari.map((programare) => { 
-                    if(programare.stapanId.stapanId === stapanCurent.entitate.stapanId && programare.stare === 'confirmata'){ nrProgramari = nrProgramari + 1, p.push(programare) }
+                    if(programare.stapanId.stapanId === stapanCurent.stapanId && programare.stare === 'confirmata'){ nrProgramari = nrProgramari + 1, p.push(programare) }
                 })
                 tratamente && tratamente.map((tratament)  => { 
                     const dataSfarsit = new Date(tratament.dataSfarsit)
-                    if(tratament.animalId.stapan.stapanId === stapanCurent.entitate.stapanId && dataSfarsit > dataCurenta){ nrTratamente = nrTratamente + 1, t.push(tratament) }  
+                    if(tratament.animalId.stapan.stapanId === stapanCurent.stapanId && dataSfarsit > dataCurenta){ nrTratamente = nrTratamente + 1, t.push(tratament) }  
                 })
                 animale && animale.map((animal)  => { 
-                    if(animal.stapan.stapanId === stapanCurent.entitate.stapanId){ nrAnimale = nrAnimale + 1, a.push(animal) }  
+                    if(animal.stapan.stapanId === stapanCurent.stapanId){ nrAnimale = nrAnimale + 1, a.push(animal) }  
                 })
                 //default pt stapani
                 setOptiune('animale')
@@ -146,7 +146,7 @@ const DetaliiStapan = (
         const file = evt.target.files[0]
         try{
             const poza       = await toBase64(file)
-            const idEntitate = stapanCurent.entitate.stapanId
+            const idEntitate = stapanCurent.stapanId
             const raspunsApi = await salvarePoza({api, poza, jwtToken, folder: "poze_stapani", idEntitate, entitate: "stapan"}) 
             const raspuns = {
                 "status" : raspunsApi.status,
@@ -154,20 +154,16 @@ const DetaliiStapan = (
             }
             setTextRaspuns(raspuns)
             if(raspunsApi.status === 200){
-                stapanCurent.entitate.imagine = raspunsApi.data.numePoza
-                updateListaStapani(stapanCurent.entitate)
-                updateStapanListaAnimale(stapanCurent.entitate)
+                stapanCurent.imagine = raspunsApi.data.numePoza
+                updateListaStapani(stapanCurent)
+                updateStapanListaAnimale(stapanCurent)
             }  
         } catch(error){ setTextRaspuns("EROARE") }
         setViewRaspuns(true)
     }
 
     const handleShowModalAnimal = async (animal) => {
-        setAnimalCurent(
-            {
-                "entitate"      : animal,
-            }
-        )
+        setAnimalCurent(animal)
         setViewDetaliiAnimal(true)
     }
 
@@ -190,7 +186,7 @@ const DetaliiStapan = (
             "email"       :   emailEntitateCurenta,
         }
         const stapanEditat = {    
-            ...stapanCurent.entitate,
+            ...stapanCurent,
             "nume"        :   numeEntitateCurenta,
             "nrTelefon"   :   telefonEntitateCurenta,
             "email"       :   emailEntitateCurenta,         
@@ -200,9 +196,9 @@ const DetaliiStapan = (
             //update in lista stapani
             updateListaStapani(stapanEditat)
             //update stapan curent in modal detalii animal
-            stapanCurent.entitate.nume      = stapanEditat.nume
-            stapanCurent.entitate.nrTelefon = stapanEditat.nrTelefon
-            stapanCurent.entitate.email     = stapanEditat.email
+            stapanCurent.nume      = stapanEditat.nume
+            stapanCurent.nrTelefon = stapanEditat.nrTelefon
+            stapanCurent.email     = stapanEditat.email
             //update stapan in lista de animale - ca sa apara numele editat si in tabel
             updateStapanListaAnimale(stapanEditat)
         }
@@ -239,7 +235,7 @@ const DetaliiStapan = (
 
             <div className="modalDetaliiEntitate" >
                <BaraModalEntitate 
-                    titluModal             = {stapanCurent.entitate.nume}
+                    titluModal             = {stapanCurent.nume}
                     functieInchindereModal = {handleClickInchidereOptiuniEntitate}
                />
 
@@ -284,7 +280,7 @@ const DetaliiStapan = (
                             <button onClick={() => {setViewVizitaNoua(true)}}>Vizită nouă</button>
                         </div>
                         <div className="linieInput">
-                            <button onClick={() => {handleShowModalStapan(stapanCurent.entitate)}}>Vezi stăpân</button>
+                            <button onClick={() => {handleShowModalStapan(stapanCurent)}}>Vezi stăpân</button>
                         </div>
                         </>)}
                     </div>               

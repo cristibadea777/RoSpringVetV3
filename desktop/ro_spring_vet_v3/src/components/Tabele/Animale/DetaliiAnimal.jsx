@@ -41,7 +41,7 @@ const DetaliiAnimal = (
     const [pozaAnimal,  setPozaAnimal] = useState('')
     const getPozaAnimal = async () => {
         let cale_poza = 'animal_default.png'
-        if(animalCurent.entitate.imagine !== null){ cale_poza = animalCurent.entitate.imagine }
+        if(animalCurent.imagine !== null){ cale_poza = animalCurent.imagine }
         const apiEndpoint = api + '/resources/poze_animale/' + cale_poza
         const poza = await getPoza({ jwtToken, apiEndpoint })
         setPozaAnimal(poza)
@@ -66,14 +66,14 @@ const DetaliiAnimal = (
 
     const [stapan,      setStapan    ] = useState('')
     const getStapan = async () => {
-        const apiEndpoint = api + '/stapani/getStapan' + '?stapanId=' + animalCurent.entitate.stapan.stapanId
+        const apiEndpoint = api + '/stapani/getStapan' + '?stapanId=' + animalCurent.stapan.stapanId
         const stapan = await getEntitate({ jwtToken, apiEndpoint }) 
         setStapan(stapan)
     }
 
     useEffect(
         () => {            
-            if(animalCurent.entitate){
+            if(animalCurent){
                 let dataCurenta  = new Date()
                 let nrVizite     = 0
                 let nrProgramari = 0
@@ -83,20 +83,20 @@ const DetaliiAnimal = (
                 let t = []
                 let p = []
 
-                setIdAnimalCurent       (animalCurent.entitate.animalId)
-                setNumeAnimalCurent     (animalCurent.entitate.nume)
-                setRasaAnimalCurent     (animalCurent.entitate.rasa)
-                setSpecieAnimalCurent   (animalCurent.entitate.specie)
+                setIdAnimalCurent       (animalCurent.animalId)
+                setNumeAnimalCurent     (animalCurent.nume)
+                setRasaAnimalCurent     (animalCurent.rasa)
+                setSpecieAnimalCurent   (animalCurent.specie)
 
                 vizite && vizite.map((vizita) => { 
-                    if(vizita.animalId.animalId === animalCurent.entitate.animalId){ nrVizite = nrVizite + 1, v.push(vizita) } 
+                    if(vizita.animalId.animalId === animalCurent.animalId){ nrVizite = nrVizite + 1, v.push(vizita) } 
                 })
                 programari && programari.map((programare) => { 
-                    if(programare.animalId.animalId === animalCurent.entitate.animalId && programare.stare === 'confirmata'){ nrProgramari = nrProgramari + 1, p.push(programare) }
+                    if(programare.animalId.animalId === animalCurent.animalId && programare.stare === 'confirmata'){ nrProgramari = nrProgramari + 1, p.push(programare) }
                 })
                 tratamente && tratamente.map((tratament)  => { 
                     const dataSfarsit = new Date(tratament.dataSfarsit)
-                    if(tratament.animalId.animalId === animalCurent.entitate.animalId && dataSfarsit > dataCurenta){ nrTratamente = nrTratamente + 1, t.push(tratament) }  
+                    if(tratament.animalId.animalId === animalCurent.animalId && dataSfarsit > dataCurenta){ nrTratamente = nrTratamente + 1, t.push(tratament) }  
                 })
                 //default pt animale
                 setOptiune('vizite'),
@@ -121,7 +121,7 @@ const DetaliiAnimal = (
         const file = evt.target.files[0]
         try{
             const poza       = await toBase64(file)
-            const idEntitate = animalCurent.entitate.animalId
+            const idEntitate = animalCurent.animalId
             const raspunsApi = await salvarePoza({api, poza, jwtToken, folder: "poze_animale", idEntitate, entitate: "animal"}) 
             const raspuns = {
                 "status" : raspunsApi.status,
@@ -129,8 +129,8 @@ const DetaliiAnimal = (
             }
             setTextRaspuns(raspuns)
             if(raspunsApi.status === 200){
-                animalCurent.entitate.imagine = raspunsApi.data.numePoza
-                updateListaAnimale(animalCurent.entitate)
+                animalCurent.imagine = raspunsApi.data.numePoza
+                updateListaAnimale(animalCurent)
                 getPozaAnimal()
             }  
         } catch(error){  setTextRaspuns("EROARE") }
@@ -156,7 +156,7 @@ const DetaliiAnimal = (
             "rasa"        :   rasaAnimalCurent,
         }
         const animalEditat = {    
-            ...animalCurent.entitate,
+            ...animalCurent,
             "nume"   : numeAnimalCurent,
             "specie" : specieAnimalCurent,
             "rasa"   : rasaAnimalCurent,            
@@ -184,11 +184,7 @@ const DetaliiAnimal = (
         <div className="modalTabele"> 
             {viewDetaliiStapan&&(
                 <DetaliiStapan 
-                    stapanCurent = {
-                        {
-                            "entitate"      : stapan,
-                        }
-                    }
+                    stapanCurent         = {stapan}
                     setViewDetaliiStapan = {setViewDetaliiStapan}
                     animale              = {animale}
                     setAnimale           = {setAnimale}
@@ -205,7 +201,7 @@ const DetaliiAnimal = (
         
             <div className="modalDetaliiEntitate" >
                <BaraModalEntitate 
-                    titluModal             = {animalCurent.entitate.nume}
+                    titluModal             = {animalCurent.nume}
                     functieInchindereModal = {handleClickInchidereOptiuniEntitate}
                />
 
@@ -250,7 +246,7 @@ const DetaliiAnimal = (
                             <button onClick={() => {setViewVizitaNoua(true)}}>Vizită nouă</button>
                         </div>
                         <div className="linieInput">
-                            <button onClick={() => {handleShowModalStapan(animalCurent.entitate)}}>Vezi stăpân</button>
+                            <button onClick={() => {handleShowModalStapan(animalCurent)}}>Vezi stăpân</button>
                         </div>
                     </div>               
                 </div>
@@ -276,7 +272,7 @@ const DetaliiAnimal = (
 
             {viewProgramareNoua && (
             <ProgramareNoua 
-                animalCurent          = {animalCurent.entitate}
+                animalCurent          = {animalCurent}
                 setViewProgramareNoua = {setViewProgramareNoua}
                 viewProgramareNoua    = {viewProgramareNoua}
                 api                   = {api}
@@ -288,7 +284,7 @@ const DetaliiAnimal = (
             {viewVizitaNoua && (
             <VizitaNoua 
                 viewVizitaNoua        = {viewVizitaNoua}
-                animalCurent          = {animalCurent.entitate}
+                animalCurent          = {animalCurent}
                 setViewVizitaNoua     = {setViewVizitaNoua}
                 api                   = {api}
                 jwtToken              = {jwtToken}

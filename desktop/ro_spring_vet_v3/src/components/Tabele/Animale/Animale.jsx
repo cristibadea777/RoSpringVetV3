@@ -45,14 +45,9 @@ const Animale = ( {animale, setAnimale, stapani, setStapani, viewAnimale, vizite
         }
     }
     useEffect( () => { updatePozePagina() }, [paginaAnimale] )
-
     
     const handleShowModalAnimal = (animal) => {
-        setAnimalCurent(
-            {
-                "entitate"      : animal,
-            }
-        )
+        setAnimalCurent(animal)
         setViewDetaliiAnimal(true)
     }
 
@@ -103,7 +98,7 @@ const Animale = ( {animale, setAnimale, stapani, setStapani, viewAnimale, vizite
                                 <td>{animal.specie}</td>
                                 <td>{animal.rasa}</td>
                                 <td>
-                                    <div><button onClick={() => handleShowModalAnimal(animal, index)}><FontAwesomeIcon icon={faBars} color="white"></FontAwesomeIcon></button></div>
+                                    <div><button onClick={() => handleShowModalAnimal(animal)}><FontAwesomeIcon icon={faBars} color="white"></FontAwesomeIcon></button></div>
                                 </td>
                             </tr>
                         ))}

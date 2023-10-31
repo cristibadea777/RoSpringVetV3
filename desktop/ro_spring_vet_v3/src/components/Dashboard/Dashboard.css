@@ -3,7 +3,7 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    margin-top: 3%;
+    margin-top: 5%;
 }
 
 .containerInputuriDashboard{
@@ -29,15 +29,13 @@
 }
 
 .containerTextInputuriDashboard{
-    width: 60%;
+    width: 50%;
 }
 
 .containerStatisticiDashboard{
-    width: 40%;
+    width: 50%;
+    padding-left: 10%;
 }
-
-
-
 
 
 .containerPozaDashboard{

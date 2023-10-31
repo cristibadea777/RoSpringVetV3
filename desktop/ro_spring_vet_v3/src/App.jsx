@@ -127,6 +127,8 @@ function App() {
       <Angajati
         angajati                = {angajati}
         viewAngajati            = {viewAngajati}
+        setAngajati             = {setAngajati}
+        vizite                  = {vizite}
         api                     = {api}
         jwtToken                = {jwtToken}
       />)}

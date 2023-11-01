@@ -8,8 +8,8 @@ import { getPozePagina } from "../../AccesareAPI"
 
 const TabelDetaliiEntitate = ({listaTabel, optiune, textFiltru, viewTabel, handleShowModalAnimal, jwtToken, api}) => {
     
-    const [paginaEntitate,               setPaginaEntitate] = useState([])
-    const [pozePaginaAnimaleStapan,      setPozePaginaAnimaleStapan]     = useState([])
+    const [paginaEntitate,          setPaginaEntitate]          = useState([])
+    const [pozePaginaAnimaleStapan, setPozePaginaAnimaleStapan] = useState([])
 
     const filtrareEntitati = (listaTabel) => {
         return listaTabel.filter((entitate) => {

@@ -5,6 +5,7 @@ import { BaraModalEntitate, ContainerInputPoza } from "../ComponenteModale"
 import BaraTabelDetalii from "../DetaliiEntitate/BaraTabelDetalii"
 import TabelDetaliiEntitate from "../DetaliiEntitate/TabelDetaliiEntitate"
 import DetaliiAnimal from "../Animale/DetaliiAnimal"
+import AnimalNou from "../Animale/AnimalNou"
 
 const DetaliiStapan = (
     {   
@@ -31,22 +32,6 @@ const DetaliiStapan = (
         setPozaStapan(poza)
     }    
     
-///////
-    ///////
-////////////////////////////////////////////////////////
-        //////////////// 
-    /////////////////////////////////    //////// ///////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ////const pt view Animal nou aici ...............\\
-//////// //////////////////////////////    ////////////////////////////////////////////////////////////////////////
-     ////  ////////     ///////  /////   ////////////
-/////////    ///////////////////   ///////////          // ///////           ///////
-    /////// //////// ///////////////////   //////////   ////////////
-////////////////////////////////////////////////////////////////////////////
-        ///////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////
-
-
     const [listaTabel,             setListaTabel]             = useState([])
     const [optiune,                setOptiune]                = useState('')
 
@@ -61,6 +46,9 @@ const DetaliiStapan = (
     //pt detalii animal
     const [animalCurent,           setAnimalCurent]        = useState('')
     const [viewDetaliiAnimal,      setViewDetaliiAnimal]   = useState(false)
+
+    //modal animal nou
+    const [viewAnimalNou,     setViewAnimalNou]     = useState(false)
 
     const [textFiltru,  setTextFiltru] = useState('')
     const handleChangeTextFiltru = (event) => {
@@ -127,9 +115,8 @@ const DetaliiStapan = (
                 setAnimaleEntitate(a)
 
                 getPozaStapan()
-
             }
-        }, [stapanCurent, stapani]
+        }, [stapanCurent, stapani, animale]
     )
     
     const updateStapanListaAnimale = (stapanEditat) => {
@@ -233,6 +220,17 @@ const DetaliiStapan = (
                 />
             )}
 
+            {viewAnimalNou &&(
+                <AnimalNou 
+                    stapan                 = {stapanCurent}
+                    setViewAnimalNou       = {setViewAnimalNou}
+                    animale                = {animale}
+                    setAnimale             = {setAnimale}
+                    api                    = {api}
+                    jwtToken               = {jwtToken}
+                />
+            )}
+
             <div className="modalDetaliiEntitate" >
                <BaraModalEntitate 
                     titluModal             = {stapanCurent.nume}
@@ -267,22 +265,13 @@ const DetaliiStapan = (
                         <RowStatistica label={"Total Vizite"}        valoare={totalVizite}/>
                         <RowStatistica label={"Programări viitoare"} valoare={programariViitoare}/>
                         <RowStatistica label={"Tratamente active"}   valoare={tratamenteActive}/>                         
-                        <RowStatistica label={"Total animale"}  valoare={totalAnimale}/>
+                        <RowStatistica label={"Total animale"}       valoare={totalAnimale}/>
                     </div>
 
                     <div className="inputuriTextDetaliiEntitate">
-                        {stapanCurent.tipEntitate === 'animal' && (
-                        <>
                         <div className="linieInput">
-                            <button onClick={() => {setViewProgramareNoua(true)}}>Programare nouă</button>
+                            <button onClick={() => {setViewAnimalNou(true)}}>Animal nou</button>
                         </div>
-                        <div className="linieInput">
-                            <button onClick={() => {setViewVizitaNoua(true)}}>Vizită nouă</button>
-                        </div>
-                        <div className="linieInput">
-                            <button onClick={() => {handleShowModalStapan(stapanCurent)}}>Vezi stăpân</button>
-                        </div>
-                        </>)}
                     </div>               
                 </div>
 

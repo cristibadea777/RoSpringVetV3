@@ -191,18 +191,7 @@ const DetaliiAngajat = (
                     </div>
 
                     <div className="inputuriTextDetaliiEntitate">
-                        {angajatCurent.tipEntitate === 'animal' && (
-                        <>
-                        <div className="linieInput">
-                            <button onClick={() => {setViewProgramareNoua(true)}}>Programare nouă</button>
-                        </div>
-                        <div className="linieInput">
-                            <button onClick={() => {setViewVizitaNoua(true)}}>Vizită nouă</button>
-                        </div>
-                        <div className="linieInput">
-                            <button onClick={() => {handleShowModalAngajat(angajatCurent)}}>Vezi stăpân</button>
-                        </div>
-                        </>)}
+                        
                     </div>               
                 </div>
 

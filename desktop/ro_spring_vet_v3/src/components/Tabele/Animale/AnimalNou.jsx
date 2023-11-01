@@ -6,25 +6,23 @@ import "../Tabele.css"
 import { getPoza, salvareEntitate } from "../../AccesareAPI"
 import { toBase64 } from "../Utilities"
 
-const StapanNou = ({setViewStapanNou, api, jwtToken, stapani, setStapani}) => {
+const AnimalNou = ({stapan, setViewAnimalNou, animale, setAnimale, api, jwtToken}) => {
     
-    const handleClickInchidere = () =>{ setViewStapanNou(false) }
+    const handleClickInchidere = () =>{ setViewAnimalNou(false) }
 
     const [textRaspuns, setTextRaspuns] = useState('')
-    const [viewRaspuns, setViewRaspuns] = useState('')
+    const [viewRaspuns, setViewRaspuns] = useState(false)
     const [nume,        setNume]        = useState('')
-    const [telefon,     setTelefon]     = useState('')
-    const [email,       setEmail]       = useState('')
-    const [parola,      setParola]      = useState('')
+    const [specie,      setSpecie]      = useState('')
+    const [rasa,        setRasa]        = useState('')
     const [pozaCurenta, setPozaCurenta] = useState('')
 
     const handleChangeNume      = (event) => { setNume(event.target.value)    } 
-    const handleChangeTelefon   = (event) => { setTelefon(event.target.value) }
-    const handleChangeEmail     = (event) => { setEmail(event.target.value)   }
-    const handleChangeParola    = (event) => { setParola(event.target.value)  }
+    const handleChangeSpecie    = (event) => { setSpecie(event.target.value) }
+    const handleChangeRasa      = (event) => { setRasa(event.target.value)   }
 
     const getPozaDefault = async () => {
-        const raspuns = await getPoza({ jwtToken, apiEndpoint: `${api}/resources/poze_stapani/stapan_default.png` })
+        const raspuns = await getPoza({ jwtToken, apiEndpoint: `${api}/resources/poze_animale/animal_default.png` })
         setPozaCurenta(raspuns)
     }
     useEffect(() => { getPozaDefault() }, [])
@@ -37,24 +35,24 @@ const StapanNou = ({setViewStapanNou, api, jwtToken, stapani, setStapani}) => {
         } catch(error){ setTextRaspuns("EROARE") }
     }
     
-    const handleClickAdaugaStapanNou = async () => {
+    const handleClickAdaugaAnimalNou = async () => {
         const cerere = {
+            "stapanId"  : stapan.stapanId,
             "nume"      : nume,
-            "nrTelefon" : telefon,
-            "email"     : email,
-            "parola"    : parola,
+            "specie"    : specie,
+            "rasa"      : rasa,
             "imagine"   : pozaCurenta,
         }
-        const apiEndpoint = api + "/stapani/angajat/saveStapan"
+        const apiEndpoint = api + "/animale/saveAnimal"
         const raspunsApi = await salvareEntitate( {jwtToken, apiEndpoint, cerere} )
         if(raspunsApi.status === 200){
-            const raspuns = { //pt tag-ul <p> la reusita
+            const raspuns = { 
                 "status" : raspunsApi.status,
-                "data"   : "Stăpân adăugat",
+                "data"   : "Animal adăugat",
             }
             setTextRaspuns(raspuns) 
-            //raspunsul de la server este stapanul adaugat - se adauga in lista
-            adaugaStapan(raspunsApi.data)
+            //raspunsul de la server este animalul adaugat - pus in lista de animale si lista animalelor stapanului in modal detalii
+            adaugaAnimal(raspunsApi.data)
         }
         else{
             const raspuns = {
@@ -66,10 +64,11 @@ const StapanNou = ({setViewStapanNou, api, jwtToken, stapani, setStapani}) => {
         setViewRaspuns(true)
     }
 
-    const adaugaStapan = (stapanAdaugat) => {
-        const stapaniEditati = [...stapani]
-        stapaniEditati.push(stapanAdaugat)
-        setStapani(stapaniEditati) 
+    const adaugaAnimal = (animalNou) => {
+        //push in lista de animale - lista de animale a stapanului se va recalcula si ea in useEffect
+        const animaleEditate         = [...animale]
+        animaleEditate.push(animalNou)
+        setAnimale(animaleEditate)
     }
 
     return(
@@ -77,7 +76,7 @@ const StapanNou = ({setViewStapanNou, api, jwtToken, stapani, setStapani}) => {
         <div className="modalAdaugare">
             <div className="baraModal">
                 <div id="stanga">  
-                    <p className="textTitluModal">Adaugă un stăpân nou</p> 
+                    <p className="textTitluModal">Adaugă un animal nou</p> 
                 </div>    
                 <div id="dreapta"> 
                     <button className="butonInchidere" onClick={handleClickInchidere}>
@@ -93,19 +92,15 @@ const StapanNou = ({setViewStapanNou, api, jwtToken, stapani, setStapani}) => {
                         <input className="inputAdaugare" id="nume" value={nume} onChange={handleChangeNume}></input>
                     </div>
                     <div className="linieColoanaInput">
-                        <label className="labelInputAdaugare" htmlFor="telefon">Telefon</label>
-                        <input className="inputAdaugare" id="telefon" value={telefon} onChange={handleChangeTelefon}></input>
+                        <label className="labelInputAdaugare" htmlFor="specie">Specie</label>
+                        <input className="inputAdaugare" id="specie" value={specie} onChange={handleChangeSpecie}></input>
                     </div>
                     <div className="linieColoanaInput">
-                        <label className="labelInputAdaugare" htmlFor="email">Email</label>
-                        <input className="inputAdaugare" id="email" value={email} onChange={handleChangeEmail}></input>
-                    </div>
-                    <div className="linieColoanaInput">
-                        <label className="labelInputAdaugare" htmlFor="parola">Parola</label>
-                        <input type="password" className="inputAdaugare" id="parola" value={parola} onChange={handleChangeParola}></input>
+                        <label className="labelInputAdaugare" htmlFor="rasa">Rasa</label>
+                        <input className="inputAdaugare" id="rasa" value={rasa} onChange={handleChangeRasa}></input>
                     </div>
                     <div className="linieColoanaInputButon">
-                        <button onClick={handleClickAdaugaStapanNou} className="butonAdauga">Adaugă</button>
+                        <button onClick={handleClickAdaugaAnimalNou} className="butonAdauga">Adaugă</button>
                     </div>
                 </div>
                 <div className="coloanaPoza">
@@ -129,6 +124,7 @@ const StapanNou = ({setViewStapanNou, api, jwtToken, stapani, setStapani}) => {
                 </div>
             </div>
         </div>
+
         {viewRaspuns && (
             <div className="modal"> 
                 <div style={{width:"25%", height:"33%", backgroundColor:"#232B2B", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", border: "1px solid white"}}>
@@ -136,7 +132,7 @@ const StapanNou = ({setViewStapanNou, api, jwtToken, stapani, setStapani}) => {
                     <button onClick={() => {
                         setViewRaspuns(false)
                         if(textRaspuns.status === 200) 
-                            setViewStapanNou(false)
+                            setViewAnimalNou(false)
                     }}>OK</button>
                 </div>
             </div>
@@ -144,4 +140,4 @@ const StapanNou = ({setViewStapanNou, api, jwtToken, stapani, setStapani}) => {
     </div>
     )
 }
-export default StapanNou
+export default AnimalNou

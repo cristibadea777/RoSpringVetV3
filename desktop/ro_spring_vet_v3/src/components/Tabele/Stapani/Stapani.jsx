@@ -14,7 +14,7 @@ const Stapani = ({stapani, setStapani, viewStapani, animale, setAnimale, vizite,
     const [viewDetaliiStapan,   setViewDetaliiStapan]   = useState('')
     const [stapanCurent,        setStapanCurent]        = useState('')
 
-    const [textFiltru,      setTextFiltru] = useState('')
+    const [textFiltru,          setTextFiltru]          = useState('')
     const handleChangeTextFiltru = (event) => {
         setTextFiltru(event.target.value)
     }
@@ -74,8 +74,8 @@ const Stapani = ({stapani, setStapani, viewStapani, animale, setAnimale, vizite,
             
             {viewStapanNou && (
             <StapanNou 
-                viewStapanNou    = {viewStapanNou}
                 setViewStapanNou = {setViewStapanNou}
+                setStapani       = {setStapani}
                 api              = {api}
                 jwtToken         = {jwtToken}
                 stapani          = {stapani}
@@ -103,12 +103,7 @@ const Stapani = ({stapani, setStapani, viewStapani, animale, setAnimale, vizite,
                     <tbody>
                         {paginaStapani.map((stapan, index)=>(
                             <tr key={stapan.stapanId}>
-                                <td>
-                                    <img 
-                                        src={pozePaginaStapani[index]} 
-                                        height="55" width="55"
-                                    />
-                                </td>
+                                <td><img src={pozePaginaStapani[index]} height="55" width="55"/></td>
                                 <td>{stapan.nume}</td>
                                 <td>{stapan.nrTelefon}</td>
                                 <td>{stapan.email}</td>
@@ -122,6 +117,7 @@ const Stapani = ({stapani, setStapani, viewStapani, animale, setAnimale, vizite,
             </div>   
 
             <Pagini 
+                lista                = {stapani}
                 viewTabel            = {viewStapani}
                 listaObiecteFiltrate = {stapaniFiltrati}
                 setPaginaTabel       = {setPaginaStapani}

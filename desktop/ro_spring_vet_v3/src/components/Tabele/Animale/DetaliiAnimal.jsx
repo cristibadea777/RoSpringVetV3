@@ -11,7 +11,7 @@ import DetaliiStapan from "../Stapani/DetaliiStapan";
 
 const DetaliiAnimal = (
     {   
-        animalCurent, animale, setAnimale, stapani, setStapani, api, jwtToken, vizite, programari, tratamente, angajati, setViewDetaliiAnimal
+        animalCurent, animale, setAnimale, stapani, setStapani, api, jwtToken, vizite, setVizite, programari, setProgramari, tratamente, angajati, setViewDetaliiAnimal
     }) => {
     
     const handleClickInchidereOptiuniEntitate = () => { setViewDetaliiAnimal(false) }
@@ -71,50 +71,60 @@ const DetaliiAnimal = (
         setStapan(stapan)
     }
 
+    const getViziteSiTratamente = () => {
+        let dataCurenta  = new Date()
+        let nrVizite     = 0
+        let nrTratamente = 0
+        let v = []
+        let t = []    
+        vizite && vizite.map((vizita) => { 
+            if(vizita.animalId.animalId === animalCurent.animalId){ 
+                nrVizite = nrVizite + 1, v.push(vizita) 
+            } 
+        })
+        tratamente && tratamente.map((tratament)  => { 
+            const dataSfarsit = new Date(tratament.dataSfarsit)
+            if(tratament.animalId.animalId === animalCurent.animalId && dataSfarsit > dataCurenta){ 
+                nrTratamente = nrTratamente + 1, t.push(tratament) 
+            }  
+        })
+        setViziteEntitate(v)
+        setTotalVizite(nrVizite)
+        setTratamenteEntitate(t)
+        setTratamenteActive(nrTratamente)
+        setListaTabel(v)
+        setOptiune('vizite')
+    } 
+
+    const getProgramari = () => {
+        let nrProgramari = 0
+        let p = []
+        programari && programari.map((programare) => { 
+            if(programare.animalId.animalId === animalCurent.animalId && programare.stare === 'confirmata'){ 
+                nrProgramari = nrProgramari + 1, p.push(programare) 
+            }
+        })
+        setProgramariViitoare(nrProgramari)
+        setProgramariEntitate(p) 
+        setListaTabel(p)
+        setOptiune('programari')
+    }
+
+    useEffect(() => { getProgramari() }, [programari])
+
+    useEffect(() => { getViziteSiTratamente() }, [vizite])
+    
     useEffect(
         () => {            
             if(animalCurent){
-                let dataCurenta  = new Date()
-                let nrVizite     = 0
-                let nrProgramari = 0
-                let nrTratamente = 0
-                
-                let v = []
-                let t = []
-                let p = []
-
-                setIdAnimalCurent       (animalCurent.animalId)
-                setNumeAnimalCurent     (animalCurent.nume)
-                setRasaAnimalCurent     (animalCurent.rasa)
-                setSpecieAnimalCurent   (animalCurent.specie)
-
-                vizite && vizite.map((vizita) => { 
-                    if(vizita.animalId.animalId === animalCurent.animalId){ nrVizite = nrVizite + 1, v.push(vizita) } 
-                })
-                programari && programari.map((programare) => { 
-                    if(programare.animalId.animalId === animalCurent.animalId && programare.stare === 'confirmata'){ nrProgramari = nrProgramari + 1, p.push(programare) }
-                })
-                tratamente && tratamente.map((tratament)  => { 
-                    const dataSfarsit = new Date(tratament.dataSfarsit)
-                    if(tratament.animalId.animalId === animalCurent.animalId && dataSfarsit > dataCurenta){ nrTratamente = nrTratamente + 1, t.push(tratament) }  
-                })
-                //default pt animale
-                setOptiune('vizite'),
-                setListaTabel(v)
-
-                setTotalVizite(nrVizite)
-                setProgramariViitoare(nrProgramari)
-                setTratamenteActive(nrTratamente)
-
-                setViziteEntitate(v)
-                setProgramariEntitate(p) 
-                setTratamenteEntitate(t)
-
+                setIdAnimalCurent    (animalCurent.animalId)
+                setNumeAnimalCurent  (animalCurent.nume)
+                setRasaAnimalCurent  (animalCurent.rasa)
+                setSpecieAnimalCurent(animalCurent.specie)
                 getPozaAnimal()
-
                 getStapan()                                    
             }
-        }, [animalCurent, animale]
+        }, [animalCurent]
     )
 
     const handleChangePoza = async (evt) => {
@@ -280,6 +290,7 @@ const DetaliiAnimal = (
                 setTextRaspuns        = {setTextRaspuns}
                 setViewRaspuns        = {setViewRaspuns}
                 programari            = {programari}
+                setProgramari         = {setProgramari}
             />)}
             {viewVizitaNoua && (
             <VizitaNoua 
@@ -291,6 +302,7 @@ const DetaliiAnimal = (
                 setTextRaspuns        = {setTextRaspuns}    
                 setViewRaspuns        = {setViewRaspuns}    
                 vizite                = {vizite}
+                setVizite             = {setVizite}
                 angajati              = {angajati}
                 tratamente            = {tratamente}
             />

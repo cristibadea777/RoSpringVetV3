@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useEffect, useState } from "react"
 import { salvareEntitate } from "../../AccesareAPI"
 
-const VizitaNoua = ({animalCurent, setViewVizitaNoua, api, jwtToken, setTextRaspuns, setViewRaspuns, vizite, angajati, tratamente}) => {
+const VizitaNoua = ({animalCurent, setViewVizitaNoua, api, jwtToken, setTextRaspuns, setViewRaspuns, vizite, setVizite, angajati, tratamente}) => {
     
     const handleClickInchidere = () => {
         setViewVizitaNoua(false)
@@ -49,8 +49,10 @@ const VizitaNoua = ({animalCurent, setViewVizitaNoua, api, jwtToken, setTextRasp
             }
             setTextRaspuns(raspuns)
             //adaugat vizita si tratament in liste
-            vizite.push(raspunsApi.data)
+            const viziteEditate = [...vizite]
+            viziteEditate.push(raspunsApi.data)
             tratamente.push(raspunsApi.data.tratament)
+            setVizite(viziteEditate)
             setViewVizitaNoua(false)
         }
         else{

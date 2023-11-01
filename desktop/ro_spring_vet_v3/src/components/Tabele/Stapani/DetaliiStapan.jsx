@@ -9,7 +9,7 @@ import AnimalNou from "../Animale/AnimalNou"
 
 const DetaliiStapan = (
     {   
-        stapanCurent, setViewDetaliiStapan, animale, setAnimale, stapani, setStapani, api, jwtToken, vizite, programari, tratamente, angajati
+        stapanCurent, setViewDetaliiStapan, animale, setAnimale, stapani, setStapani, api, jwtToken, vizite, setVizite, programari, setProgramari, tratamente, angajati
     }) => {
     
     const handleClickInchidereOptiuniEntitate = () => { setViewDetaliiStapan(false) }
@@ -211,8 +211,10 @@ const DetaliiStapan = (
                     stapani                 = {stapani}
                     setStapani              = {setStapani}
                     programari              = {programari}
+                    setProgramari           = {setProgramari}
                     tratamente              = {tratamente}
                     vizite                  = {vizite}
+                    setVizite               = {setVizite}
                     angajati                = {angajati}
                     setViewDetaliiAnimal    = {setViewDetaliiAnimal}
                     api                     = {api}

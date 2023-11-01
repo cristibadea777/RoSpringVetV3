@@ -7,7 +7,7 @@ import Pagini from "../../Pagini/Pagini"
 import DetaliiAnimal from "./DetaliiAnimal"
 import { getPozePagina } from "../../AccesareAPI"
 
-const Animale = ( {animale, setAnimale, stapani, setStapani, viewAnimale, vizite, programari, tratamente, angajati, api, jwtToken} ) => {
+const Animale = ( {animale, setAnimale, stapani, setStapani, viewAnimale, vizite, setVizite, setProgramari, programari, tratamente, angajati, api, jwtToken} ) => {
 
     const [viewDetaliiAnimal,   setViewDetaliiAnimal]   = useState('')
     const [animalCurent,        setAnimalCurent]        = useState('')
@@ -64,6 +64,8 @@ const Animale = ( {animale, setAnimale, stapani, setStapani, viewAnimale, vizite
                     programari              = {programari}
                     tratamente              = {tratamente}
                     vizite                  = {vizite}
+                    setVizite               = {setVizite}
+                    setProgramari           = {setProgramari}
                     angajati                = {angajati}
                     setViewDetaliiAnimal    = {setViewDetaliiAnimal}
                     api                     = {api}

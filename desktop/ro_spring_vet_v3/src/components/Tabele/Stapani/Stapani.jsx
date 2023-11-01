@@ -7,7 +7,7 @@ import { faBars } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import DetaliiStapan from "./DetaliiStapan"
 
-const Stapani = ({stapani, setStapani, viewStapani, animale, setAnimale, vizite, programari, tratamente, angajati, api, jwtToken}) => {
+const Stapani = ({stapani, setStapani, viewStapani, animale, setAnimale, vizite, setVizite, programari, setProgramari, tratamente, angajati, api, jwtToken}) => {
 
     const [viewStapanNou,   setViewStapanNou] = useState(false)
 
@@ -63,8 +63,10 @@ const Stapani = ({stapani, setStapani, viewStapani, animale, setAnimale, vizite,
                     animale                 = {animale}
                     setAnimale              = {setAnimale}
                     programari              = {programari}
+                    setProgramari           = {setProgramari}
                     tratamente              = {tratamente}
                     vizite                  = {vizite}
+                    setVizite               = {setVizite}
                     angajati                = {angajati}
                     setViewDetaliiStapan    = {setViewDetaliiStapan}
                     api                     = {api}

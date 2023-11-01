@@ -4,7 +4,7 @@ import "../ModalAdaugare.css"
 import { useEffect, useState } from "react"
 import { salvareEntitate } from "../../AccesareAPI"
 
-const ProgramareNoua = ({ animalCurent, setViewProgramareNoua, api, jwtToken, setTextRaspuns, setViewRaspuns, programari }) => {
+const ProgramareNoua = ({ animalCurent, setViewProgramareNoua, api, jwtToken, setTextRaspuns, setViewRaspuns, programari, setProgramari }) => {
     
     const handleClickInchidere = () => { setViewProgramareNoua(false) }
 
@@ -29,7 +29,9 @@ const ProgramareNoua = ({ animalCurent, setViewProgramareNoua, api, jwtToken, se
             }
             setTextRaspuns(raspuns)
             //obiectul programare din raspunsApi.data trebuie pus in lista de programari
-            programari.push(raspunsApi.data)
+            const programariEditate = [...programari]
+            programariEditate.push(raspunsApi.data)
+            setProgramari(programariEditate)
             setViewProgramareNoua(false)
         }
         else{

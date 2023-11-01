@@ -154,6 +154,7 @@ const TabelDetaliiEntitate = ({listaTabel, optiune, textFiltru, viewTabel, handl
                 setPaginaTabel          = {setPaginaEntitate}
                 textFiltru              = {textFiltru}
                 viewTabel               = {viewTabel}
+                optiune                 = {optiune}
             />
         </div>
         </>

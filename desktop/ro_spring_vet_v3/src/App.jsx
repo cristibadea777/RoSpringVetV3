@@ -117,7 +117,9 @@ function App() {
         stapani                 = {stapani}
         setStapani              = {setStapani}
         vizite                  = {vizite}
+        setVizite               = {setVizite}
         programari              = {programari}
+        setProgramari           = {setProgramari}
         tratamente              = {tratamente}
         angajati                = {angajati}
         api                     = {api}
@@ -140,7 +142,9 @@ function App() {
         animale                 = {animale}
         setAnimale              = {setAnimale}
         vizite                  = {vizite}
+        setVizite               = {setVizite}
         programari              = {programari}
+        setProgramari           = {setProgramari}
         tratamente              = {tratamente}
         angajati                = {angajati}
         api                     = {api}

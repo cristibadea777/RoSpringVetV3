@@ -16,8 +16,8 @@ const DetaliiAnimal = (
     
     const handleClickInchidereOptiuniEntitate = () => { setViewDetaliiAnimal(false) }
 
-    const [idAnimalCurent,          setIdAnimalCurent]        = useState('')
-    const [numeAnimalCurent,        setNumeAnimalCurent]      = useState('')
+    const [idAnimalCurent,         setIdAnimalCurent]         = useState('')
+    const [numeAnimalCurent,       setNumeAnimalCurent]       = useState('')
     const [rasaAnimalCurent,       setRasaAnimalCurent]       = useState('')
     const [specieAnimalCurent,     setSpecieAnimalCurent]     = useState('')
  
@@ -115,7 +115,7 @@ const DetaliiAnimal = (
     useEffect(() => { getViziteSiTratamente() }, [vizite])
     
     useEffect(
-        () => {            
+        () => {     
             if(animalCurent){
                 setIdAnimalCurent    (animalCurent.animalId)
                 setNumeAnimalCurent  (animalCurent.nume)
@@ -124,7 +124,7 @@ const DetaliiAnimal = (
                 getPozaAnimal()
                 getStapan()                                    
             }
-        }, [animalCurent]
+        }, [animalCurent, animale]
     )
 
     const handleChangePoza = async (evt) => {
@@ -172,8 +172,14 @@ const DetaliiAnimal = (
             "rasa"   : rasaAnimalCurent,            
         }
         const raspunsApi = await editEntitate({jwtToken, apiEndpoint, cerere})
-        if(raspunsApi.status === 200)
+        if(raspunsApi.status === 200){
             updateListaAnimale(animalEditat)
+            //pt modalul curent
+            animalCurent.nume   = animalEditat.nume
+            animalCurent.specie = animalEditat.specie
+            animalCurent.rasa   = animalEditat.rasa
+        }
+
         setTextRaspuns(raspunsApi)
         setViewRaspuns(true)
     }
@@ -203,7 +209,9 @@ const DetaliiAnimal = (
                     api                  = {api}
                     jwtToken             = {jwtToken}
                     vizite               = {vizite}
+                    setVizite            = {setVizite}
                     programari           = {programari}
+                    setProgramari        = {setProgramari}
                     tratamente           = {tratamente}
                     angajati             = {angajati}
                 />

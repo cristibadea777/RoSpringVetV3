@@ -1,13 +1,12 @@
 import { faX } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { salvareEntitate } from "../../AccesareAPI"
+import "../ModalAdaugare.css"
 
 const VizitaNoua = ({animalCurent, setViewVizitaNoua, api, jwtToken, setTextRaspuns, setViewRaspuns, vizite, setVizite, angajati, tratamente}) => {
     
-    const handleClickInchidere = () => {
-        setViewVizitaNoua(false)
-    }
+    const handleClickInchidere = () => { setViewVizitaNoua(false) }
 
     const [motiv,           setMotiv]           = useState('')
     const [diagnostic,      setDiagnostic]      = useState('')
@@ -118,9 +117,12 @@ const VizitaNoua = ({animalCurent, setViewVizitaNoua, api, jwtToken, setTextRasp
                     </div>
                     
                     <div className="containerLinie">
-                        <button onClick={handleClickAdaugaVizita}>Adaugă</button>
+                        <div className="containerLinieStanga">
+                        </div>
+                        <div className="containerLinieDreapta" style={{justifyContent: "flex-end"}}>
+                            <button onClick={handleClickAdaugaVizita}>Adaugă</button>
+                        </div>
                     </div>
-
                 </div>
 
             </div>

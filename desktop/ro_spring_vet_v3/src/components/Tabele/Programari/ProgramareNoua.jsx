@@ -21,7 +21,6 @@ const ProgramareNoua = ({ animalCurent, setViewProgramareNoua, api, jwtToken, se
         }
         const raspunsApi = await salvareEntitate({jwtToken, apiEndpoint, cerere})
         if(raspunsApi.status === 200){
-            //pt tag-ul <p> in OptiuniAnimal
             //pun mesajul de succes in data pt ca la succes se returneaza de la server nu mesaj, ci un obiect programare
             const raspuns = {
                 "status" : raspunsApi.status,
@@ -40,19 +39,18 @@ const ProgramareNoua = ({ animalCurent, setViewProgramareNoua, api, jwtToken, se
                 "data"   : raspunsApi.data, //la esec se returneaza mesajul de eroare de la server
             }
             setTextRaspuns(raspuns)
-           
         }
         setViewRaspuns(true)
     }
 
-    const [dataAleasa, setDataAleasa]   = useState(new Date().toISOString().split('T')[0])
+    const [dataAleasa, setDataAleasa]   = useState('')
     const [motiv,      setMotiv]        = useState('')
 
     const azi = new Date().toISOString().split('T')[0]
 
     return (
     <div className="modalSecundar">
-        <div className="modalAdaugare">
+        <div className="modalAdaugare" style={{width:"45%", height: "45%"}}>
             <div className="baraModal">
                 <div id="stanga">  
                     <p className="textTitluModal">{animalCurent.nume} - Programare nouă</p> 
@@ -64,7 +62,7 @@ const ProgramareNoua = ({ animalCurent, setViewProgramareNoua, api, jwtToken, se
                 </div>
             </div>
 
-            <div className="containerAdaugare">
+            <div className="containerAdaugare" >
                 <div className="containerLinie">
                     <label htmlFor="dataAleasa">Dată</label>
                     <input type="datetime-local" id="dataAleasa" value={dataAleasa} onChange={handleChangeData} min={azi}></input>
@@ -75,11 +73,11 @@ const ProgramareNoua = ({ animalCurent, setViewProgramareNoua, api, jwtToken, se
                     <input id="motiv" value={motiv} onChange={handleChangeMotiv}></input>
                 </div>
                 
-                <div className="containerLinie">
+                <div className="containerLinie" style={{justifyContent: "flex-end"}}>
                     <button onClick={handleClickAdaugaProgramare}>Adaugă</button>
                 </div>
-
             </div>
+            
         </div>
     </div>
     )

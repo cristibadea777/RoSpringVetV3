@@ -60,7 +60,7 @@ const LoginRegister = ({ setViewLoginRegister, setViewDashboard, setJwtToken, se
                 }
             }
             if(authority === 'ADMIN'){
-                const apiEndpoint = `${api}/angajati/getAngajatConectat`
+                const apiEndpoint = `${api}/angajati/angajat/getAngajatConectat`
                 const admin = await getUserConectat({jwtToken, apiEndpoint})
                 setUserConectat(admin)
                 if(admin.imagine === null){

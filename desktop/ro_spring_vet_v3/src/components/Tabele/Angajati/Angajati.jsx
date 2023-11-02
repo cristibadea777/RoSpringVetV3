@@ -5,8 +5,11 @@ import { getPozePagina } from "../../AccesareAPI"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faBars } from "@fortawesome/free-solid-svg-icons"
 import DetaliiAngajat from "./DetaliiAngajat"
+import AngajatNou from "./AngajatNou"
 
 const Angajati = ({angajati, viewAngajati, setAngajati, vizite, api, jwtToken}) => {
+
+    const [viewAngajatNou,     setViewAngajatNou]     = useState(false)
 
     const [viewDetaliiAngajat, setViewDetaliiAngajat] = useState('')
     const [angajatCurent,      setAngajatCurent]      = useState('')
@@ -35,10 +38,10 @@ const Angajati = ({angajati, viewAngajati, setAngajati, vizite, api, jwtToken}) 
         () => {
           if(paginaAngajati.length !== 0){
             getPozePagina({
-                caleFolderPoze: '/resources/poze_angajati/', 
-                poza: 'angajat_default.png', 
-                lista: paginaAngajati, 
-                setListaPoze: setPozePagina, 
+                caleFolderPoze : '/resources/poze_angajati/', 
+                poza           : 'angajat_default.png', 
+                lista          : paginaAngajati, 
+                setListaPoze   : setPozePagina, 
                 jwtToken, 
                 api,
             })
@@ -54,6 +57,16 @@ const Angajati = ({angajati, viewAngajati, setAngajati, vizite, api, jwtToken}) 
     return(
         <div className="containerPrincipal">
 
+            {viewAngajatNou && (
+                <AngajatNou 
+                    angajati                = {angajati}
+                    setAngajati             = {setAngajati}
+                    setViewAngajatNou       = {setViewAngajatNou}
+                    api                     = {api}
+                    jwtToken                = {jwtToken}
+                />
+            )}
+
             {viewDetaliiAngajat && (
                 <DetaliiAngajat 
                     angajatCurent           = {angajatCurent}
@@ -67,9 +80,11 @@ const Angajati = ({angajati, viewAngajati, setAngajati, vizite, api, jwtToken}) 
             )}
             
             <TitluSiFiltru 
-                titlu={"Angajati"}
-                filtru={textFiltru}
-                functie={handleChangeTextFiltru}
+                titlu                       = {"Angajati"}
+                filtru                      = {textFiltru}
+                functie                     = {handleChangeTextFiltru}
+                viewAngajati                = {viewAngajati}
+                setViewAngajatNou           = {setViewAngajatNou}
             />
 
             <div className="containerTabel">

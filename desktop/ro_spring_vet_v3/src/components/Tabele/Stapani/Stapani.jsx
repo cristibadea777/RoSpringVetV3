@@ -9,8 +9,8 @@ import DetaliiStapan from "./DetaliiStapan"
 
 const Stapani = ({stapani, setStapani, viewStapani, animale, setAnimale, vizite, setVizite, programari, setProgramari, tratamente, angajati, api, jwtToken}) => {
 
-    const [viewStapanNou,   setViewStapanNou] = useState(false)
-
+    const [viewStapanNou,       setViewStapanNou]       = useState(false)
+        
     const [viewDetaliiStapan,   setViewDetaliiStapan]   = useState('')
     const [stapanCurent,        setStapanCurent]        = useState('')
 
@@ -36,10 +36,10 @@ const Stapani = ({stapani, setStapani, viewStapani, animale, setAnimale, vizite,
     const updatePozePagina = () => {
         if(paginaStapani.length !== 0){
             getPozePagina({
-                caleFolderPoze: '/resources/poze_stapani/', 
-                poza:           'stapan_default.png', 
-                lista:          paginaStapani, 
-                setListaPoze:   setPozePaginaStapani, 
+                caleFolderPoze : '/resources/poze_stapani/', 
+                poza           : 'stapan_default.png', 
+                lista          :  paginaStapani, 
+                setListaPoze   :  setPozePaginaStapani, 
                 jwtToken, 
                 api,
             })

@@ -43,7 +43,7 @@
 .textLabel{
     color: white;
     margin-right: 3%;
-    font-size: 22px;
+    font-size: 2vw;
     font-weight: 100;
     color: white;
 }
@@ -57,7 +57,7 @@
 }
 
 .text{
-    font-size: 24px;
+    font-size: 2vw;
     color: white;
 }
 

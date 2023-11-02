@@ -35,10 +35,10 @@ const Animale = ( {animale, setAnimale, stapani, setStapani, viewAnimale, vizite
     const updatePozePagina = () => {
         if(paginaAnimale.length !== 0){
             getPozePagina({
-                caleFolderPoze: '/resources/poze_animale/', 
-                poza:           'animal_default.png', 
-                lista:          paginaAnimale, 
-                setListaPoze:   setPozePaginaAnimale, 
+                caleFolderPoze : '/resources/poze_animale/', 
+                poza           : 'animal_default.png', 
+                lista          : paginaAnimale, 
+                setListaPoze   : setPozePaginaAnimale, 
                 jwtToken, 
                 api,
             })

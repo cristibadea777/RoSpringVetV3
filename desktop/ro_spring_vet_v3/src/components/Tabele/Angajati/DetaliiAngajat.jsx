@@ -53,16 +53,8 @@ const DetaliiAngajat = (
     useEffect(
         () => {            
             if(angajatCurent){
-                let dataCurenta  = new Date()
-                let nrVizite     = 0
-                let nrProgramari = 0
-                let nrTratamente = 0
-                let nrAnimale    = 0
-                
+                let nrVizite     = 0     
                 let v = []
-                let t = []
-                let p = []
-                let a = []
 
                 setIdEntitateCurenta     (angajatCurent.angajatId)
                 setNumeEntitateCurenta   (angajatCurent.nume)
@@ -79,9 +71,7 @@ const DetaliiAngajat = (
                 setListaTabel(v)
 
                 setTotalVizite(nrVizite)
-
                 setViziteEntitate(v)
-
                 getPozaAngajat()
 
             }
@@ -118,7 +108,7 @@ const DetaliiAngajat = (
     }
 
     const handleClickEditAngajat = async () => {
-        const apiEndpoint = api + '/angajati/editAngajat'
+        const apiEndpoint = api + '/angajati/angajat/editAngajat'
         const cerere = {
             "angajatId"   :   idEntitateCurenta,        
             "nume"        :   numeEntitateCurenta,

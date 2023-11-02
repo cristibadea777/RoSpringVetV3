@@ -35,6 +35,19 @@ const ContainerInputPoza = ({pozaCurenta, handleChangePoza}) => (
     </div>
 )
 
+const ContainerRaspuns = ({textRaspuns, setViewRaspuns, setViewEntitateNoua}) => (
+    <div className="modal"> 
+        <div style={{width:"25%", height:"33%", backgroundColor:"#232B2B", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", border: "1px solid white"}}>
+            <p className="raspunsApi" style={{color: (textRaspuns.status === 200) ? "green" : "red"}}> {textRaspuns.data} </p>
+            <button onClick={() => {
+                setViewRaspuns(false)
+                if(textRaspuns.status === 200) 
+                    setViewEntitateNoua(false)
+            }}>OK</button>
+        </div>
+    </div>
+)
 
 
-export { BaraModalEntitate, ContainerInputPoza }
+
+export { BaraModalEntitate, ContainerInputPoza, ContainerRaspuns }

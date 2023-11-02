@@ -5,8 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import com.cristianbadea.models.ApplicationUser;
 import com.cristianbadea.models.Stapan;
 import com.cristianbadea.repositories.StapanRepository;
+import com.cristianbadea.repositories.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
@@ -18,24 +21,29 @@ public class StapanService {
     private AuthenticationService authenticationService;
     @Autowired
     private PozeService           pozeService;
+    @Autowired
+    private UserRepository        userRepository;
 
     public List<Stapan> getAllStapani(){
         return stapanRepository.findAll();
     }
 
-    public ResponseEntity<String> saveStapan(String nume, String telefon, String email, String parola, String imagine){
+    public Stapan getStapan(long stapanId){
+        return stapanRepository.findById(stapanId).get();
+    }
+
+    public ResponseEntity<String> saveStapan(String nume, String nrTelefon, String email, String parola, String imagine){
         
-        if(email.isBlank())    return new ResponseEntity<String>("Email gol",    HttpStatus.CONFLICT);
-        if(parola.isBlank())   return new ResponseEntity<String>("Parola goală", HttpStatus.CONFLICT);
-        if(nume.isBlank())     return new ResponseEntity<String>("Nume gol",     HttpStatus.CONFLICT);
-        if(telefon.isBlank())  return new ResponseEntity<String>("Telefon gol",  HttpStatus.CONFLICT);
+        if(email     == null  || email.isBlank())      return new ResponseEntity<String>("Email gol",     HttpStatus.CONFLICT);
+        if(parola    == null  || parola.isBlank())     return new ResponseEntity<String>("Parola goală",  HttpStatus.CONFLICT);
+        if(nume      == null  || nume.isBlank())       return new ResponseEntity<String>("Nume gol",      HttpStatus.CONFLICT);
+        if(nrTelefon == null  || nrTelefon.isBlank())  return new ResponseEntity<String>("Telefon gol",   HttpStatus.CONFLICT);
 
         Stapan stapan;
-       
         try { 
              //salvare intai user cu authentication service si apoi stapanul   
             authenticationService.registerUser(email, parola); 
-            stapan = stapanRepository.save(new Stapan(nume, telefon, email, null, null, null, null));
+            stapan = stapanRepository.save(new Stapan(nume, nrTelefon, email, null, null, null, null));
         } catch (Exception e) { return new ResponseEntity<String>("Userul exista deja", HttpStatus.CONFLICT); }
 
         try {                        
@@ -56,5 +64,32 @@ public class StapanService {
 
     public Stapan findByEmail(String email){
         return stapanRepository.findByEmail(email);
+    }
+
+    public ResponseEntity<String> editStapan(long stapanId, String nume, String nrTelefon, String email) {
+        if(email     == null  || email.isBlank())      return new ResponseEntity<String>("Email gol",     HttpStatus.CONFLICT);
+        if(nume      == null  || nume.isBlank())       return new ResponseEntity<String>("Nume gol",      HttpStatus.CONFLICT);
+        if(nrTelefon == null  || nrTelefon.isBlank())  return new ResponseEntity<String>("Telefon gol",   HttpStatus.CONFLICT);
+
+        Stapan          stapan = null;
+        ApplicationUser user   = null;
+        try {
+            stapan = stapanRepository.findById(stapanId).get();
+            user   = userRepository.findByUsername(stapan.getEmail()).get();
+        } catch (Exception e) {
+            return new ResponseEntity<String>("User inexistent", HttpStatus.CONFLICT);
+        }
+        if(user == null || stapan == null)  return new ResponseEntity<String>("User inexistent", HttpStatus.CONFLICT);
+
+        try {
+            if(user.getUsername() != email){
+                userRepository.updateEmail(user.getUsername(), email);
+                stapanRepository.update(stapanId, nume, nrTelefon, email);
+            }
+            return ResponseEntity.ok("Editat cu succes");
+        } catch (Exception e) {
+            System.out.println(e);
+            return new ResponseEntity<String>("Eroare - email deja existent",   HttpStatus.CONFLICT);
+        }
     }
 }

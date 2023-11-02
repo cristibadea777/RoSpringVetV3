@@ -34,8 +34,8 @@ public class AnimalController {
         return animalService.getAllAnimale();
     }
 
-    @PostMapping("/angajat/saveAnimal")
-    public String saveAnimal(@RequestBody AnimalDTO animalDTO){
+    @PostMapping("/saveAnimal")
+    public ResponseEntity<String> saveAnimal(@RequestBody AnimalDTO animalDTO){
         return animalService.saveAnimal(
             animalDTO.getNume(), 
             animalDTO.getSpecie(), 

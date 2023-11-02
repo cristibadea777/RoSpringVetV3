@@ -53,7 +53,6 @@ public class RoSpringVetV3Application {
 			
 			try {
 
-
 				Stapan stapan1 = new Stapan("Cristian", "0771287872", "eu@cristianbadea.online", null, null, null, null);
 				Stapan stapan2 = new Stapan("Gabriela", "1234567890", "gabibadea@yahoo.com", null, null, null, null);
 				Stapan stapan3 = new Stapan("Georgiana", "098765432", "georgiana@yahoo.com.online", null, null, null, null);

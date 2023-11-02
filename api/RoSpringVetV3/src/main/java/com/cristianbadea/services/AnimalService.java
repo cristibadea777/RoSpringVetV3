@@ -10,6 +10,7 @@ import com.cristianbadea.models.Animal;
 import com.cristianbadea.models.Stapan;
 import com.cristianbadea.repositories.AnimalRepository;
 import com.cristianbadea.repositories.StapanRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class AnimalService {
@@ -18,29 +19,40 @@ public class AnimalService {
     private AnimalRepository animalRepository;
     @Autowired
     private StapanRepository stapanRepository;
+    @Autowired
+    private PozeService      pozeService;
 
     public List<Animal> getAllAnimale(){
         return animalRepository.findAll(); 
     }
 
-    public String saveAnimal(String nume, String specie, String rasa, String imagine, long stapanId){
+    public ResponseEntity<String> saveAnimal(String nume, String specie, String rasa, String imagine, long stapanId){
         Optional<Stapan> stapan = stapanRepository.findById(stapanId);
-        if(stapan == null)
-            return "Eroare - stapan null";
-        if(nume.isEmpty() || specie.isEmpty())
-            return "NUME SI SPECIE NU TREBUIE SA FIE GOALE";
-        animalRepository.save(new Animal(nume, specie, rasa, stapan.get(), null, null, null, imagine));
-        return "";
+        if(stapan   == null)                        return new ResponseEntity<String>("Stapan de negăsit",                 HttpStatus.CONFLICT);
+        if(nume     == null || nume.isBlank())      return new ResponseEntity<String>("Nume nu trebuie să fie gol",        HttpStatus.CONFLICT);
+        if(specie   == null || specie.isBlank())    return new ResponseEntity<String>("Specia trebuie să fie specificată", HttpStatus.CONFLICT);
+        Animal animal;
+        try {
+            animal = animalRepository.save(new Animal(nume, specie, rasa, stapan.get(), null, null, null, null));
+            if(imagine != null){
+                animal.setImagine(String.valueOf(animal.getAnimalId()));
+                animalRepository.save(animal);
+                pozeService.salveazaPoza("poze_animale", String.valueOf(animal.getAnimalId()), imagine, "animal");
+            }
+            ObjectMapper objectMapper = new ObjectMapper();
+            String animalJson = objectMapper.writeValueAsString(animal);
+            return ResponseEntity.ok(animalJson);
+        } catch (Exception e) { 
+            System.err.println(e);
+            return new ResponseEntity<String>("Eroare la salvare animal", HttpStatus.CONFLICT); 
+        }            
     }
 
     public ResponseEntity<String> editAnimal(long animalId, String nume, String specie, String rasa){
         Animal animal = animalRepository.findById(animalId).get();
-        if(animal == null)
-            return new ResponseEntity<String>("Animal inexistent", HttpStatus.CONFLICT);
-        if(nume.isEmpty())
-            return new ResponseEntity<String>("Nume nu trebuie să fie gol", HttpStatus.CONFLICT);
-        if(specie.isEmpty())
-            return new ResponseEntity<String>("Specia trebuie să fie specificată", HttpStatus.CONFLICT);
+        if(animal == null)   return new ResponseEntity<String>("Animal inexistent",                 HttpStatus.CONFLICT);
+        if(nume.isEmpty())   return new ResponseEntity<String>("Nume nu trebuie să fie gol",        HttpStatus.CONFLICT);
+        if(specie.isEmpty()) return new ResponseEntity<String>("Specia trebuie să fie specificată", HttpStatus.CONFLICT);
         animal.setNume(nume);
         animal.setSpecie(specie);
         animal.setRasa(rasa);
@@ -52,5 +64,4 @@ public class AnimalService {
         return animalRepository.findAllByStapanId(stapanId);
     }
     
-
 }

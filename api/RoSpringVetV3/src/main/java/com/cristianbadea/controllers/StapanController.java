@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.cristianbadea.dto.StapanDTO;
 import com.cristianbadea.models.Stapan;
 import com.cristianbadea.services.AuthenticationService;
@@ -29,7 +29,12 @@ public class StapanController {
     @GetMapping("/angajat/getAllStapani")
     public List<Stapan> getAllStapani(){
         return stapanService.getAllStapani();
-    }   
+    }  
+    
+    @GetMapping("/getStapan")
+    public Stapan getStapan(@RequestParam(name = "stapanId") long stapanId){
+        return stapanService.getStapan(stapanId);
+    }
 
     @GetMapping("/stapan/getStapanConectat")
     public Stapan getStapanConectat(){
@@ -40,6 +45,16 @@ public class StapanController {
     @PostMapping("/angajat/saveStapan")
     public ResponseEntity<String> saveStapan(@RequestBody StapanDTO stapanDTO){  
         return stapanService.saveStapan(stapanDTO.getNume(), stapanDTO.getNrTelefon(), stapanDTO.getEmail(), stapanDTO.getParola(), stapanDTO.getImagine());
+    }
+
+    @PostMapping("/editStapan")
+    public ResponseEntity<String> editStapan(@RequestBody StapanDTO stapanDTO){
+        return stapanService.editStapan(
+            stapanDTO.getStapanId(),
+            stapanDTO.getNume(), 
+            stapanDTO.getNrTelefon(), 
+            stapanDTO.getEmail()
+        );
     }
 
 }

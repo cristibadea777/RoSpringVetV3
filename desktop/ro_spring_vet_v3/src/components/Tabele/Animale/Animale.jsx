@@ -70,6 +70,7 @@ const Animale = ( {animale, setAnimale, stapani, setStapani, viewAnimale, vizite
                     setViewDetaliiAnimal    = {setViewDetaliiAnimal}
                     api                     = {api}
                     jwtToken                = {jwtToken}
+                    viewButonStapan         = {true}
                 />
             )}
             

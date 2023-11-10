@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import { editEntitate, getEntitate, getPoza, salvarePoza } from "../../AccesareAPI"
 import { toBase64 } from "../Utilities"
 import ProgramareNoua from "../Programari/ProgramareNoua";
-import VizitaNoua from "../Vizite/VizitaNoua"
+import Vizita from "../Vizite/Vizita"
 import { BaraModalEntitate, ContainerInputPoza } from "../ComponenteModale";
 import BaraTabelDetalii from "../DetaliiEntitate/BaraTabelDetalii";
 import TabelDetaliiEntitate from "../DetaliiEntitate/TabelDetaliiEntitate";
@@ -11,7 +11,7 @@ import DetaliiStapan from "../Stapani/DetaliiStapan";
 
 const DetaliiAnimal = (
     {   
-        animalCurent, animale, setAnimale, stapani, setStapani, api, jwtToken, vizite, setVizite, programari, setProgramari, tratamente, angajati, setViewDetaliiAnimal
+        animalCurent, animale, setAnimale, stapani, setStapani, api, jwtToken, vizite, setVizite, programari, setProgramari, tratamente, angajati, setViewDetaliiAnimal, viewButonStapan
     }) => {
     
     const handleClickInchidereOptiuniEntitate = () => { setViewDetaliiAnimal(false) }
@@ -196,9 +196,17 @@ const DetaliiAnimal = (
         setViewDetaliiStapan(true)
     }
 
+    const [viewDetaliiVizita, setViewDetaliiVizita] = useState(false)
+    const [vizitaCurenta,     setVizitaCurenta]     = useState(null)
+    const handleViewVizitaCurenta = (vizita) => {
+        setVizitaCurenta    (vizita)
+        setViewDetaliiVizita(true)
+    }
+
     return(
         <div className="modalTabele"> 
-            {viewDetaliiStapan&&(
+
+            {viewDetaliiStapan &&(
                 <DetaliiStapan 
                     stapanCurent         = {stapan}
                     setViewDetaliiStapan = {setViewDetaliiStapan}
@@ -214,6 +222,24 @@ const DetaliiAnimal = (
                     setProgramari        = {setProgramari}
                     tratamente           = {tratamente}
                     angajati             = {angajati}
+                />
+            )}
+
+            {viewDetaliiVizita && (
+                <Vizita 
+                    animalCurent          = {animalCurent}
+                    tratamente            = {tratamente}
+                    vizite                = {vizite}
+                    vizitaCurenta         = {vizitaCurenta}
+                    setVizite             = {setVizite}
+                    setVizitaCurenta      = {setVizitaCurenta}
+                    setViewDetaliiVizita  = {setViewDetaliiVizita}
+                    setViewDetaliiAnimal  = {setViewDetaliiAnimal}
+                    setTextRaspuns        = {setTextRaspuns}
+                    setViewRaspuns        = {setViewRaspuns}
+                    angajati              = {angajati}
+                    api                   = {api}
+                    jwtToken              = {jwtToken}
                 />
             )}
         
@@ -263,9 +289,11 @@ const DetaliiAnimal = (
                         <div className="linieInput">
                             <button onClick={() => {setViewVizitaNoua(true)}}>Vizită nouă</button>
                         </div>
-                        <div className="linieInput">
-                            <button onClick={() => {handleShowModalStapan(animalCurent)}}>Vezi stăpân</button>
-                        </div>
+                        {viewButonStapan && (
+                            <div className="linieInput">
+                                <button onClick={() => {handleShowModalStapan(animalCurent)}}>Vezi stăpân</button>
+                            </div>
+                        )}
                     </div>               
                 </div>
 
@@ -284,7 +312,8 @@ const DetaliiAnimal = (
                     viewTabel              = {animalCurent}
                     setOptiune             = {setOptiune}
                     jwtToken               = {jwtToken}
-                    api                    = {api}  
+                    api                    = {api}
+                    handleViewVizitaCurenta={handleViewVizitaCurenta}  
                 />
             </div>
 
@@ -301,7 +330,7 @@ const DetaliiAnimal = (
                 setProgramari         = {setProgramari}
             />)}
             {viewVizitaNoua && (
-            <VizitaNoua 
+            <Vizita 
                 viewVizitaNoua        = {viewVizitaNoua}
                 animalCurent          = {animalCurent}
                 setViewVizitaNoua     = {setViewVizitaNoua}
@@ -309,6 +338,9 @@ const DetaliiAnimal = (
                 jwtToken              = {jwtToken}
                 setTextRaspuns        = {setTextRaspuns}    
                 setViewRaspuns        = {setViewRaspuns}    
+                vizitaCurenta         = {vizitaCurenta}
+                setViewDetaliiVizita  = {setViewDetaliiVizita}
+                setViewDetaliiAnimal  = {setViewDetaliiAnimal}
                 vizite                = {vizite}
                 setVizite             = {setVizite}
                 angajati              = {angajati}

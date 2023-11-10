@@ -149,6 +149,7 @@ const editEntitate = async ({jwtToken, apiEndpoint, cerere}) => {
         const raspuns = await axios.post(apiEndpoint, cerere, customConfig)
         return raspuns
     } catch (error) {
+        console.log(error)
         console.log("EROARE LA EDITARE \n" + JSON.stringify(error))
     }
 }

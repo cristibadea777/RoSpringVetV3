@@ -63,7 +63,7 @@ function App() {
         populareListeAngajat({jwtToken})
     }, [jwtToken]
   ) 
-  
+    
   return (
     <div className="container-app">
       <Navbar 
@@ -154,6 +154,18 @@ function App() {
       <Vizite 
         vizite                  = {vizite}
         viewVizite              = {viewVizite}
+        setVizite               = {setVizite}
+        
+        animale                 = {animale}
+        setAnimale              = {setAnimale}
+        stapani                 = {stapani}
+        setStapani              = {setStapani}
+        programari              = {programari}
+        setProgramari           = {setProgramari}
+        tratamente              = {tratamente}
+        angajati                = {angajati}
+
+
         api                     = {api}
         jwtToken                = {jwtToken}
       />)}

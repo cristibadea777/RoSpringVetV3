@@ -6,7 +6,7 @@ import Pagini from "../../Pagini/Pagini"
 import { getPozePagina } from "../../AccesareAPI"
 
 
-const TabelDetaliiEntitate = ({listaTabel, optiune, textFiltru, viewTabel, handleShowModalAnimal, jwtToken, api}) => {
+const TabelDetaliiEntitate = ({listaTabel, optiune, textFiltru, viewTabel, handleShowModalAnimal, jwtToken, api, handleViewVizitaCurenta}) => {
     
     const [paginaEntitate,          setPaginaEntitate]          = useState([])
     const [pozePaginaAnimaleStapan, setPozePaginaAnimaleStapan] = useState([])
@@ -111,7 +111,7 @@ const TabelDetaliiEntitate = ({listaTabel, optiune, textFiltru, viewTabel, handl
                                     <td>{entitate.dataVizita}</td>
                                     <td>{entitate.motiv}</td>
                                     <td>{entitate.numeAngajat}</td>
-                                    <td> <div> <button className="butonIconita"><FontAwesomeIcon icon={faSearch}/></button> </div> </td>
+                                    <td> <div> <button onClick={() => {handleViewVizitaCurenta(entitate)}} className="butonIconita"><FontAwesomeIcon icon={faSearch}/></button> </div> </td>
                                 </tr>
                             ) : optiune === 'tratamente' ? (
                                 <tr key={index}>

@@ -65,25 +65,19 @@ const Tratamente = ({tratamente, viewTratamente, api, jwtToken}) => {
                             <th>Stăpân</th>
                             <th>Dată începere</th>
                             <th>Dată sfârșit</th>
-                            <th>Detalii</th>
-                            <th>Opțiuni</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         {tratamente && paginaTratamente.map((tratament, index)=>(
                             <tr key={index}>
-                                <td>
-                                    <img src={pozePagina[index]} height="55" width="55"/>
-                                </td>
+                                <td><img src={pozePagina[index]} height="55" width="55"/></td>
                                 <td>{tratament.animalId.nume}</td>
                                 <td>{tratament.animalId.stapan.nume}</td>
                                 <td>{tratament.dataInceput}</td>
                                 <td>{tratament.dataSfarsit}</td>
                                 <td>
                                     <div><button className="butonIconita"><FontAwesomeIcon icon={faSearch}/></button></div>
-                                </td>
-                                <td>
-                                    <div><button>Opțiuni</button></div>
                                 </td>
                             </tr>
                         ))}

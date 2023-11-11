@@ -4,14 +4,14 @@ import { useEffect, useState } from "react"
 import { editEntitate, salvareEntitate } from "../../AccesareAPI"
 import "../ModalAdaugare.css"
 
-const Vizita = ({animalCurent, setViewVizitaNoua, setViewDetaliiVizita, setViewDetaliiAnimal, api, jwtToken, setTextRaspuns, setViewRaspuns, vizite, setVizite, angajati, tratamente, vizitaCurenta, setVizitaCurenta}) => {
+const DetaliiVizita = ({animalCurent, vizitaCurenta, setVizitaCurenta, setViewDetaliiVizita, setViewDetaliiAnimal, api, jwtToken, vizite, setVizite, angajati, tratamente}) => {
     
-    const handleClickInchidere = () => { vizitaCurenta ? (setViewDetaliiVizita(false), setVizitaCurenta('')) : setViewVizitaNoua(false) }
+    const handleClickInchidere = () => { setViewDetaliiVizita(false), setVizitaCurenta('') }
 
     const [vizitaId,        setVizitaId]        = useState('')
     const [motiv,           setMotiv]           = useState('')
     const [diagnostic,      setDiagnostic]      = useState('')
-    const [angajatId,       setAngajatId]       = useState(vizitaCurenta ? vizitaCurenta.angajatId.angajatId : angajati[0].angajatId)
+    const [angajatId,       setAngajatId]       = useState(vizitaCurenta.angajatId.angajatId)
     const [metodaTratament, setMetodaTratament] = useState('')
     const [dataInceput,     setDataInceput]     = useState(new Date().toISOString().split('T')[0])
     const [dataSfarsit,     setDataSfarsit]     = useState('')
@@ -23,108 +23,45 @@ const Vizita = ({animalCurent, setViewVizitaNoua, setViewDetaliiVizita, setViewD
     const handleChangeDataSfarsit      = (event) => { setDataSfarsit(event.target.value)     }
 
     const dataVizita = new Date().toISOString().split('T')[0]
-    const animalId   = animalCurent  ? animalCurent.animalId        : vizitaCurenta.animalId.animalId
-    const stapanId   = animalCurent  ? animalCurent.stapan.stapanId : vizitaCurenta.stapanId.stapanId
+    const animalId   = vizitaCurenta.animalId.animalId
+    const stapanId   = vizitaCurenta.stapanId.stapanId
+
+    const [viewRaspuns, setViewRaspuns] = useState('')
+    const [textRaspuns, setTextRaspuns] = useState('')
 
     useEffect(
         () => {
-            if(vizitaCurenta){
-                setVizitaId       (vizitaCurenta.vizitaId)
-                setMotiv          (vizitaCurenta.motiv)
-                setDiagnostic     (vizitaCurenta.diagnostic.diagnostic)
-                setMetodaTratament(vizitaCurenta.tratament.metodaTratament)
-                setAngajatId      (vizitaCurenta.angajatId.angajatId)
-                setDataInceput    (vizitaCurenta.tratament.dataInceput)
-                setDataSfarsit    (vizitaCurenta.tratament.dataSfarsit)
-            }
+            setVizitaId       (vizitaCurenta.vizitaId)
+            setMotiv          (vizitaCurenta.motiv)
+            setDiagnostic     (vizitaCurenta.diagnostic.diagnostic)
+            setMetodaTratament(vizitaCurenta.tratament.metodaTratament)
+            setAngajatId      (vizitaCurenta.angajatId.angajatId)
+            setDataInceput    (vizitaCurenta.tratament.dataInceput)
+            setDataSfarsit    (vizitaCurenta.tratament.dataSfarsit)
         }, [vizitaCurenta]
     )
-
-    const updateListaViziteSiTratamente = (vizitaEditata) => {
-        let viziteEditate       = [...vizite]       
-        let tratamenteEditate   = [...tratamente]
-     
-        viziteEditate.map((vizita, index) => {
-            if(vizita.vizitaId === vizitaCurenta.vizitaId){
-                viziteEditate[index] = vizitaEditata
-            }
-        })
-        setVizite(viziteEditate)
-    }
     
-    const handleClickAdaugaEditeazaVizita = async () => {
-        let apiEndpoint = api
-        let cerere = ''
-
-        if(!vizitaCurenta){
-            apiEndpoint = apiEndpoint + "/vizite/angajat/saveVizita"
-            cerere = {
-                "dataVizita"        : dataVizita,
-                "animalId"          : animalId,
-                "stapanId"          : stapanId,
-                "angajatId"         : angajatId,
-                "motiv"             : motiv,
-                "diagnostic"        : diagnostic,
-                "metodaTratament"   : metodaTratament,
-                "dataInceput"       : dataInceput,
-                "dataSfarsit"       : dataSfarsit,
-            }
+    const handleClickEditeazaVizita = async () => {
+        const apiEndpoint = api +  "/vizite/angajat/editVizita"
+        cerere = {
+            "vizitaId"          : vizitaId,
+            "dataVizita"        : dataVizita,
+            "angajatId"         : angajatId,
+            "motiv"             : motiv,
+            "diagnostic"        : diagnostic,
+            "metodaTratament"   : metodaTratament,
+            "dataInceput"       : dataInceput,
+            "dataSfarsit"       : dataSfarsit,
         }
-        else{   
-            apiEndpoint = apiEndpoint +  "/vizite/angajat/editVizita"
-            cerere = {
-                "vizitaId"          : vizitaId,
-                "dataVizita"        : dataVizita,
-                "angajatId"         : angajatId,
-                "motiv"             : motiv,
-                "diagnostic"        : diagnostic,
-                "metodaTratament"   : metodaTratament,
-                "dataInceput"       : dataInceput,
-                "dataSfarsit"       : dataSfarsit,
-            }
-        }
-
-        const raspunsApi =  vizitaCurenta 
-                         ?  await editEntitate({jwtToken, apiEndpoint, cerere}) 
-                         :  await salvareEntitate({apiEndpoint, jwtToken, cerere})
-        
+        const raspunsApi =  await editEntitate({jwtToken, apiEndpoint, cerere}) 
         if(raspunsApi.status === 200){
             //pun mesajul de succes in data pt ca la succes se returneaza de la server nu mesaj, ci un obiect vizita
             const raspuns = {
                 "status" : raspunsApi.status,
-                "data"   : ! vizitaCurenta ? "Vizită adăugată" : "Vizită editată",
+                "data"   : "Vizită editată",
             }
             setTextRaspuns(raspuns)
             //adaugat vizita si tratament in liste - la adaugare vizita noua
-            if(!vizitaCurenta){
-                const viziteEditate = [...vizite]
-                viziteEditate.push(raspunsApi.data)
-                tratamente.push(raspunsApi.data.tratament)
-                setVizite(viziteEditate)
-            }else{
-                const vizitaEditata = {
-                    ...vizitaCurenta,
-                    "angajatId"   : angajatId,
-                    "motiv"       : motiv,
-                }
-                const diagnosticEditat = {
-                    ...vizitaCurenta.diagnostic,
-                    "diagnostic"  : diagnostic,
-                }
-                const tratamentEditat = {
-                    ...vizitaCurenta.tratament,
-                    "tratament"   : metodaTratament,
-                    "dataSfarsit" : dataSfarsit,
-                }
-                //update in tabele
-                updateListaViziteTratamenteDiagnostice(vizitaEditata, tratamentEditat, diagnosticEditat)
-                //update in modalu curent
-                vizitaCurenta.angajatId.angajatId       = vizitaEditata.angajatId.angajatId
-                vizitaCurenta.motiv                     = vizitaEditata.motiv
-                vizitaCurenta.diagnostic.diagnostic     = vizitaEditata.diagnostic.diagnostic
-                vizitaCurenta.tratament.metodaTratament = vizitaEditata.tratament.metodaTratament
-                vizitaCurenta.tratament.dataSfarsit     = vizitaEditata.tratament.dataSfarsit
-            }
             vizitaCurenta ? setViewDetaliiVizita(false) : setViewVizitaNoua(false)
         }
         else{
@@ -202,9 +139,18 @@ const Vizita = ({animalCurent, setViewVizitaNoua, setViewDetaliiVizita, setViewD
                             {vizitaCurenta && (
                                 <button onClick={() => {setViewDetaliiAnimal(true), setViewDetaliiVizita(false)}}>Vezi animal</button>
                             )}
-                            <button onClick={handleClickAdaugaEditeazaVizita}>{vizitaCurenta ? 'Editează' : 'Adaugă'}</button>
+                            <button onClick={handleClickEditeazaVizita}>{vizitaCurenta ? 'Editează' : 'Adaugă'}</button>
                         </div>
                     </div>
+
+                    {(viewRaspuns && vizitaCurenta) && (
+                        <div className="modal"> 
+                            <div style={{width:"25%", height:"33%", backgroundColor:"#232B2B", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", border: "1px solid white"}}>
+                                <p className="raspunsApi" style={{color: (textRaspuns.status === 200) ? "green" : "red"}}> {textRaspuns.data} </p>
+                                <button onClick={() => {setViewRaspuns(false)}}>OK</button>
+                            </div>
+                        </div>
+                    )}
 
                 </div>
 
@@ -212,4 +158,4 @@ const Vizita = ({animalCurent, setViewVizitaNoua, setViewDetaliiVizita, setViewD
         </div>
     )
 }
-export default Vizita
+export default DetaliiVizita

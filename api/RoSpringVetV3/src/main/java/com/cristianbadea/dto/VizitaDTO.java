@@ -1,6 +1,7 @@
 package com.cristianbadea.dto;
 
 public class VizitaDTO {
+    private long    vizitaId;
     private String  dataVizita;
     private long    animalId;
     private long    stapanId;
@@ -12,7 +13,8 @@ public class VizitaDTO {
     private String  dataSfarsit;
 
     public VizitaDTO(){ super(); }
-    public VizitaDTO(String dataVizita, long animalId, long stapanId, long angajatId, String motiv, String diagnostic, String metodaTratament, String dataInceput, String dataSfarsit){
+    public VizitaDTO(long vizitaId, String dataVizita, long animalId, long stapanId, long angajatId, String motiv, String diagnostic, String metodaTratament, String dataInceput, String dataSfarsit){
+        this.vizitaId        = vizitaId;
         this.dataVizita      = dataVizita;
         this.animalId        = animalId;
         this.stapanId        = stapanId;
@@ -23,7 +25,7 @@ public class VizitaDTO {
         this.dataInceput     = dataInceput;
         this.dataSfarsit     = dataSfarsit;
     }
-
+    public long     getVizitaId         (){ return vizitaId;              }
     public String   getDataVizita       (){ return this.dataVizita;       }
     public long     getAnimalId         (){ return this.animalId;         }
     public long     getStapanId         (){ return this.stapanId;         }
@@ -34,14 +36,16 @@ public class VizitaDTO {
     public String   getDataInceput      (){ return this.dataInceput;      }
     public String   getDataSfarsit      (){ return this.dataSfarsit;      }
 
-    public void     setDataVizita       (String dataVizita)      { this.dataVizita = dataVizita;            }
-    public void     setAnimalId         (long animalId)          { this.animalId = animalId;                }
-    public void     setStapanId         (long stapanId)          { this.stapanId = stapanId;                }
-    public void     setAngajatId        (long angajatId)         { this.angajatId = angajatId;              }
-    public void     setMotiv            (String motiv)           { this.motiv = motiv;                      }
-    public void     setDiagnostic       (String diagnostic)      { this.diagnostic = diagnostic;            }           
-    public void     setMetodaTratament  (String metodaTratament) { this.metodaTratament = metodaTratament;  }
-    public void     setDataInceput      (String dataInceput)     { this.dataInceput = dataInceput;          }
-    public void     setDataSfarsit      (String dataSfarsit)     { this.dataSfarsit = dataSfarsit;          }
+    public void     setDataVizita       (String dataVizita)      { this.dataVizita      = dataVizita;      }
+    public void     setAnimalId         (long animalId)          { this.animalId        = animalId;        }
+    public void     setStapanId         (long stapanId)          { this.stapanId        = stapanId;        }
+    public void     setAngajatId        (long angajatId)         { this.angajatId       = angajatId;       }
+    public void     setMotiv            (String motiv)           { this.motiv           = motiv;           }
+    public void     setDiagnostic       (String diagnostic)      { this.diagnostic      = diagnostic;      }           
+    public void     setMetodaTratament  (String metodaTratament) { this.metodaTratament = metodaTratament; }
+    public void     setDataInceput      (String dataInceput)     { this.dataInceput     = dataInceput;     }
+    public void     setDataSfarsit      (String dataSfarsit)     { this.dataSfarsit     = dataSfarsit;     }
+    public void setVizitaId             (long vizitaId)          { this.vizitaId        = vizitaId;        }
+    
 
 }

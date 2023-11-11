@@ -22,11 +22,11 @@ import com.cristianbadea.services.VizitaService;
 public class VizitaController {
    
     @Autowired
-    VizitaService vizitaService;
+    VizitaService           vizitaService;
     @Autowired
-    AuthenticationService authenticationService;
+    AuthenticationService   authenticationService;
     @Autowired
-    StapanService stapanService;
+    StapanService           stapanService;
     
     @GetMapping("/angajat/getAllVizite")
     public List<Vizita> getAllVizite(){
@@ -39,6 +39,20 @@ public class VizitaController {
             vizitaDTO.getDataVizita(), 
             vizitaDTO.getAnimalId(), 
             vizitaDTO.getStapanId(), 
+            vizitaDTO.getAngajatId(), 
+            vizitaDTO.getMotiv(), 
+            vizitaDTO.getDiagnostic(), 
+            vizitaDTO.getMetodaTratament(), 
+            vizitaDTO.getDataInceput(), 
+            vizitaDTO.getDataSfarsit()
+        );
+    }
+
+    @PostMapping("/angajat/editVizita")
+    public ResponseEntity<String> editVizita(@RequestBody VizitaDTO vizitaDTO){
+        return vizitaService.editVizita(
+            vizitaDTO.getVizitaId(),
+            vizitaDTO.getDataVizita(), 
             vizitaDTO.getAngajatId(), 
             vizitaDTO.getMotiv(), 
             vizitaDTO.getDiagnostic(), 

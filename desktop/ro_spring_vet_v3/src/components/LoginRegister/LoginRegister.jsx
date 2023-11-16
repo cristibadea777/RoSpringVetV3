@@ -9,8 +9,8 @@ const LoginRegister = ({ setViewLoginRegister, setViewDashboard, setJwtToken, se
 
     const [textNume,        setTextNume]        = useState('')
     const [textTelefon,     setTextTelefon]     = useState('')
-    const [textEmail,       setTextEmail]       = useState('')
-    const [textParola,      setTextParola]      = useState('')
+    const [textEmail,       setTextEmail]       = useState('rospringvet@gmail.com')
+    const [textParola,      setTextParola]      = useState('fulger')
 
     const [textEroare,      setTextEroare]      = useState('')
 

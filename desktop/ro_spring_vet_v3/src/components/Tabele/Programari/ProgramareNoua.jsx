@@ -1,13 +1,13 @@
 import { faX } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import "../ModalAdaugare.css"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { salvareEntitate } from "../../AccesareAPI"
 
 const ProgramareNoua = ({ animalCurent, setViewProgramareNoua, api, jwtToken, setTextRaspuns, setViewRaspuns, programari, setProgramari }) => {
     
     const handleClickInchidere = () => { setViewProgramareNoua(false) }
-
+                                                                
     const handleChangeData  = (event) => { setDataAleasa(event.target.value) }
     const handleChangeMotiv = (event) => { setMotiv(event.target.value)      }
 
@@ -49,7 +49,7 @@ const ProgramareNoua = ({ animalCurent, setViewProgramareNoua, api, jwtToken, se
     const azi = new Date().toISOString().split('T')[0]
 
     return (
-    <div className="modalSecundar">
+    <div className="modalTabele">
         <div className="modalAdaugare" style={{width:"45%", height: "45%"}}>
             <div className="baraModal">
                 <div id="stanga">  

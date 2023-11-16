@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import LoginRegister from "./components/LoginRegister/LoginRegister";
 import Dashboard from "./components/Dashboard/Dashboard";
 import Navbar from "./components/Navbar/Navbar";
-import { getAllObiecte, getPozePagina } from "./components/AccesareAPI";
+import { getAllObiecte } from "./components/AccesareAPI";
 import Animale from "./components/Tabele/Animale/Animale";
 import Angajati from "./components/Tabele/Angajati/Angajati";
 import Stapani from "./components/Tabele/Stapani/Stapani";
@@ -155,7 +155,6 @@ function App() {
         vizite                  = {vizite}
         viewVizite              = {viewVizite}
         setVizite               = {setVizite}
-        
         animale                 = {animale}
         setAnimale              = {setAnimale}
         stapani                 = {stapani}

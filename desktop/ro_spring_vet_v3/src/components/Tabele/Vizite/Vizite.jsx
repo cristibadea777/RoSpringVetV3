@@ -4,27 +4,27 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faSearch } from "@fortawesome/free-solid-svg-icons"
 import Pagini from "../../Pagini/Pagini"
 import { getPozePagina } from "../../AccesareAPI"
-import Vizita from "./Vizita"
 import DetaliiAnimal from "../Animale/DetaliiAnimal"
+import DetaliiVizita from "./DetaliiVizita"
 
 const Vizite = ({vizite, viewVizite, setVizite, api, jwtToken, animale, setAnimale, stapani, setStapani, programari, setProgramari, tratamente, angajati}) => {
 
     const [paginaVizite, setPaginaVizite]  = useState([])
     const [pozePagina,   setPozePagina]    = useState([])
-    useEffect(
-        () => {
-          if(paginaVizite.length !== 0){
+
+    const updatePozePagina = () => {
+        if(paginaVizite.length !== 0){
             getPozePagina({
-                caleFolderPoze: '/resources/poze_animale/', 
-                poza: 'animal_default.png', 
-                lista: paginaVizite, 
-                setListaPoze: setPozePagina, 
+                caleFolderPoze : '/resources/poze_animale/', 
+                poza           : 'animal_default.png',
+                lista          :  paginaVizite, 
+                setListaPoze   :  setPozePagina, 
                 jwtToken, 
                 api,
             })
-          }
-        }, [paginaVizite]
-    )
+        }
+    }
+    useEffect( () => { updatePozePagina() }, [vizite, paginaVizite] )
 
     const [textFiltru, setTextFiltru] = useState('')
 
@@ -33,7 +33,7 @@ const Vizite = ({vizite, viewVizite, setVizite, api, jwtToken, animale, setAnima
     }
 
     const filtrareVizite = (vizite) => {
-        console.log(vizite)
+        console.log("vizite schimbate")
         return vizite.filter((vizita) => {
             const textCautat = textFiltru.toLowerCase()
             return(
@@ -83,7 +83,7 @@ const Vizite = ({vizite, viewVizite, setVizite, api, jwtToken, animale, setAnima
             )}
             
             {viewDetaliiVizita && (
-                <Vizita 
+                <DetaliiVizita 
                     vizitaCurenta         = {vizitaCurenta}
                     animalCurent          = {vizitaCurenta.animalId}
                     vizite                = {vizite}
@@ -139,12 +139,22 @@ const Vizite = ({vizite, viewVizite, setVizite, api, jwtToken, animale, setAnima
             </div>
 
             <Pagini 
+                lista                 = {vizite}
                 viewTabel             = {viewVizite}
                 listaObiecteFiltrate  = {viziteFiltrate}
                 setPaginaTabel        = {setPaginaVizite}
                 textFiltru            = {textFiltru} 
             />
             
+            {(viewRaspuns) && (
+            <div className="modal"> 
+                <div style={{width:"25%", height:"33%", backgroundColor:"#232B2B", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", border: "1px solid white"}}>
+                    <p className="raspunsApi" style={{color: (textRaspuns.status === 200) ? "green" : "red"}}> {textRaspuns.data} </p>
+                    <button onClick={() => {setViewRaspuns(false)}}>OK</button>
+                </div>
+            </div>
+            )}
+
         </div>
     )
 }

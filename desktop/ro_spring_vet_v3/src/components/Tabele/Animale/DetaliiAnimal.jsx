@@ -3,11 +3,12 @@ import { useEffect, useState } from "react"
 import { editEntitate, getEntitate, getPoza, salvarePoza } from "../../AccesareAPI"
 import { toBase64 } from "../Utilities"
 import ProgramareNoua from "../Programari/ProgramareNoua";
-import Vizita from "../Vizite/Vizita"
 import { BaraModalEntitate, ContainerInputPoza } from "../ComponenteModale";
 import BaraTabelDetalii from "../DetaliiEntitate/BaraTabelDetalii";
 import TabelDetaliiEntitate from "../DetaliiEntitate/TabelDetaliiEntitate";
 import DetaliiStapan from "../Stapani/DetaliiStapan";
+import DetaliiVizita from "../Vizite/DetaliiVizita";
+import VizitaNoua from "../Vizite/VizitaNoua";
 
 const DetaliiAnimal = (
     {   
@@ -226,18 +227,17 @@ const DetaliiAnimal = (
             )}
 
             {viewDetaliiVizita && (
-                <Vizita 
-                    animalCurent          = {animalCurent}
-                    tratamente            = {tratamente}
-                    vizite                = {vizite}
+                <DetaliiVizita 
                     vizitaCurenta         = {vizitaCurenta}
+                    animalCurent          = {vizitaCurenta.animalId}
+                    vizite                = {vizite}
+                    tratamente            = {tratamente}
+                    setTextRaspuns        = {setTextRaspuns}
+                    setViewRaspuns        = {setViewRaspuns}
                     setVizite             = {setVizite}
                     setVizitaCurenta      = {setVizitaCurenta}
                     setViewDetaliiVizita  = {setViewDetaliiVizita}
                     setViewDetaliiAnimal  = {setViewDetaliiAnimal}
-                    setTextRaspuns        = {setTextRaspuns}
-                    setViewRaspuns        = {setViewRaspuns}
-                    angajati              = {angajati}
                     api                   = {api}
                     jwtToken              = {jwtToken}
                 />
@@ -322,29 +322,26 @@ const DetaliiAnimal = (
                 animalCurent          = {animalCurent}
                 setViewProgramareNoua = {setViewProgramareNoua}
                 viewProgramareNoua    = {viewProgramareNoua}
-                api                   = {api}
-                jwtToken              = {jwtToken}
                 setTextRaspuns        = {setTextRaspuns}
                 setViewRaspuns        = {setViewRaspuns}
                 programari            = {programari}
                 setProgramari         = {setProgramari}
-            />)}
-            {viewVizitaNoua && (
-            <Vizita 
-                viewVizitaNoua        = {viewVizitaNoua}
-                animalCurent          = {animalCurent}
-                setViewVizitaNoua     = {setViewVizitaNoua}
                 api                   = {api}
                 jwtToken              = {jwtToken}
+            />)}
+            
+            {viewVizitaNoua && (
+            <VizitaNoua 
+                animalCurent          = {animalCurent}
+                setViewVizitaNoua     = {setViewVizitaNoua}
                 setTextRaspuns        = {setTextRaspuns}    
                 setViewRaspuns        = {setViewRaspuns}    
-                vizitaCurenta         = {vizitaCurenta}
-                setViewDetaliiVizita  = {setViewDetaliiVizita}
-                setViewDetaliiAnimal  = {setViewDetaliiAnimal}
                 vizite                = {vizite}
                 setVizite             = {setVizite}
                 angajati              = {angajati}
                 tratamente            = {tratamente}
+                api                   = {api}
+                jwtToken              = {jwtToken}
             />
             )} 
 

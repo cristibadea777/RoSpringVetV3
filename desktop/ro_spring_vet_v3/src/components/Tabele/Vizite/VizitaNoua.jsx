@@ -1,83 +1,59 @@
 import { faX } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { useEffect, useState } from "react"
-import { editEntitate } from "../../AccesareAPI"
+import { useState } from "react"
+import { salvareEntitate } from "../../AccesareAPI"
 import "../ModalAdaugare.css"
 
-const DetaliiVizita = ({animalCurent, vizitaCurenta, setVizitaCurenta, setViewDetaliiVizita, setViewDetaliiAnimal, api, jwtToken, vizite, setVizite, angajati, tratamente, setTextRaspuns, setViewRaspuns}) => {
-    
-    const handleClickInchidere = () => { setViewDetaliiVizita(false), setVizitaCurenta('') }
+const VizitaNoua = ({animalCurent, setViewVizitaNoua, setTextRaspuns, setViewRaspuns, vizite, setVizite, angajati, tratamente, api, jwtToken}) => {
 
-    const [vizitaId,        setVizitaId]        = useState('')
+    const handleClickInchidere = () => { setViewVizitaNoua(false) }
+
     const [motiv,           setMotiv]           = useState('')
     const [diagnostic,      setDiagnostic]      = useState('')
-    const [angajatId,       setAngajatId]       = useState(vizitaCurenta.angajatId.angajatId)
     const [metodaTratament, setMetodaTratament] = useState('')
-    const [dataInceput,     setDataInceput]     = useState(new Date().toISOString().split('T')[0])
     const [dataSfarsit,     setDataSfarsit]     = useState('')
-    
+    const dataVizita = new Date().toISOString().split('T')[0]
+    const animalId   = animalCurent.animalId        
+    const stapanId   = animalCurent.stapan.stapanId 
+    const [angajatId,   setAngajatId]           = useState('')
+
     const handleChangeDiagnostic       = (event) => { setDiagnostic(event.target.value)      }
     const handleChangeMotiv            = (event) => { setMotiv(event.target.value)           }
     const handleChangeAngajatId        = (event) => { setAngajatId(event.target.value)       }  
     const handleChangeMetodaTratament  = (event) => { setMetodaTratament(event.target.value) }
     const handleChangeDataSfarsit      = (event) => { setDataSfarsit(event.target.value)     }
-
-    const dataVizita = new Date().toISOString().split('T')[0]
-
-    const updateListaVizite = (vizitaEditata) => {
-        let viziteEditate = [...vizite]       
-        viziteEditate.map((vizita, index) => {
-            if(vizita.vizitaId === vizitaId){
-                viziteEditate[index] = vizitaEditata
-            }
-        })        
-        setVizite(viziteEditate)
-    }
-
-    useEffect(
-        () => {
-            setVizitaId       (vizitaCurenta.vizitaId)
-            setMotiv          (vizitaCurenta.motiv)
-            setDiagnostic     (vizitaCurenta.diagnostic.diagnostic)
-            setMetodaTratament(vizitaCurenta.tratament.metodaTratament)
-            setAngajatId      (vizitaCurenta.angajatId.angajatId)
-            setDataInceput    (vizitaCurenta.tratament.dataInceput)
-            setDataSfarsit    (vizitaCurenta.tratament.dataSfarsit)
-        }, [vizitaCurenta]
-    )
     
-    const handleClickEditeazaVizita = async () => {
-        const apiEndpoint = api +  "/vizite/angajat/editVizita"
+    const handleClickAdaugaVizita = async () => {
+        
+        const apiEndpoint = api + "/vizite/angajat/saveVizita"
+        
         const cerere = {
-            "vizitaId"          : vizitaId,
             "dataVizita"        : dataVizita,
+            "animalId"          : animalId,
+            "stapanId"          : stapanId,
             "angajatId"         : angajatId,
             "motiv"             : motiv,
             "diagnostic"        : diagnostic,
             "metodaTratament"   : metodaTratament,
-            "dataInceput"       : dataInceput,
+            "dataInceput"       : dataVizita,
             "dataSfarsit"       : dataSfarsit,
         }
-        const raspunsApi =  await editEntitate({jwtToken, apiEndpoint, cerere}) 
+
+        const raspunsApi =  await salvareEntitate({apiEndpoint, jwtToken, cerere})
+
         if(raspunsApi.status === 200){
             //pun mesajul de succes in data pt ca la succes se returneaza de la server nu mesaj, ci un obiect vizita
             const raspuns = {
                 "status" : raspunsApi.status,
-                "data"   : "Vizită editată",
+                "data"   : "Vizită adăugată",
             }
-            const vizitaEditata = { 
-                ...vizitaCurenta,
-            }
-            vizitaEditata.motiv = motiv
-            vizitaEditata.diagnostic.diagnostic = diagnostic
-            vizitaEditata.tratament.metodaTratament = metodaTratament
-            vizitaEditata.tratament.dataSfarsit = dataSfarsit
-
-            updateListaVizite(vizitaEditata)
-            
             setTextRaspuns(raspuns)
-            //adaugat vizita si tratament in liste - la adaugare vizita noua
-            setViewDetaliiVizita(false)
+            //adaugat vizita si tratament in liste 
+            const viziteEditate = [...vizite]
+            viziteEditate.push(raspunsApi.data)
+            tratamente.push(raspunsApi.data.tratament)
+            setVizite(viziteEditate)
+            setViewVizitaNoua(false)
         }
         else{
             const raspuns = {
@@ -89,16 +65,12 @@ const DetaliiVizita = ({animalCurent, vizitaCurenta, setVizitaCurenta, setViewDe
         setViewRaspuns(true)
     }
 
-    return (
+    return(
         <div className="modalTabele">
             <div className="modalAdaugare" style={{width: "80%", height:"80%"}}>
                 <div className="baraModal">
                     <div id="stanga">  
-                        {vizitaCurenta ? (
-                            <p className="textTitluModal">{vizitaCurenta.animalId.nume} - vizită din data de - {vizitaCurenta.dataVizita}</p>
-                        ) : (
-                            <p className="textTitluModal">{animalCurent.nume} - Vizită nouă</p>
-                        )} 
+                        <p className="textTitluModal">{animalCurent.nume} - Vizită nouă</p>
                     </div>    
                     <div id="dreapta"> 
                         <button className="butonInchidere" onClick={handleClickInchidere}>
@@ -106,7 +78,7 @@ const DetaliiVizita = ({animalCurent, vizitaCurenta, setVizitaCurenta, setViewDe
                         </button> 
                     </div>
                 </div>
-                
+
                 <div className="containerAdaugare">
                     <div className="containerLinie">
                         <div className="containerLinieStanga">
@@ -121,15 +93,12 @@ const DetaliiVizita = ({animalCurent, vizitaCurenta, setVizitaCurenta, setViewDe
                     <div className="containerLinie">
                         <div className="containerLinieStanga">
                             <label htmlFor="angajatId">Veterinar</label>
-                            {vizitaCurenta ? (
-                                <label>{vizitaCurenta.angajatId.nume}</label>
-                            ) : ( 
-                                <select onChange={handleChangeAngajatId}>
-                                    {angajati.map((angajat, index) => (
-                                            <option key={index} value={angajat.angajatId}>{angajat.nume}</option>
-                                        ))}
-                                </select>
-                            )}
+                            <select onChange={handleChangeAngajatId}>
+                                <option value={0}>{''}</option>
+                                {angajati.map((angajat, index) => (
+                                    <option key={index} value={angajat.angajatId}>{angajat.nume}</option>
+                                ))}
+                            </select>
                         </div>
                         <div className="containerLinieDreapta">
                             <div className="containerLinieDreapta">
@@ -151,8 +120,7 @@ const DetaliiVizita = ({animalCurent, vizitaCurenta, setVizitaCurenta, setViewDe
                         <div className="containerLinieStanga">
                         </div>
                         <div className="containerLinieDreapta" style={{justifyContent: "flex-end"}}>
-                            <button onClick={() => {setViewDetaliiAnimal(true), setViewDetaliiVizita(false)}}>Vezi animal</button>
-                            <button onClick={handleClickEditeazaVizita}>{vizitaCurenta ? 'Editează' : 'Adaugă'}</button>
+                            <button onClick={handleClickAdaugaVizita}>Adaugă</button>
                         </div>
                     </div>
 
@@ -161,5 +129,6 @@ const DetaliiVizita = ({animalCurent, vizitaCurenta, setVizitaCurenta, setViewDe
             </div>
         </div>
     )
+
 }
-export default DetaliiVizita
+export default VizitaNoua

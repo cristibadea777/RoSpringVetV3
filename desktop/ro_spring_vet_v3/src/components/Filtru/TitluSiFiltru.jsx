@@ -22,14 +22,10 @@ const TitluSiFiltru = ({titlu, functie, filtru, viewProgramari, setTipProgramari
             )}
             {viewProgramari && (
                 <div className="containerSecundarTitluFiltru">
-                    <div className="linieAlegereTipProgramari">
-                        <label htmlFor="confirmate">Confirmate</label>
-                        <input type="radio" id="confirmate" name="tip_programari" value={"Confirmate"} onChange={handleChangeTipProgramari} checked={tipProgramari==="Confirmate"}></input>
-                    </div>
-                    <div className="linieAlegereTipProgramari">
-                        <label htmlFor="neconfirmate">Neconfirmate</label>
-                        <input type="radio" id="neconfirmate" name="tip_programari" value={"Neconfirmate"} onChange={handleChangeTipProgramari} checked={tipProgramari==="Neconfirmate"}></input>
-                    </div>
+                    <label htmlFor="confirmate">Confirmate</label>
+                    <input type="radio" id="confirmate" name="tip_programari" value={"Confirmate"} onChange={handleChangeTipProgramari} checked={tipProgramari==="Confirmate"}></input>
+                    <label htmlFor="neconfirmate" style={{marginLeft: "10%"}}>Neconfirmate</label>
+                    <input type="radio" id="neconfirmate" name="tip_programari" value={"Neconfirmate"} onChange={handleChangeTipProgramari} checked={tipProgramari==="Neconfirmate"}></input>
                 </div>
             )}
             {viewAngajati && (

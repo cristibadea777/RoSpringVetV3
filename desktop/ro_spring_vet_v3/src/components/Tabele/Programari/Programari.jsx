@@ -2,10 +2,13 @@ import { useEffect, useState } from "react"
 import TitluSiFiltru from "../../Filtru/TitluSiFiltru"
 import Pagini from "../../Pagini/Pagini"
 import { getPozePagina } from "../../AccesareAPI"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faBars } from "@fortawesome/free-solid-svg-icons"
+import DetaliiProgramare from "./DetaliiProgramare"
 
 
-const Programari = ({programari, viewProgramari, api, jwtToken}) => {
-    
+const Programari = ({programari, setProgramari, viewProgramari, api, jwtToken}) => {
+
     const [textFiltru,          setTextFiltru]          = useState('')
 
     const [paginaProgramari,    setPaginaProgramari]    = useState([])
@@ -61,9 +64,15 @@ const Programari = ({programari, viewProgramari, api, jwtToken}) => {
         setTextFiltru(event.target.value)
     }
 
-    const handleShowModalProgramare = () => {
-
+    const [programareCurenta,       setProgramareCurenta]       = useState('')
+    const [viewDetaliiProgramare,   setViewDetaliiProgramare]   = useState(false)
+    const handleViewDetaliiProgramare = (programare) => {
+        setProgramareCurenta(programare)
+        setViewDetaliiProgramare(true)
     }
+
+    const [textRaspuns,            setTextRaspuns]            = useState('')
+    const [viewRaspuns,            setViewRaspuns]            = useState(false)
 
     return(
         <div className="containerPrincipal">
@@ -76,6 +85,19 @@ const Programari = ({programari, viewProgramari, api, jwtToken}) => {
                 setTipProgramari = {setTipProgramari}
                 tipProgramari    = {tipProgramari}
             />
+
+            {viewDetaliiProgramare && (
+                <DetaliiProgramare 
+                    programari                = {programari}
+                    setProgramari             = {setProgramari}
+                    programareCurenta         = {programareCurenta}
+                    setViewDetaliiProgramare  = {setViewDetaliiProgramare}
+                    setTextRaspuns            = {setTextRaspuns}
+                    setViewRaspuns            = {setViewRaspuns}
+                    api                       = {api}
+                    jwtToken                  = {jwtToken}
+                />
+            )}
 
             <div className="containerTabel">
                 <table className="tabel">
@@ -105,7 +127,7 @@ const Programari = ({programari, viewProgramari, api, jwtToken}) => {
                                 <td>{programare.motiv}</td>
                                 <td>{programare.stare}</td>
                                 <td>
-                                    <div><button>Opțiuni</button></div>
+                                    <div> <button className="butonIconita" onClick={() => handleViewDetaliiProgramare(programare)}><FontAwesomeIcon icon={faBars}/></button> </div>
                                 </td>
                             </tr>
                         ))}
@@ -114,12 +136,22 @@ const Programari = ({programari, viewProgramari, api, jwtToken}) => {
             </div>
             
             <Pagini
+                lista                = {programari}
                 viewTabel            = {viewProgramari}
                 setPaginaTabel       = {setPaginaProgramari}
                 listaObiecteFiltrate = {programariFiltrate}
                 tipProgramari        = {tipProgramari}
                 textFiltru           = {textFiltru}
             />
+
+            {(viewRaspuns) && (
+            <div className="modal"> 
+                <div style={{width:"25%", height:"33%", backgroundColor:"#232B2B", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", border: "1px solid white"}}>
+                    <p className="raspunsApi" style={{color: (textRaspuns.status === 200) ? "green" : "red"}}> {textRaspuns.data} </p>
+                    <button onClick={() => {setViewRaspuns(false)}}>OK</button>
+                </div>
+            </div>
+            )}
 
             
         </div>

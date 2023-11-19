@@ -1,11 +1,81 @@
-const DetaliiProgramare = ({animalCurent, programareCurenta}) => {
- 
+import { useState } from "react"
+import { faX } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { editEntitate } from "../../AccesareAPI"
+
+const DetaliiProgramare = ({programari, setProgramari, programareCurenta, setViewDetaliiProgramare, setTextRaspuns, setViewRaspuns, api, jwtToken}) => {
+
+    const handleClickInchidere = () => { setViewDetaliiProgramare(false) }
+    
+    const azi = new Date().toISOString().split('T')[0]
+    const [dataAleasa, setDataAleasa]   = useState(programareCurenta.dataProgramare)
+    const [motiv,      setMotiv]        = useState(programareCurenta.motiv)
+    const [stare,      setStare]        = useState(programareCurenta.stare)
+
+    const handleChangeData  = (event) => { setDataAleasa(event.target.value) }
+    const handleChangeMotiv = (event) => { setMotiv(event.target.value)      }
+
+    const updateListaProgramari = (programareEditata) => {
+        let programariEditate = [...programari]       
+        programariEditate.map((programare, index) => {
+            if(programare.programareId === programareCurenta.programareId){
+                programariEditate[index] = programareEditata
+            }
+        })        
+        setProgramari(programariEditate)
+    }
+
+    const anuleazaProgramarea = () => {
+        //STERGE PROGRAMAREA DIN DB
+    }
+    const confirmaProgramarea = () => {
+        setStare("confirmata")
+        handleClickEditeazaProgramare()
+    }
+
+    const handleClickEditeazaProgramare = async () => {
+        const apiEndpoint = api +  "/programari/editProgramare"
+        const cerere = {
+            "programareId"   : programareCurenta.programareId,
+            "dataProgramare" : dataAleasa.replace("T", " "),
+            "motiv"          : motiv,
+            "stare"          : stare,
+            "stapanId"       : programareCurenta.stapanId.stapanId,
+            "animalId"       : programareCurenta.animalId.animalId,
+        }
+        const raspunsApi = await editEntitate({jwtToken, apiEndpoint, cerere})
+        if(raspunsApi.status === 200){
+            //pun mesajul de succes in data pt ca la succes se returneaza de la server nu mesaj, ci un obiect programare
+            const raspuns = {
+                "status" : raspunsApi.status,
+                "data"   : "Programare adăugată",
+            }
+            setTextRaspuns(raspuns)
+            const programareEditata = {
+                ...programareCurenta,
+            }
+            programareEditata.motiv          = motiv
+            programareEditata.dataProgramare = dataAleasa
+            programareEditata.stare          = raspunsApi.data.stare
+            updateListaProgramari(programareEditata)
+            setViewDetaliiProgramare(false)
+        }
+        else{
+            const raspuns = {
+                "status" : raspunsApi.status,
+                "data"   : raspunsApi.data, //la esec se returneaza mesajul de eroare de la server
+            }
+            setTextRaspuns(raspuns)
+        }
+        setViewRaspuns(true)
+    }
+
     return(
         <div className="modalTabele">
             <div className="modalAdaugare" style={{width:"45%", height: "45%"}}>
                 <div className="baraModal">
                     <div id="stanga">  
-                        <p className="textTitluModal">Programare - {programareCurenta.dataProgramare} - {animalCurent.nume} - detalii</p> 
+                        <p className="textTitluModal">{programareCurenta.dataProgramare} - {programareCurenta.animalId.nume}</p> 
                     </div>    
                     <div id="dreapta"> 
                         <button className="butonInchidere" onClick={handleClickInchidere}>
@@ -26,8 +96,12 @@ const DetaliiProgramare = ({animalCurent, programareCurenta}) => {
                     </div>
                     
                     <div className="containerLinie" style={{justifyContent: "flex-end"}}>
-                        <button onClick={handleClickAdaugaProgramare}>Editează</button>
-                        <button>Anulează</button>
+                        <button onClick={handleClickEditeazaProgramare}>Editează</button>
+                        {programareCurenta.stare === "confirmata" ? (
+                            <button style={{backgroundColor: "red", marginLeft: "7%"}}>Anulează programarea</button>
+                        ) : (
+                            <button style={{backgroundColor: "green", marginLeft: "7%"}}>Confirmă programarea</button>
+                        )}
                     </div>
                 </div>
                 

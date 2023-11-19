@@ -178,6 +178,7 @@ function App() {
       {viewProgramari && (
       <Programari
         programari              = {programari}
+        setProgramari           = {setProgramari}
         viewProgramari          = {viewProgramari}
         api                     = {api}
         jwtToken                = {jwtToken}

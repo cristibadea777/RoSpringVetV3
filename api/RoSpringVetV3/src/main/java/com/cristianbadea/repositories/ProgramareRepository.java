@@ -12,5 +12,7 @@ import com.cristianbadea.models.Stapan;
 public interface ProgramareRepository extends JpaRepository<Programare, Long> {
 
     List<Programare> findAllByStapanId(@Param("stapanId") Stapan stapanId);
+
+    List<Programare> findByDataProgramareBefore(String date);
  	
 }

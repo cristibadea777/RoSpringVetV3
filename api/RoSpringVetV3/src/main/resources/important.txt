@@ -1,0 +1,22 @@
+/src/main/resources/application.properties - este trecut la gitignore pentru ca acolo pun conexiunea catre DB, parolele, etc.
+Se creeaza deci /src/main/resources/application.properties
+Se stabileste conexiunea catre baza de date
+Trebuie sa se creeze folderele si sa se specifice locatia resurselor
+(specificate in additional-spring-configuration-metadata.json)
+
+
+#####application.properties:
+spring.datasource.url=jdbc:mariadb://localhost:3306/appvet3
+spring.datasource.username=root
+spring.datasource.password= ???
+spring.datasource.driver-class-name=org.mariadb.jdbc.Driver
+###proprietati hibernate
+###tabelele se creaza automat atunci cand pornim aplicatia
+spring.jpa.hibernate.ddl-auto=update
+###putem vedea log-urile generate de hibernate in timpul startului aplicatiei
+logging.level.org.hibernate.SQL=DEBUG
+###pentru folderul extern
+external.resources.path = /home/cristiiy/Documents/RoSpringVet3Files/resources/
+external.resources.dir  = resources
+###port --- contstanta 'api' in frontend este setata pt 8000
+server.port=8000

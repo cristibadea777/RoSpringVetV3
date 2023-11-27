@@ -34,8 +34,7 @@ public class PozeService {
 
         String calePoza     = path + folderPoza + "/" + numePozaDB;  
         long   idEntitate   = Long.valueOf(numePozaDB);
-
-        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectMapper   objectMapper   = new ObjectMapper();
         RaspunsPozaDTO raspunsPozaDTO = new RaspunsPozaDTO();
 
         try {
@@ -78,6 +77,7 @@ public class PozeService {
             return ResponseEntity.ok(objectMapper.writeValueAsString(raspunsPozaDTO));
             
         } catch (Exception e) {
+            System.out.println(e);
             return new ResponseEntity<String>("Eroare salvare poză în folder", HttpStatus.CONFLICT);
         }
 

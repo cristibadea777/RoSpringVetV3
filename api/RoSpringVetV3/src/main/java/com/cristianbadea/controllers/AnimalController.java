@@ -55,7 +55,6 @@ public class AnimalController {
         );
     }
 
-    //TODO: facut si pt angajat cand ia toate animalele stapanului
     @GetMapping("/stapan/getAllAnimaleStapan")
     public List<Animal> getAllAnimaleStapan(){
         String username = authenticationService.getUserConectat();

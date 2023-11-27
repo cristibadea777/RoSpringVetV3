@@ -4,6 +4,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,12 +43,9 @@ public class ProgramareController {
 
     @PostMapping("/saveProgramare")
     public ResponseEntity<String> saveProgramare(@RequestBody ProgramareDTO programareDTO){
-        
         String stare = "";
-        System.out.println(authenticationService.getUserRoles());
         if(authenticationService.getUserRoles().contains("ROLE_ADMIN")){ stare = "confirmata"; }
         else { stare = "neconfirmata"; }
-
         return programareService.saveProgramare(
             programareDTO.getDataProgramare(),
             programareDTO.getMotiv(),
@@ -55,6 +53,24 @@ public class ProgramareController {
             programareDTO.getAnimalId(),
             stare
         );
+    }
+
+    @PostMapping("/editProgramare")
+    public ResponseEntity<String> editProgramare(@RequestBody ProgramareDTO programareDTO){
+        return programareService.editProgramare(
+            programareDTO.getProgramareId(),
+            programareDTO.getDataProgramare(),
+            programareDTO.getMotiv(),
+            programareDTO.getStapanId(),
+            programareDTO.getAnimalId(),
+            programareDTO.getStare()
+        );
+
+    }
+
+    @DeleteMapping("/deleteProgramare")
+    public ResponseEntity<String> deleteProgramare(@RequestBody ProgramareDTO programareDTO){
+        return programareService.deleteProgramare(programareDTO.getProgramareId());
     }
 
 }

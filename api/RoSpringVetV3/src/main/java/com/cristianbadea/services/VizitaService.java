@@ -36,27 +36,28 @@ public class VizitaService {
     private AngajatRepository     angajatRepository;
 
     public List<Vizita> getAllVizite(){
-        //TODO: filtrare dupa data vizita (descrescator)
         return vizitaRepository.findAll();
     }
 
-    public String verificaContinutVizita(String diagnostic_string, String metodaTratament, String dataInceput, String dataSfarsit){
+    public String verificaContinutVizita(String diagnostic_string, String metodaTratament, String dataInceput, String dataSfarsit, long angajatId){
         if(diagnostic_string == null || diagnostic_string.isBlank()) return "Diagnostic este gol";            
         if(metodaTratament   == null || metodaTratament.isBlank())   return "Metoda tratament este goala";        
         if(dataInceput       == null || dataInceput.isBlank())       return "Data inceput este goala";
         if(dataSfarsit       == null || dataSfarsit.isBlank())       return "Data sfarsit este goala";
+        if(angajatId         == 0)                                   return "Adauga un angajat";
         return null;
     }
 
     public ResponseEntity<String> saveVizita(String dataVizita, long animalId, long stapanId, long angajatId, String motiv, String diagnostic_string, String metodaTratament, String dataInceput, String dataSfarsit) {
-        
-        String verificare = verificaContinutVizita(diagnostic_string, metodaTratament, dataInceput, dataSfarsit);
+
+        String verificare = verificaContinutVizita(diagnostic_string, metodaTratament, dataInceput, dataSfarsit, angajatId);
         if(verificare != null) return new ResponseEntity<String>(verificare, HttpStatus.CONFLICT);
 
         try {
             Animal  animal   = animalRepository.findById(animalId).get();
             Stapan  stapan   = stapanRepository.findById(stapanId).get();
             Angajat angajat  = angajatRepository.findById(angajatId).get();
+
             Diagnostic diagnostic = new Diagnostic();
             diagnostic.setDiagnostic(diagnostic_string);
             diagnosticRepository.save(diagnostic);
@@ -70,7 +71,8 @@ public class VizitaService {
             ObjectMapper objectMapper = new ObjectMapper();
             String vizitaJson = objectMapper.writeValueAsString(vizita);
             return ResponseEntity.ok(vizitaJson); 
-        } catch (Exception e) {
+        } catch (Exception e){ 
+            System.out.println(e);
             return new ResponseEntity<String>("Eroare salvare vizita", HttpStatus.CONFLICT);
         }
     }
@@ -80,11 +82,10 @@ public class VizitaService {
     }
 
     public ResponseEntity<String> editVizita(long vizitaId, String dataVizita, long angajatId, String motiv, String diagnostic_string, String metodaTratament, String dataInceput, String dataSfarsit) {
-        
-        String verificare = verificaContinutVizita(diagnostic_string, metodaTratament, dataInceput, dataSfarsit);
+        String verificare = verificaContinutVizita(diagnostic_string, metodaTratament, dataInceput, dataSfarsit, angajatId);
         if(verificare != null) return new ResponseEntity<String>(verificare, HttpStatus.CONFLICT);
         Vizita vizita = vizitaRepository.findById(vizitaId).get();
-        vizita.setMotiv(motiv);
+        vizita.setMotiv(motiv);     
         try {
             Angajat   angajat     = angajatRepository.findById(angajatId).get();
             Tratament tratament   = tratamentRepository.findById(vizita.getTratament().getTratamentId()).get();
@@ -101,7 +102,7 @@ public class VizitaService {
             vizitaRepository.save(vizita);
             return ResponseEntity.ok("Editat cu succes");
         } catch (Exception e) {
-            return new ResponseEntity<String>("Eroare salvare vizita", HttpStatus.CONFLICT);
+            return new ResponseEntity<String>("Eroare editare vizita", HttpStatus.CONFLICT);
         }
     }
 

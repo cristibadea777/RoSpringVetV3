@@ -24,7 +24,7 @@ public class ProgramareService {
     @Autowired
     private ProgramareRepository programareRepository;
     @Autowired
-    private StapanRepository stapabRepository;
+    private StapanRepository stapanRepository;
     @Autowired
     private AnimalRepository animalRepository;
 
@@ -80,7 +80,7 @@ public class ProgramareService {
         ResponseEntity<String> verificare = verificaProgramare(dataProgramare);
         if( verificare != null) return verificare;
         try {
-            Stapan stapan = stapabRepository.findById(stapanId).get();
+            Stapan stapan = stapanRepository.findById(stapanId).get();
             Animal animal = animalRepository.findById(animalId).get();
             Programare programare = programareRepository.save(new Programare(dataProgramare, motiv, stapan, animal, stare));            
             ObjectMapper objectMapper = new ObjectMapper();
@@ -95,7 +95,7 @@ public class ProgramareService {
         ResponseEntity<String> verificare = verificaProgramare(dataProgramare);
         if( verificare != null) return verificare;
         try {
-            Stapan stapan = stapabRepository.findById(stapanId).get();
+            Stapan stapan = stapanRepository.findById(stapanId).get();
             Animal animal = animalRepository.findById(animalId).get();
             Programare programare = programareRepository.findById(programareId).get();
             programare.setAnimalId(animal);

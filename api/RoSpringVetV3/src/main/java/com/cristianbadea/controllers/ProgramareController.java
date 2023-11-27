@@ -57,15 +57,17 @@ public class ProgramareController {
 
     @PostMapping("/editProgramare")
     public ResponseEntity<String> editProgramare(@RequestBody ProgramareDTO programareDTO){
+        String stare = "";
+        if(authenticationService.getUserRoles().contains("ROLE_ADMIN")){ stare = "confirmata"; }
+        else { stare = "neconfirmata"; }
         return programareService.editProgramare(
             programareDTO.getProgramareId(),
             programareDTO.getDataProgramare(),
             programareDTO.getMotiv(),
             programareDTO.getStapanId(),
             programareDTO.getAnimalId(),
-            programareDTO.getStare()
+            stare
         );
-
     }
 
     @DeleteMapping("/deleteProgramare")

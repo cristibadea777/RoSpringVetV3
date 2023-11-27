@@ -7,7 +7,7 @@ import { faBars } from "@fortawesome/free-solid-svg-icons"
 import DetaliiProgramare from "./DetaliiProgramare"
 
 
-const Programari = ({programari, setProgramari, viewProgramari, api, jwtToken}) => {
+const Programari = ({programari, setProgramari, viewProgramari, api, jwtToken, authority}) => {
 
     const [textFiltru,          setTextFiltru]          = useState('')
 
@@ -96,6 +96,7 @@ const Programari = ({programari, setProgramari, viewProgramari, api, jwtToken}) 
                     setViewRaspuns            = {setViewRaspuns}
                     api                       = {api}
                     jwtToken                  = {jwtToken}
+                    authority                 = {authority}
                 />
             )}
 

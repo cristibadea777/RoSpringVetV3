@@ -211,4 +211,20 @@ const salvareEntitate = async ({jwtToken, apiEndpoint, cerere}) => {
     }
   }
 
-export { registerUser, loginUser, getUserConectat, getPoza, logout, getAllObiecte, editEntitate, salvarePoza, salvareEntitate, getPozePagina, getEntitate }
+  const deleteEntitate = async ({jwtToken, apiEndpoint, cerere}) => {
+    const customConfig = {
+        headers: {
+            'Authorization' : `Bearer ${jwtToken}`,
+            'Content-Type': 'application/json'
+        },
+    }
+    try {
+        const raspuns = await axios.delete(apiEndpoint, {...customConfig, data: cerere})
+        return raspuns.data
+    } catch (error) {
+        console.log(error)
+        console.log("EROARE DELETE ENTITATE\n" + JSON.stringify(error))       
+    }
+  }
+
+export { registerUser, loginUser, getUserConectat, getPoza, logout, getAllObiecte, editEntitate, salvarePoza, salvareEntitate, getPozePagina, getEntitate, deleteEntitate }

@@ -1,11 +1,12 @@
-import { faSearch } from "@fortawesome/free-solid-svg-icons"
+import { faBars, faSearch } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useEffect, useState } from "react"
 import TitluSiFiltru from "../../Filtru/TitluSiFiltru"
 import Pagini from "../../Pagini/Pagini"
 import { getPozePagina } from "../../AccesareAPI"
+import DetaliiTratament from "./DetaliiTratament"
 
-const Tratamente = ({tratamente, viewTratamente, api, jwtToken}) => {
+const Tratamente = ({tratamente, viewTratamente, setTratamente, api, jwtToken, authority}) => {
 
     const [paginaTratamente, setPaginaTratamente] = useState([])
     const [pozePagina,       setPozePagina]       = useState([])
@@ -43,9 +44,15 @@ const Tratamente = ({tratamente, viewTratamente, api, jwtToken}) => {
 
     const tratamenteFiltrate = filtrareTratamente(tratamente)
 
-    const handleShowModalTratament = () => {
-
+    const [tratamentCurent,        setTratamentCurent]        = useState('')
+    const [viewDetaliiTratament,   setViewDetaliiTratament]   = useState(false)
+    const handleViewDetaliiTratament = (tratament) => {
+        setTratamentCurent(tratament)
+        setViewDetaliiTratament(true)
     }
+
+    const [textRaspuns,            setTextRaspuns]            = useState('')
+    const [viewRaspuns,            setViewRaspuns]            = useState(false)
 
     return(
         <div className="containerPrincipal">
@@ -55,6 +62,20 @@ const Tratamente = ({tratamente, viewTratamente, api, jwtToken}) => {
                 filtru  = {textFiltru}
                 functie = {handleChangeTextFiltru}
             />
+
+            {viewDetaliiTratament && (
+                <DetaliiTratament 
+                    tratamente              = {tratamente}
+                    setTratamente           = {setTratamente}
+                    tratamentCurent         = {tratamentCurent}
+                    setTextRaspuns          = {setTextRaspuns}
+                    setViewRaspuns          = {setViewRaspuns}
+                    setViewDetaliiTratament = {setViewDetaliiTratament}
+                    api                     = {api}
+                    jwtToken                = {jwtToken}
+                    authority               = {authority}
+                />
+            )}
 
             <div className="containerTabel">
                 <table className="tabel">
@@ -77,7 +98,7 @@ const Tratamente = ({tratamente, viewTratamente, api, jwtToken}) => {
                                 <td>{tratament.dataInceput}</td>
                                 <td>{tratament.dataSfarsit}</td>
                                 <td>
-                                    <div><button className="butonIconita"><FontAwesomeIcon icon={faSearch}/></button></div>
+                                    <div> <button className="butonIconita" onClick={() => handleViewDetaliiTratament(tratament)}><FontAwesomeIcon icon={faBars}/></button> </div>
                                 </td>
                             </tr>
                         ))}
@@ -86,11 +107,21 @@ const Tratamente = ({tratamente, viewTratamente, api, jwtToken}) => {
             </div>
 
             <Pagini 
+                lista                   = {tratamente}
                 viewTabel               = {viewTratamente}
                 listaObiecteFiltrate    = {tratamenteFiltrate}
                 setPaginaTabel          = {setPaginaTratamente}
                 textFiltru              = {textFiltru}
             />
+
+            {(viewRaspuns) && (
+            <div className="modal"> 
+                <div style={{width:"25%", height:"33%", backgroundColor:"#232B2B", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", border: "1px solid white"}}>
+                    <p className="raspunsApi" style={{color: (textRaspuns.status === 200) ? "green" : "red"}}> {textRaspuns.data} </p>
+                    <button onClick={() => {setViewRaspuns(false)}}>OK</button>
+                </div>
+            </div>
+            )}
             
         </div>
     )

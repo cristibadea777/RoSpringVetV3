@@ -6,7 +6,7 @@ import Pagini from "../../Pagini/Pagini"
 import { getPozePagina } from "../../AccesareAPI"
 
 
-const TabelDetaliiEntitate = ({listaTabel, optiune, textFiltru, viewTabel, handleShowModalAnimal, jwtToken, api, handleViewVizitaCurenta}) => {
+const TabelDetaliiEntitate = ({listaTabel, optiune, textFiltru, viewTabel, handleShowModalAnimal, jwtToken, api, handleViewVizitaCurenta, handleViewProgramareCurenta}) => {
     
     const [paginaEntitate,          setPaginaEntitate]          = useState([])
     const [pozePaginaAnimaleStapan, setPozePaginaAnimaleStapan] = useState([])
@@ -42,7 +42,6 @@ const TabelDetaliiEntitate = ({listaTabel, optiune, textFiltru, viewTabel, handl
                     entitate.rasa.toLowerCase().includes(textCautat)
                 )
             }
-
         })
     }
     const entitatiFiltrate = filtrareEntitati(listaTabel)
@@ -76,13 +75,12 @@ const TabelDetaliiEntitate = ({listaTabel, optiune, textFiltru, viewTabel, handl
                                 <th>Dată</th>
                                 <th>Motiv</th>
                                 <th>Angajat</th>
-                                <th>Detalii</th>
+                                <th>Opțiuni</th>
                             </tr>
                         ) : optiune === 'tratamente' ? (
                             <tr>
                                 <th>Dată începere</th>
                                 <th>Dată sfârșit</th>
-                                <th>Detalii</th>
                                 <th>Opțiuni</th>
                             </tr>
                         ) : optiune === 'programari' ? (
@@ -118,14 +116,13 @@ const TabelDetaliiEntitate = ({listaTabel, optiune, textFiltru, viewTabel, handl
                                     <td>{entitate.dataInceput}</td>
                                     <td>{entitate.dataSfarsit}</td>
                                     <td><div><button className="butonIconita"><FontAwesomeIcon icon={faSearch}/></button></div></td>
-                                    <td><div><button>Opțiuni</button></div></td>
                                 </tr>
                             ) : optiune === 'programari' ? (
                                 <tr key={index}>
                                     <td>{entitate.dataProgramare}</td>
                                     <td>{entitate.motiv}</td>
                                     <td>{entitate.stare}</td>
-                                    <td><div><button>Opțiuni</button></div></td>
+                                    <td> <div> <button onClick={() => {handleViewProgramareCurenta(entitate)}} className="butonIconita"><FontAwesomeIcon icon={faSearch}/></button> </div> </td>
                                 </tr>
                             ) : optiune === 'animale' ? (
                                 <tr key={index}>

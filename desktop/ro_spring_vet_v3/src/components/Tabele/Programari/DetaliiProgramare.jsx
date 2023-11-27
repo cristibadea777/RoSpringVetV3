@@ -1,9 +1,9 @@
 import { useState } from "react"
 import { faX } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { editEntitate } from "../../AccesareAPI"
+import { deleteEntitate, editEntitate } from "../../AccesareAPI"
 
-const DetaliiProgramare = ({programari, setProgramari, programareCurenta, setViewDetaliiProgramare, setTextRaspuns, setViewRaspuns, api, jwtToken}) => {
+const DetaliiProgramare = ({programari, setProgramari, programareCurenta, setViewDetaliiProgramare, setTextRaspuns, setViewRaspuns, api, jwtToken, authority}) => {
 
     const handleClickInchidere = () => { setViewDetaliiProgramare(false) }
     
@@ -25,12 +25,27 @@ const DetaliiProgramare = ({programari, setProgramari, programareCurenta, setVie
         setProgramari(programariEditate)
     }
 
-    const anuleazaProgramarea = () => {
-        //STERGE PROGRAMAREA DIN DB
-    }
-    const confirmaProgramarea = () => {
-        setStare("confirmata")
-        handleClickEditeazaProgramare()
+    const anuleazaProgramarea = async () => {
+        //sterge programarea din db
+        const apiEndpoint = api +  "/programari/deleteProgramare"
+        const cerere = {
+            "programareId"   : programareCurenta.programareId,
+            "dataProgramare" : programareCurenta.dataProgramare,
+            "motiv"          : programareCurenta.motiv,
+            "stare"          : programareCurenta.stare,
+            "stapanId"       : programareCurenta.stapanId.stapanId,
+            "animalId"       : programareCurenta.animalId.animalId,
+        }
+        const raspunsApi = await deleteEntitate({jwtToken, apiEndpoint, cerere})
+        const raspuns = {
+            "status" : 200,
+            "data"   : raspunsApi,
+        }
+        setTextRaspuns(raspuns)
+        setViewRaspuns(true)
+        handleClickInchidere()
+        //sterge programarea din lista
+        setProgramari((prevProgramari) => prevProgramari.filter((programare) => programare !== programareCurenta))
     }
 
     const handleClickEditeazaProgramare = async () => {
@@ -98,9 +113,13 @@ const DetaliiProgramare = ({programari, setProgramari, programareCurenta, setVie
                     <div className="containerLinie" style={{justifyContent: "flex-end"}}>
                         <button onClick={handleClickEditeazaProgramare}>Editează</button>
                         {programareCurenta.stare === "confirmata" ? (
-                            <button style={{backgroundColor: "red", marginLeft: "7%"}}>Anulează programarea</button>
+                            <button onClick={anuleazaProgramarea} style={{backgroundColor: "red", marginLeft: "7%"}}>Anulează programarea</button>
                         ) : (
-                            <button style={{backgroundColor: "green", marginLeft: "7%"}}>Confirmă programarea</button>
+                            <>
+                            {authority === "ADMIN" && (
+                                <button onClick={handleClickEditeazaProgramare} style={{backgroundColor: "green", marginLeft: "7%"}}>Confirmă programarea</button>
+                            )}
+                            </>
                         )}
                     </div>
                 </div>

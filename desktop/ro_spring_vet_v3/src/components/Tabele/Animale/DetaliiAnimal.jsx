@@ -9,10 +9,11 @@ import TabelDetaliiEntitate from "../DetaliiEntitate/TabelDetaliiEntitate";
 import DetaliiStapan from "../Stapani/DetaliiStapan";
 import DetaliiVizita from "../Vizite/DetaliiVizita";
 import VizitaNoua from "../Vizite/VizitaNoua";
+import DetaliiProgramare from "../Programari/DetaliiProgramare";
 
 const DetaliiAnimal = (
     {   
-        animalCurent, animale, setAnimale, stapani, setStapani, api, jwtToken, vizite, setVizite, programari, setProgramari, tratamente, angajati, setViewDetaliiAnimal, viewButonStapan
+        animalCurent, animale, setAnimale, stapani, setStapani, api, jwtToken, vizite, setVizite, programari, setProgramari, tratamente, angajati, setViewDetaliiAnimal, viewButonStapan, authority
     }) => {
     
     const handleClickInchidereOptiuniEntitate = () => { setViewDetaliiAnimal(false) }
@@ -101,7 +102,7 @@ const DetaliiAnimal = (
         let nrProgramari = 0
         let p = []
         programari && programari.map((programare) => { 
-            if(programare.animalId.animalId === animalCurent.animalId && programare.stare === 'confirmata'){ 
+            if(programare.animalId.animalId === animalCurent.animalId){ 
                 nrProgramari = nrProgramari + 1, p.push(programare) 
             }
         })
@@ -203,6 +204,12 @@ const DetaliiAnimal = (
         setVizitaCurenta    (vizita)
         setViewDetaliiVizita(true)
     }
+    const [viewDetaliiProgramare, setViewDetaliiProgramare] = useState(false)
+    const [programareCurenta, setProgramareCurenta] = useState(null)
+    const handleViewProgramareCurenta = (programare) => {
+        setProgramareCurenta (programare)
+        setViewDetaliiProgramare(true)
+    }
 
     return(
         <div className="modalTabele"> 
@@ -228,18 +235,32 @@ const DetaliiAnimal = (
 
             {viewDetaliiVizita && (
                 <DetaliiVizita 
-                    vizitaCurenta         = {vizitaCurenta}
-                    animalCurent          = {vizitaCurenta.animalId}
-                    vizite                = {vizite}
-                    tratamente            = {tratamente}
-                    setTextRaspuns        = {setTextRaspuns}
-                    setViewRaspuns        = {setViewRaspuns}
-                    setVizite             = {setVizite}
-                    setVizitaCurenta      = {setVizitaCurenta}
-                    setViewDetaliiVizita  = {setViewDetaliiVizita}
-                    setViewDetaliiAnimal  = {setViewDetaliiAnimal}
-                    api                   = {api}
-                    jwtToken              = {jwtToken}
+                    vizitaCurenta            = {vizitaCurenta}
+                    animalCurent             = {vizitaCurenta.animalId}
+                    vizite                   = {vizite}
+                    tratamente               = {tratamente}
+                    setTextRaspuns           = {setTextRaspuns}
+                    setViewRaspuns           = {setViewRaspuns}
+                    setVizite                = {setVizite}
+                    setVizitaCurenta         = {setVizitaCurenta}
+                    setViewDetaliiVizita     = {setViewDetaliiVizita}
+                    setViewDetaliiAnimal     = {setViewDetaliiAnimal}
+                    api                      = {api}
+                    jwtToken                 = {jwtToken}
+                />
+            )}
+
+            {viewDetaliiProgramare && (
+                <DetaliiProgramare 
+                    programareCurenta        = {programareCurenta}
+                    api                      = {api}
+                    jwtToken                 = {jwtToken}
+                    programari               = {programari}
+                    setProgramari            = {setProgramari}
+                    setTextRaspuns           = {setTextRaspuns}
+                    setViewRaspuns           = {setViewRaspuns}
+                    setViewDetaliiProgramare = {setViewDetaliiProgramare}
+                    authority                = {authority}
                 />
             )}
         
@@ -306,14 +327,15 @@ const DetaliiAnimal = (
                 </div>
 
                 <TabelDetaliiEntitate 
-                    listaTabel             = {listaTabel}
-                    optiune                = {optiune} 
-                    textFiltru             = {textFiltru}
-                    viewTabel              = {animalCurent}
-                    setOptiune             = {setOptiune}
-                    jwtToken               = {jwtToken}
-                    api                    = {api}
-                    handleViewVizitaCurenta={handleViewVizitaCurenta}  
+                    listaTabel                  = {listaTabel}
+                    optiune                     = {optiune} 
+                    textFiltru                  = {textFiltru}
+                    viewTabel                   = {animalCurent}
+                    setOptiune                  = {setOptiune}
+                    jwtToken                    = {jwtToken}
+                    api                         = {api}
+                    handleViewVizitaCurenta     = {handleViewVizitaCurenta}  
+                    handleViewProgramareCurenta = {handleViewProgramareCurenta}
                 />
             </div>
 

@@ -163,8 +163,6 @@ function App() {
         setProgramari           = {setProgramari}
         tratamente              = {tratamente}
         angajati                = {angajati}
-
-
         api                     = {api}
         jwtToken                = {jwtToken}
       />)}
@@ -172,8 +170,10 @@ function App() {
       <Tratamente 
         tratamente              = {tratamente}
         viewTratamente          = {viewTratamente}
+        setTratamente           = {setTratamente}
         api                     = {api}
         jwtToken                = {jwtToken}
+        authority               = {authority}
       />)}
       {viewProgramari && (
       <Programari
@@ -182,6 +182,7 @@ function App() {
         viewProgramari          = {viewProgramari}
         api                     = {api}
         jwtToken                = {jwtToken}
+        authority               = {authority}
       />)}
     </div>
   )

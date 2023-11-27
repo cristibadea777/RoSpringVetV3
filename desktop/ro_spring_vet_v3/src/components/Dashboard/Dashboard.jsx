@@ -90,7 +90,7 @@ const Dashboard = ( {username, authority, userConectat, pozaProfil, setPozaProfi
     }
 
     const handleEditAngajat = async () => {
-        const apiEndpoint = api + '/angajati/editAngajat'
+        const apiEndpoint = api + '/angajati/angajat/editAngajat'
         const cerere = {
             "angajatId"   :   idEntitateCurenta,      
             "nume"        :   numeEntitateCurenta,
